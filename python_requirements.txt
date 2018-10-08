@@ -5,4 +5,5 @@ numpy
 pandas
 jupyter
 scikit-learn
-opencv-python
+seaborn
+scikit-image
