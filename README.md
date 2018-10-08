@@ -11,6 +11,4 @@
 
 [ISIC Gallery](https://www.isic-archive.com/#!/topWithHeader/onlyHeaderTop/gallery)  
 
-### HAM10000 dataset
-
-[Download](https://www.kaggle.com/kmader/skin-cancer-mnist-ham10000)
+[ISIC Archive Downloader](https://github.com/GalAvineri/ISIC-Archive-Downloader)
