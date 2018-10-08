@@ -7,3 +7,4 @@ jupyter
 scikit-learn
 seaborn
 scikit-image
+tqdm
