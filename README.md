@@ -14,4 +14,7 @@
 [ISIC Archive Downloader](https://github.com/GalAvineri/ISIC-Archive-Downloader)
 
 Usage:  
-`python ../ISIC-Archive-Downloader/download_archive.py --num-images 5000 -s --images-dir data/ISIC/images --descs-dir data/ISIC/description --seg-dir data/ISIC/segmentation --seg-skill expert --p 100`
+```bash
+python ../ISIC-Archive-Downloader/download_archive.py --num-images 1000 -s --images-dir data/ISIC/benign/images --descs-dir data/ISIC/benign/description --seg-dir data/ISIC/benign/segmentation --seg-skill expert --filter benign
+python ../ISIC-Archive-Downloader/download_archive.py --num-images 1000 -s --images-dir data/ISIC/malignant/images --descs-dir data/ISIC/malignant/description --seg-dir data/ISIC/malignant/segmentation --seg-skill expert --filter malignant
+```
