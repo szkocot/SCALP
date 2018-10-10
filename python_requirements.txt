@@ -9,3 +9,5 @@ seaborn
 scikit-image
 tqdm
 keras-tqdm
+joblib
+python-resize-image
