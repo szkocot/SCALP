@@ -1,3 +1,4 @@
 data
 notebooks/.ipynb_checkpoints
 .vscode/settings.json
+models/keras_model.h5
