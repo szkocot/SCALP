@@ -11,3 +11,6 @@ tqdm
 keras-tqdm
 joblib
 python-resize-image
+h5py
+joblib
+python-resize-image
