@@ -1,8 +1,17 @@
 import numpy as np
 import keras
-import python.config as config
-from python.preprocessing import Preprocessor
-from python.utils import id_to_path
+try:
+    import config
+except ImportError:
+    import python.config as config
+try:
+    from preprocessing import Preprocessor
+except ImportError:
+    from python.preprocessing import Preprocessor
+try:
+    from utils import id_to_path
+except ImportError:
+    from python.utils import id_to_path
 
 
 class Predictor(Preprocessor):
@@ -31,7 +40,12 @@ class Predictor(Preprocessor):
         # resize to N,W,H,C format (N==1)
         img.shape = (1, *img.shape)
 
-        return self.model.predict(img)
+        y_pred = self.model.predict(img)
+
+        y_dict = {'benign': y_pred[0][0],
+                  'malignant': y_pred[0][1]}
+
+        return y_dict
 
 
 if __name__ is '__main__':
@@ -49,12 +63,10 @@ if __name__ is '__main__':
     label = 'benign'
     for id in benign_ids:
         y_pred = predictor(id, 'benign')
-        print('Benign' if y_pred[0][0] > 0.5 else 'Malignant',
-              ' : ', str(np.round(np.max(y_pred), 3)))
+        print(y_pred)
 
     print('--Malignant--')
     label = 'malignant'
     for id in malignant_ids:
         y_pred = predictor(id, 'malignant')
-        print('Benign' if y_pred[0][0] > 0.5 else 'Malignant',
-              ' : ', str(np.round(np.max(y_pred), 3)))
+        print(y_pred)

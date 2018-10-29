@@ -1,7 +1,10 @@
 import os
 from PIL import Image
 import numpy as np
-import python.config
+try:
+    import config
+except ImportError:
+    import python.config as config
 
 
 class Preprocessor():
