@@ -3,12 +3,7 @@ keras
 Pillow
 numpy
 pandas
-jupyter
 scikit-learn
-seaborn
 scikit-image
-tqdm
-keras-tqdm
-joblib
-python-resize-image
 h5py
+flask
