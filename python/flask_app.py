@@ -31,7 +31,7 @@ def predict():
     data = {"success": False}
     with graph.as_default():
         y_pred = predictor(id, label)
-    data['probabilities'] = pd.Series(y_pred).to_json(orient='values')
+    data['probabilities'] = pd.Series(y_pred).to_json(orient='index')
     data["success"] = True
 
     return sendResponse(data)
