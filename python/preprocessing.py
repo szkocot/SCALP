@@ -6,6 +6,15 @@ import python.config
 
 class Preprocessor():
 
+    """Preprocesses given image data, so it can be used for CNN prediction.
+
+    Raises:
+        ValueError -- Raised when load_image_and_resize method is called with not allowed img type.
+
+    Returns:
+        [np.Array] -- Processed image.
+    """
+
     def __init__(self, config):
         self.img_mean = config.img_mean
         self.img_std = config.img_std

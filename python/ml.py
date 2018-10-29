@@ -7,6 +7,15 @@ from python.utils import id_to_path
 
 class Predictor(Preprocessor):
 
+    """Predicts probability for benign and malignant label when image is given.
+
+    Arguments:
+        Preprocessor {class} -- image id, label (['benign','malignant','unknown'])
+
+    Returns:
+        [np.Array] -- Probabilities for benign, malignant label.
+    """
+
     def __init__(self, config=config):
         super().__init__(config)
 
