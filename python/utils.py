@@ -1,9 +1,9 @@
 import os
 import glob
 try:
-    import config
+    from config import data_path
 except ImportError:
-    import python.config as config
+    from python.config import data_path
 
 
 def id_to_path(id='ISIC_0000000', label='malignant', img_type='img'):
