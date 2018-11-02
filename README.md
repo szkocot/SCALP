@@ -22,5 +22,5 @@ python ../ISIC-Archive-Downloader/download_archive.py --num-images 1000 -s --ima
 
 ## Docker container
 
-1. Build container `docker build -t Projekt-BBD .`
-2. 
+1. Build container `docker build -t bbd .`
+2. Run container `docker run -v $PWD:/project -w /projt -p 5000:5000 bbd:latest python3 python/flask_app.py`
