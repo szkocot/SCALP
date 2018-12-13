@@ -4,3 +4,6 @@ joblib
 python-resize-image
 seaborn
 jupyter
+pandas
+scikit-learn
+scikit-image

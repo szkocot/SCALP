@@ -2,8 +2,4 @@ tensorflow
 keras
 Pillow
 numpy
-pandas
-scikit-learn
-scikit-image
-h5py
 flask
