@@ -3,3 +3,5 @@ keras
 Pillow
 numpy
 flask
+autopep8
+flask-restplus

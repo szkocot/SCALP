@@ -23,29 +23,27 @@ class Preprocessor():
         self.img_std = config.img_std
         self.img_target_size = config.img_target_size
 
-    def load_image_and_resize(self, file_path, img_type):
-        img = np.array(Image.open(file_path).resize(
-            reversed(self.img_target_size)))
-        if img_type is 'img':
-            return img
-        elif img_type is 'mask':
-            return img == 255
-        else:
-            raise ValueError('img_type should be either img or mask')
-
     def mask_img(self, img, mask):
+        img = self.resize_to_np(img)
+        mask = self.resize_to_np(mask)
+
+        img = img[:, :, :3]
+        mask = mask == 255
+
         return img*np.stack((mask, mask, mask), axis=2)
 
     def standardize_img(self, img):
-        img = img[:, :, :3]
         for i in range(3):
             img[:, :, i] = (img[:, :, i] - self.img_mean[i])/self.img_std[i]
         return img
 
-    def prepare_img(self, img_path, mask_path):
-        img = self.load_image_and_resize(img_path, 'img')
-        mask = self.load_image_and_resize(mask_path, 'mask')
+    def prepare_img(self, img, mask):
 
-        img_masked = self.mask_img(img, mask)
+        img_masked = self.mask_img(img, mask).astype(np.float32)
 
         return self.standardize_img(img_masked)
+
+    def resize_to_np(self, img):
+
+        return np.array(img.resize(
+            reversed(self.img_target_size)))

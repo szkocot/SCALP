@@ -30,43 +30,16 @@ class Predictor(Preprocessor):
 
         self.model = keras.models.load_model(config.model_path)
 
-    def __call__(self, id, label):
+    def __call__(self, img, mask):
 
-        img_path = id_to_path(id=id, label=label, img_type='img')
-        mask_path = id_to_path(id=id, label=label, img_type='mask')
-
-        img = self.prepare_img(img_path, mask_path)
+        img_ready = self.prepare_img(img, mask)
 
         # resize to N,W,H,C format (N==1)
-        img.shape = (1, *img.shape)
+        img_ready.shape = (1, *img_ready.shape)
 
-        y_pred = self.model.predict(img)
+        y_pred = self.model.predict(img_ready)
 
         y_dict = {'benign': y_pred[0][0],
                   'malignant': y_pred[0][1]}
 
         return y_dict
-
-
-if __name__ is '__main__':
-
-    predictor = Predictor()
-    benign_ids = ['ISIC_0000198',
-                  'ISIC_0000335',
-                  'ISIC_0001913']
-
-    malignant_ids = ['ISIC_0000019',
-                     'ISIC_0000335',
-                     'ISIC_0010990']
-
-    print('--Benign--')
-    label = 'benign'
-    for id in benign_ids:
-        y_pred = predictor(id, 'benign')
-        print(y_pred)
-
-    print('--Malignant--')
-    label = 'malignant'
-    for id in malignant_ids:
-        y_pred = predictor(id, 'malignant')
-        print(y_pred)
