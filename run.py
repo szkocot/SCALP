@@ -15,6 +15,8 @@ def index():
 
 @app.route('/login', methods=['POST'])
 def login():
+    if (request is None):
+        return index()
     status = AuthService.login(request)
     if status == "Success":
         session['logged_in'] = True
