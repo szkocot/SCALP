@@ -12,38 +12,37 @@ def index():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return 'Hello World!'
+        return render_template('index.html')
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', "GET"])
 def login():
-    if(session['logged_in']):
-        return index()
-    status = AuthService.login(request)
-    if status == "Success":
-        session['logged_in'] = True
-    else:
-        flash(status)
+    if request.method == "POST":
+        status = AuthService.login(request)
+        if status == "Success":
+            session['logged_in'] = True
+        else:
+            flash(status)
     return index()
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout():
     session['logged_in'] = False
     return index()
 
-@app.route('/register', methods=['POST'])
-def register():
-    if session.get('logged_in'):
-        return index()
-    if not session.get('logged_in'):
-        return render_template('login.html')
 
-    newUser = AuthService.createUser(request)
-    if newUser == "Success":
-        session['logged_in'] = True
-    else:
-        flash(newUser)
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    print(request.form)
+    if request.method == "GET":
+        return render_template('register.html')
+    if request.method == "POST":
+        newUser = AuthService.createUser(request)
+        if newUser == "Success":
+            session['logged_in'] = True
+        else:
+            flash(newUser)
     return index()
 
 
@@ -56,6 +55,6 @@ def predictMalignancy():
 
     return y_pred
 
-if __name__ == '__main__':
-    app.run(host=config.HOST, port=config.PORT, debug = config.DEBUG)
 
+if __name__ == '__main__':
+    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
