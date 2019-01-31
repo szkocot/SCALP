@@ -1,6 +1,5 @@
-from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
-import os
+import os, config
 from src.app.Service.AuthService import AuthService
 
 app = Flask(__name__)
@@ -9,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     if not session.get('logged_in'):
-        return render_template('../templates/login.html')
+        return render_template('login.html')
     else:
         return 'Hello World!'
 
@@ -39,4 +38,5 @@ def register():
     return index()
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=4000)
+    app.run(host=config.HOST, port=config.PORT, debug = config.DEBUG)
+

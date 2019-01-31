@@ -1,7 +1,7 @@
 import os
 import glob
 try:
-    from src.config import data_path
+    from config import data_path
 except ImportError:
     from python.config import data_path
 

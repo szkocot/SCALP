@@ -1,6 +1,6 @@
 import numpy as np
 try:
-    from src import config
+    import config
 except ImportError:
     import python.config as config
 

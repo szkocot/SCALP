@@ -1,4 +1,5 @@
 import psycopg2
+import config
 
 
 class DbConnection:
@@ -10,11 +11,11 @@ class DbConnection:
     connection = None
 
     def __init__(self):
-        _host = "127.0.0.1"
-        _port = 5432
-        _db = "bbd"
-        _user = "postgres"
-        _password = "psql"
+        _host = config.DATABASE_CONFIG['host']
+        _port = config.DATABASE_CONFIG['port']
+        _db = config.DATABASE_CONFIG['dbname']
+        _user = config.DATABASE_CONFIG['user']
+        _password = config.DATABASE_CONFIG['password']
 
     def getConnection(self):
         if self.connection is None:
@@ -34,3 +35,7 @@ class DbConnection:
 
     def __del__(self):
         self.connection = None
+
+    def initDB(self):
+        #todo auto import db if doesnt exsist
+        return

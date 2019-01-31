@@ -7,7 +7,7 @@ import re
 from PIL import Image
 
 try:
-    from src import config
+    import config
 except ImportError:
     import python.config as config
 try:
