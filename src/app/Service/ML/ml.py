@@ -1,20 +1,10 @@
 import keras
-try:
-    import config
-except ImportError:
-    import python.config as config
-try:
-    from src.preprocessing import Preprocessor
-except ImportError:
-    from python.preprocessing import Preprocessor
-try:
-    from src.utils import id_to_path
-except ImportError:
-    from python.utils import id_to_path
+import config,os
+from src.app.Service.ML.Preprocessing import Preprocessor
+from src.app.Helper.utils import idToPath
 
 
 class Predictor(Preprocessor):
-
     """Predicts probability for benign and malignant label when image is given.
 
     Arguments:
@@ -24,13 +14,15 @@ class Predictor(Preprocessor):
         [np.Array] -- Probabilities for benign, malignant label.
     """
 
-    def __init__(self, config=config):
-        super().__init__(config)
+    def __init__(self):
+        super().__init__()
+        print(config.PREDICTOR['model_path'])
+        print(os.path.abspath(__file__))
 
-        self.model = keras.models.load_model(config.model_path)
+        #commented cause of OSError: Unable to open file (file signature not found
+        #self.model = keras.models.load_model(config.PREDICTOR['model_path'])
 
     def __call__(self, img, mask):
-
         img_ready = self.prepare_img(img, mask)
 
         # resize to N,W,H,C format (N==1)

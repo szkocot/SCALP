@@ -1,12 +1,10 @@
-import os
-import glob
-try:
-    from config import data_path
-except ImportError:
-    from python.config import data_path
+import os, glob, base64, re
+from io import BytesIO
+from PIL import Image
+import config
 
 
-def id_to_path(id='ISIC_0000000', label='malignant', img_type='img'):
+def idToPath(id='ISIC_0000000', label='malignant', img_type='img'):
     """Processes given id, label and img_type with data_path from config to create image path.
 
     Returns:
@@ -25,6 +23,16 @@ def id_to_path(id='ISIC_0000000', label='malignant', img_type='img'):
     elif img_type is 'img':
         img_type = 'images'
 
-    base_dir = os.path.join(data_path, label, img_type)
+    base_dir = os.path.join(config.PREDICTOR['data_path'], label, img_type)
 
-    return glob.glob(base_dir+'/'+id+'*')[0]
+    return glob.glob(base_dir + '/' + id + '*')[0]
+
+    # todo
+
+
+def b64ToImg(img_b64):
+    image_data = re.sub('^data:image/.+;base64,',
+                        '', img_b64)
+    image = Image.open(BytesIO(base64.b64decode(image_data)))
+
+    return image

@@ -25,9 +25,11 @@ CSRF_ENABLED = True
 # secret is not so secret but its just a random project xD
 CSRF_SESSION_KEY = "secret"
 
-# nie wiem co to nie ruszam todo later
-img_mean = [27.99144619, 19.51839209, 16.42992409]
-img_std = [64.7680645, 47.09696396, 41.13751611]
-img_target_size = (96, 128)
-model_path = '../CNN/models/CNN_binary_v1.h5'
-data_path = 'data/ISIC'
+#ML vars
+PREDICTOR = {
+    'img_mean': [27.99144619, 19.51839209, 16.42992409],
+    'img_std': [64.7680645, 47.09696396, 41.13751611],
+    'img_target_size': (96, 128),
+    'model_path': '/CNN/models/CNN_binary_v1.h5',
+    'data_path': 'data/ISIC'
+}

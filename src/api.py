@@ -5,15 +5,8 @@ from io import BytesIO
 import base64
 import re
 from PIL import Image
-
-try:
-    import config
-except ImportError:
-    import python.config as config
-try:
-    from src.ml import Predictor
-except ImportError:
-    from python.ml import Predictor
+import config
+from src.app.Service.ML.ml import Predictor
 
 app = flask.Flask(__name__)
 api = Api(app)
@@ -64,5 +57,4 @@ def after_request(response):
 
 
 if __name__ == '__main__':
-
     app.run(debug=True)
