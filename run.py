@@ -18,7 +18,8 @@ def index():
 @app.route('/login', methods=['POST', "GET"])
 def login():
     if request.method == "POST":
-        status = AuthService.login(request)
+        auth = AuthService()
+        status = auth.login(request)
         if status == "Success":
             session['logged_in'] = True
         else:
@@ -38,7 +39,9 @@ def register():
     if request.method == "GET":
         return render_template('register.html')
     if request.method == "POST":
-        newUser = AuthService.createUser(request)
+        auth = AuthService();
+        data = request.form.to_dict(flat=True)
+        newUser = auth.createUser(data=data)
         if newUser == "Success":
             session['logged_in'] = True
         else:

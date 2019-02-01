@@ -7,31 +7,31 @@ class AuthService:
     user = None
 
     def __init__(self):
-        self.user = User
+        self.user = User()
         return
 
-    def login(self, request):
-        if self.isRegistered(request.form['username']):
-            return self.validateUser(request)
+    def login(self, data):
+        if self.isRegistered(data['username']):
+            return self.validateUser(data)
         else:
             return 'Please register first'
 
-    def isRegistered(self, request):
-        if self.user.userExsists(request.form['username']):
+    def isRegistered(self, data):
+        if self.user.userExsists(username=data['username']):
             return True
         else:
             return False
 
-    def validateUser(self, request):
-        if hashlib.sha256(request.form['password']) == self.user.getUserPasswordHash(request.form['username']):
+    def validateUser(self, data):
+        if hashlib.sha256(data['password']) == self.user.getUserPasswordHash(username=data['username']):
             return "Success"
         else:
             return 'Wrong Password'
 
-    def createUser(self, request):
-        if self.user.userExsists(request.form['username']):
+    def createUser(self, data):
+        if self.user.userExsists(username=data['username']):
             return "Username taken!"
         else:
-            self.user.create(request.form['username'], hashlib.sha256(request.form['password']), request.form['name'],
-                             request.form['surname'], request.form['email'])
+            self.user.create(data['username'], hashlib.sha256(data['password']), data['name'],
+                             data['surname'], data['email'])
             return "Success"
