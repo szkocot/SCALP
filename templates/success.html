@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
-    {% if session['logged_in'] %}
-        You're logged in already!
-    {% else %}
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <span>Success</span>
+<div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Congratulations!</h5>
+                        
+                        You have just been registered.
+
+                    </div>
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

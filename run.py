@@ -1,4 +1,4 @@
-from flask import Flask, flash, render_template, request, session
+from flask import Flask, flash, render_template, request, session, redirect
 import config
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
@@ -49,11 +49,17 @@ def register():
         newUser = auth.createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
-            return render_template("success.html")
+            return  redirect("/success", code=302)
+
         else:
             flash(newUser)
     return index()
 
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
+    
 
 @app.route("/predict", methods=['GET', 'POST'])
 def predictMalignancy():
