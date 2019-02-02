@@ -1,100 +1,84 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../static/css.css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
-    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <title>BBD</title>
 </head>
 <body>
 {% block header %}
-
-        <!-- Navbar content -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">BBD</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="navbar-collapse collapse" id="collapsingNavbar">
-
-                <ul class="navbar-nav navbar-bg">
+    <!-- Navbar content -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">BBD</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav navbar-bg">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Python</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Image processing
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Binary</a>
+                        <a class="dropdown-item" href="#">Segmentation</a>
+                        <a class="dropdown-item" href="#">Summary</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if session['logged_in'] %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Project</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-user"></i> Log Out</a>
                     </li>
-
+                {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Python</a>
+                        <a class="nav-link" href="{{ url_for('login') }}"><i class="fas fa-user"></i> Sign In</a>
                     </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Image processing
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Binary</a>
-                            <a class="dropdown-item" href="#">Segmentation</a>
-                            <a class="dropdown-item" href="#">Summary</a>
-                        </div>
-                    </li>
-
-                  </ul>
-                  
-                <ul class="navbar-nav ml-auto">
-                    {% if session['logged_in'] %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-user"></i> Log Out</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}"><i class="fas fa-user"></i> Sign In</a>
-                        </li>
-                    {% endif %}
-                  </ul>
-            </div>
-        </nav>
-    
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
 {% endblock %}
 
-
 {% block messages %}
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-
-<div class="col-sm-10 col-md-10 col-lg-10 mx-auto"></div>
-          {% for message in messages %}
-          <div class="alert alert-warning text-center" role="alert">
-            <span>{{ message }}</span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-  {% endfor %}
-      
-    </div>
-                    {% endif %}
-                  {% endwith %}
-                {% endblock %}
-
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="col-sm-10 col-md-10 col-lg-10 mx-auto"></div>
+            {% for message in messages %}
+                <div class="alert alert-warning text-center" role="alert">
+                    <span>{{ message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
 
 {% block body %}
-    todo body
 {% endblock %}
 
 {% block footer %}
-<footer class="page-footer font-small blue pt-4">
-<div class="footer-copyright text-center py-3">
-<span>Copyright &#169 Szymon Kocot, Wojciech Opoczyński, Kamila Wasilewska</span>
-  </div>
-</footer>
+    <footer class="page-footer font-small blue pt-4">
+        <div class="footer-copyright text-center py-3">
+            <span>Copyright &#169 Szymon Kocot, Wojciech Opoczyński, Kamila Wasilewska</span>
+        </div>
+    </footer>
 {% endblock %}
 
 <!-- Optional JavaScript -->
