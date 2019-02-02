@@ -1,6 +1,5 @@
 from src.app.Model.User import User
-
-import hashlib
+import bcrypt
 
 
 class AuthService:
@@ -16,22 +15,37 @@ class AuthService:
         else:
             return 'Please register first'
 
-    def isRegistered(self, data):
-        if self.user.userExsists(username=data['username']):
+    def isRegistered(self, username):
+        if self.user.userExsists(username):
             return True
         else:
             return False
 
     def validateUser(self, data):
-        if hashlib.sha256(data['password']) == self.user.getUserPasswordHash(username=data['username']):
+        if self.validatePassword(data['username'], data['password']):
             return "Success"
         else:
             return 'Wrong Password'
 
     def createUser(self, data):
-        if self.user.userExsists(username=data['username']):
+        if self.user.userExsists(data['username']):
             return "Username taken!"
         else:
-            self.user.create(data['username'], hashlib.sha256(data['password']), data['name'],
+            password = self.encodePassword(data['password'])
+            self.user.create(data['username'], password, data['name'],
                              data['surname'], data['email'])
             return "Success"
+
+    def encodePassword(self, password):
+        password = password.encode()
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password, salt)
+        return hashed.decode("utf-8")
+
+    def validatePassword(self, username, password):
+        password = password.encode()
+        hashed = self.user.getUserPasswordHash(username).encode()
+        if bcrypt.checkpw(password, hashed):
+            return True
+        else:
+            return False

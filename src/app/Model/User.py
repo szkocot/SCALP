@@ -3,27 +3,36 @@ from .DbConnection import DbConnection
 
 class User(DbConnection):
     def userExsists(self, username):
-        db = self.getCursor()
-        query = "SELECT id FROM users WHERE username = %s"
-        result = db.execute(query, username).fetchall()
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT id FROM users WHERE username = %(username)s"
+        cur.execute(query, {'username': username})
+        result = cur.fetchall()
         if result is not None and len(result) > 0:
             return True
         else:
             return False
 
     def getUserById(self, id):
-        db = self.getCursor()
-        query = "SELECT id, username, name, surname, email FROM users WHERE id = %d"
-        result = db.execute(query, id)
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT id, username, name, surname, email FROM users WHERE id = %(id)s"
+        result = cur.execute(query, {'id': id})
         return result
 
     def getUserPasswordHash(self, username):
-        db = self.getCursor()
-        query = "SELECT password FROM users WHERE username = %s"
-        result = db.execute(query, username).fetchone()
-        return result['password']
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT password FROM users WHERE username = %(username)s"
+        cur.execute(query, {'username': username})
+        result = cur.fetchone()
+        return result[0]
 
     def create(self, username, password, name=None, surname=None, email=None):
-        db = self.getCursor()
-        query = "INSERT INTO user (username, password, name, surname, email) VALUES (%s, %s, %s, %s, %s);"
-        return db.execute(query, (username, password, name, surname, email))
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "INSERT INTO users (username, password, name, surname, email) VALUES (%(username)s, %(password)s, %(name)s, %(surname)s, %(email)s);"
+        cur.execute(query,
+                    {'username': username, "password": password, "name": name, "surname": surname, "email": email})
+        db.commit()
+        return

@@ -11,11 +11,11 @@ class DbConnection:
     connection = None
 
     def __init__(self):
-        _host = config.DATABASE_CONFIG['host']
-        _port = config.DATABASE_CONFIG['port']
-        _db = config.DATABASE_CONFIG['dbname']
-        _user = config.DATABASE_CONFIG['user']
-        _password = config.DATABASE_CONFIG['password']
+        self._host = config.DATABASE_CONFIG['host']
+        self._port = config.DATABASE_CONFIG['port']
+        self._db = config.DATABASE_CONFIG['dbname']
+        self._user = config.DATABASE_CONFIG['user']
+        self._password = config.DATABASE_CONFIG['password']
 
     def getConnection(self):
         if self.connection is None:
@@ -29,13 +29,9 @@ class DbConnection:
 
         return self.connection
 
-    def getCursor(self):
-        connection = self.getConnection()
-        return connection.cursor()
-
     def __del__(self):
         self.connection = None
 
     def initDB(self):
-        #todo auto import db if doesnt exsist
+        # todo auto import db if doesnt exsist
         return

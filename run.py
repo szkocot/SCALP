@@ -18,8 +18,10 @@ def index():
 @app.route('/login', methods=['POST', "GET"])
 def login():
     if request.method == "POST":
+        print(request)
         auth = AuthService()
-        status = auth.login(request)
+        data = request.form.to_dict(flat=True)
+        status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
         else:
@@ -35,13 +37,12 @@ def logout():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    print(request.form)
+    auth = AuthService()
     if request.method == "GET":
         return render_template('register.html')
     if request.method == "POST":
-        auth = AuthService();
         data = request.form.to_dict(flat=True)
-        newUser = auth.createUser(data=data)
+        newUser = auth.createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
         else:
@@ -58,6 +59,15 @@ def predictMalignancy():
 
     return y_pred
 
+@app.route("/reset", methods=['GET','POST'])
+def reset():
+    return index()
+
+
 
 if __name__ == '__main__':
+
+    app.secret_key=config.CSRF_SESSION_KEY
+    app.config['SESSION_TYPE'] = 'filesystem'
+
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)

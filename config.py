@@ -10,10 +10,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Define the database - we are working with
 DATABASE_CONFIG = {
-    'host': 'localhost',
+    'host': '127.0.0.1',
     'dbname': 'bbd',
-    'user': 'postgres',
-    'password': 'psql',
+    'user': 'bbd',
+    'password': '1q2w3e4r',
     'port': 5432
 }
 

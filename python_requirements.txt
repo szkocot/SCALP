@@ -6,3 +6,4 @@ flask
 autopep8
 psycopg2
 psycopg2-binary
+bcrypt

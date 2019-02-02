@@ -44,14 +44,14 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.acquisition (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     image_type character varying(256),
     "pixelsX" character varying(256),
     "pixelsY" character varying(256)
 );
 
 
-ALTER TABLE public.acquisition OWNER TO postgres;
+ALTER TABLE public.acquisition OWNER TO bbd;
 
 --
 -- TOC entry 197 (class 1259 OID 16661)
@@ -59,7 +59,7 @@ ALTER TABLE public.acquisition OWNER TO postgres;
 --
 
 CREATE TABLE public.clinical (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     age_approx integer,
     anatom_site_general character varying(256),
     benign_malignant character varying(256),
@@ -70,7 +70,7 @@ CREATE TABLE public.clinical (
 );
 
 
-ALTER TABLE public.clinical OWNER TO postgres;
+ALTER TABLE public.clinical OWNER TO bbd;
 
 --
 -- TOC entry 198 (class 1259 OID 16667)
@@ -78,13 +78,13 @@ ALTER TABLE public.clinical OWNER TO postgres;
 --
 
 CREATE TABLE public.creator (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     _id character varying(256),
     name character varying(256)
 );
 
 
-ALTER TABLE public.creator OWNER TO postgres;
+ALTER TABLE public.creator OWNER TO bbd;
 
 --
 -- TOC entry 199 (class 1259 OID 16673)
@@ -92,7 +92,7 @@ ALTER TABLE public.creator OWNER TO postgres;
 --
 
 CREATE TABLE public.dataset (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     _access_level integer,
     _id character varying(256),
     description character varying(256),
@@ -102,7 +102,7 @@ CREATE TABLE public.dataset (
 );
 
 
-ALTER TABLE public.dataset OWNER TO postgres;
+ALTER TABLE public.dataset OWNER TO bbd;
 
 --
 -- TOC entry 200 (class 1259 OID 16679)
@@ -110,14 +110,14 @@ ALTER TABLE public.dataset OWNER TO postgres;
 --
 
 CREATE TABLE public.meta (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     acquisition_id integer,
     clinical_id integer,
     unstructured_id integer
 );
 
 
-ALTER TABLE public.meta OWNER TO postgres;
+ALTER TABLE public.meta OWNER TO bbd;
 
 --
 -- TOC entry 201 (class 1259 OID 16682)
@@ -125,7 +125,7 @@ ALTER TABLE public.meta OWNER TO postgres;
 --
 
 CREATE TABLE public.metadata (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     _model_type character varying(256),
     created timestamp(6) with time zone,
     dataset_id integer,
@@ -138,7 +138,7 @@ CREATE TABLE public.metadata (
 );
 
 
-ALTER TABLE public.metadata OWNER TO postgres;
+ALTER TABLE public.metadata OWNER TO bbd;
 
 --
 -- TOC entry 202 (class 1259 OID 16688)
@@ -146,14 +146,14 @@ ALTER TABLE public.metadata OWNER TO postgres;
 --
 
 CREATE TABLE public.notes (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     accepted boolean,
     "time" timestamp(6) with time zone,
     user_id character varying(256)
 );
 
 
-ALTER TABLE public.notes OWNER TO postgres;
+ALTER TABLE public.notes OWNER TO bbd;
 
 --
 -- TOC entry 203 (class 1259 OID 16691)
@@ -161,13 +161,13 @@ ALTER TABLE public.notes OWNER TO postgres;
 --
 
 CREATE TABLE public.tags (
-    id integer NOT NULL,
+     id integer NOT NULL PRIMARY KEY,
     data json,
     note_id integer
 );
 
 
-ALTER TABLE public.tags OWNER TO postgres;
+ALTER TABLE public.tags OWNER TO bbd;
 
 --
 -- TOC entry 204 (class 1259 OID 16697)
@@ -175,7 +175,7 @@ ALTER TABLE public.tags OWNER TO postgres;
 --
 
 CREATE TABLE public.unstructured (
-    id integer NOT NULL,
+    id integer NOT NULL PRIMARY KEY,
     diagnosis character varying(256),
     id1 character varying(256),
     localization character varying(256),
@@ -183,7 +183,7 @@ CREATE TABLE public.unstructured (
 );
 
 
-ALTER TABLE public.unstructured OWNER TO postgres;
+ALTER TABLE public.unstructured OWNER TO bbd;
 
 --
 -- TOC entry 205 (class 1259 OID 16703)
@@ -191,110 +191,18 @@ ALTER TABLE public.unstructured OWNER TO postgres;
 --
 
 CREATE TABLE public.users (
-    id bigint NOT NULL,
+    id SERIAL,
     username character varying(128),
     name character varying(128),
-    surnname character varying(128),
-    email character varying(256)
+    surname character varying(128),
+    email character varying(256),
+    password text NOT NULL,
+    admin boolean DEFAULT False
 );
 
-
-ALTER TABLE public.users OWNER TO postgres;
-
---
--- TOC entry 2715 (class 2606 OID 16710)
--- Name: clinical PK_clinical; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.clinical
-    ADD CONSTRAINT "PK_clinical" PRIMARY KEY (id);
+ALTER TABLE public.users OWNER TO bbd;
 
 
---
--- TOC entry 2738 (class 2606 OID 16712)
--- Name: users User_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
-
-
---
--- TOC entry 2717 (class 2606 OID 16714)
--- Name: creator creator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.creator
-    ADD CONSTRAINT creator_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2719 (class 2606 OID 16716)
--- Name: dataset dataset_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.dataset
-    ADD CONSTRAINT dataset_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2713 (class 2606 OID 16718)
--- Name: acquisition meta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.acquisition
-    ADD CONSTRAINT meta_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2723 (class 2606 OID 16720)
--- Name: meta meta_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.meta
-    ADD CONSTRAINT meta_pkey1 PRIMARY KEY (id);
-
-
---
--- TOC entry 2729 (class 2606 OID 16722)
--- Name: metadata metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.metadata
-    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2731 (class 2606 OID 16724)
--- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.notes
-    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2734 (class 2606 OID 16726)
--- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tags
-    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2736 (class 2606 OID 16728)
--- Name: unstructured unstructured_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.unstructured
-    ADD CONSTRAINT unstructured_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2720 (class 1259 OID 16729)
--- Name: fki_FK_acquisition; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX "fki_FK_acquisition" ON public.meta USING btree (acquisition_id);
 
