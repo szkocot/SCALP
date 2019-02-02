@@ -1,7 +1,7 @@
 from src.app.Model.Abstract.DbConnection import DbConnection
 
 
-class Tags(DbConnection):
+class Unstructured(DbConnection):
 
     def __init__(self):
         super().__init__()
@@ -26,4 +26,5 @@ class Tags(DbConnection):
                 " VALUES (%(id)s, %(diagnosis)s, %(id1)s, %(localization)s, %(site)s);"
         cur.execute(query, {'id': data['id'], "diagnosis": data['diagnosis'], "id1": data['id1'],
                             'localization': data['localization'], "site": data['site']})
-        return
+        cur.execute('SELECT LASTVAL()')
+        return cur.fetchone()[0]

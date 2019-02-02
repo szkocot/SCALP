@@ -38,4 +38,6 @@ class User(DbConnection):
         query = "INSERT INTO users (username, password, name, surname, email) VALUES (%(username)s, %(password)s, %(name)s, %(surname)s, %(email)s);"
         cur.execute(query,
                     {'username': username, "password": password, "name": name, "surname": surname, "email": email})
-        return
+        cur.execute('SELECT LASTVAL()')
+        result = cur.fetchone()
+        return result[0]

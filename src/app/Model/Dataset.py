@@ -35,4 +35,5 @@ class Dataset(DbConnection):
         cur.execute(query, {'id': data['id'], "_access_level": data['_access_level'], "_id": data['_id'],
                             'description': data['description'], "license": data['license'], "name": data['name'],
                             'updated': data['updated'], })
-        return
+        cur.execute('SELECT LASTVAL()')
+        return cur.fetchone()[0]

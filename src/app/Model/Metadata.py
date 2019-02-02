@@ -43,4 +43,5 @@ class Metadata(DbConnection):
                      'dataset_id': data['dataset_id'], "name": data['name'], "notes_id": data['notes_id'],
                      'updated': data['updated'], "_id": data['_id'], "creator_id": data['creator_id'],
                      'meta_id': data['meta_id']})
-        return
+        cur.execute('SELECT LASTVAL()')
+        return cur.fetchone()[0]

@@ -41,4 +41,5 @@ class Clinical(DbConnection):
                             "diagnosis_confirm_type": data['diagnosis_confirm_type'],
                             "melanocytic": data['melanocytic'],
                             "sex": data['sex']})
-        return
+        cur.execute('SELECT LASTVAL()')
+        return cur.fetchone()[0]

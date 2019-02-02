@@ -30,4 +30,5 @@ def insert(self, data):
     query = "INSERT INTO acquisition (id, image_type, pixelsX, pixelsY) VALUES (%(id)s, %(image_type)s, %(pixelsX)s, %(pixelsY)s);"
     cur.execute(query, {'id': data['id'], "image_type": data['image_type'], "pixelsX": data['pixelsX'],
                         "pixelsY": data['pixelsY']})
-    return
+    cur.execute('SELECT LASTVAL()')
+    return cur.fetchone()[0]

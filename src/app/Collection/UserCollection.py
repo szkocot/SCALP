@@ -7,10 +7,10 @@ class UserCollection(DbConnection):
         super().__init__()
 
 
-    def getUserCollection(self, id):
+    def getUserCollection(self):
         db = self.getConnection()
         cur = db.cursor()
         query = "SELECT id, username, name, surname, email, admin FROM users"
-        result = cur.execute(query)
-        return result
+        cur.execute(query)
+        return cur.fetchall()
 

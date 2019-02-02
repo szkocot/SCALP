@@ -29,4 +29,5 @@ class Meta(DbConnection):
         cur.execute(query,
                     {'id': data['id'], "_acquisition_id": data['_acquisition_id'], "_clinical_id": data['_clinical_id'],
                      'unstructured_id': data['unstructured_id']})
-        return
+        cur.execute('SELECT LASTVAL()')
+        return cur.fetchone()[0]

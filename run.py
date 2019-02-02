@@ -1,16 +1,22 @@
-from flask import Flask, flash, render_template, request, session, redirect
+from flask import Flask, flash, render_template, request, session, redirect, url_for
 import config
 from src.app.Service.AuthService import AuthService
+from src.app.Service.JsonDataParser import JsonDataParser
 from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.Prediction import Prediction
 from src.app.Helper.utils import b64ToImg
-from src.app.Collection import UserCollection
+from src.app.Collection.UserCollection import UserCollection
 
 app = Flask(__name__)
 
 system = SystemManager()
 system.validate()
 
+jsons = JsonDataParser()
+jsons.setPath("D:\\ISIC\\ISIC\\benign\\description")
+
+
+# fileList = jsons.importFiles()
 
 @app.route('/')
 def index():
@@ -50,7 +56,7 @@ def register():
         newUser = auth.createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
-            return  redirect("/success", code=302)
+            return redirect(url_for("success"), code=302)
 
         else:
             flash(newUser)
@@ -60,7 +66,7 @@ def register():
 @app.route('/success')
 def success():
     return render_template('success.html')
-    
+
 
 @app.route("/predict", methods=['GET', 'POST'])
 def predictMalignancy():
@@ -71,11 +77,12 @@ def predictMalignancy():
 
     return y_pred
 
+
 @app.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
-   userCollection = UserCollection()
-   result = userCollection.getUserCollection()
-   return render_template('adminPage.html')
+    userCollection = UserCollection()
+    users = userCollection.getUserCollection()
+    return render_template('adminPage.html', users=users)
 
 
 @app.route("/reset", methods=['GET', 'POST'])
@@ -88,5 +95,3 @@ if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
-
-
