@@ -27,6 +27,7 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
+            return render_template('success.html')
         else:
             flash(status)
     return index()
@@ -48,6 +49,7 @@ def register():
         newUser = auth.createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
+            return render_template("success.html")
         else:
             flash(newUser)
     return index()
