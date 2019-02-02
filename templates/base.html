@@ -9,29 +9,31 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../static/css.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <title>BBD</title>
 </head>
 <body>
 {% block header %}
-    <nav class="navbar navbar-light navbar-bg">
+
         <!-- Navbar content -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">BBD</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="/">BBD</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
+
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+
+                <ul class="navbar-nav navbar-bg">
                     <li class="nav-item">
                         <a class="nav-link" href="#">Project</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Python</a>
                     </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
@@ -43,31 +45,56 @@
                             <a class="dropdown-item" href="#">Summary</a>
                         </div>
                     </li>
+
+                  </ul>
+                  
+                <ul class="navbar-nav ml-auto">
                     {% if session['logged_in'] %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+                            <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-user"></i> Log Out</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
+                            <a class="nav-link" href="{{ url_for('login') }}"><i class="fas fa-user"></i> Sign In</a>
                         </li>
                     {% endif %}
-                </ul>
+                  </ul>
             </div>
         </nav>
-    </nav>
+    
 {% endblock %}
+
+
+{% block messages %}
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+{% if messages %}
+
+<div class="col-sm-10 col-md-10 col-lg-10 mx-auto"></div>
+          {% for message in messages %}
+          <div class="alert alert-warning text-center" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+  {% endfor %}
+      
+    </div>
+                    {% endif %}
+                  {% endwith %}
+                {% endblock %}
+
+
 {% block body %}
     todo body
+{% endblock %}
+
+{% block footer %}
+<footer class="page-footer font-small blue pt-4">
+<div class="footer-copyright text-center py-3">
+<span>Copyright &#169 Szymon Kocot, Wojciech Opoczyński, Kamila Wasilewska</span>
+  </div>
+</footer>
 {% endblock %}
 
 <!-- Optional JavaScript -->
@@ -81,6 +108,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
-<center>Copyright &#169 Szymon Kocot, Wojciech Opoczyński, Kamila Wasilewska</center>
 </body>
 </html>
