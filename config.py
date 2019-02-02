@@ -8,7 +8,7 @@ DEBUG = True
 
 # CREATE DB FROM DUMP FILE
 CREATE_DB = True
-DUMP_FILE_PATH = "\\db\\"
+DUMP_FILE_PATH = "db"
 
 # Define the application directory
 import os

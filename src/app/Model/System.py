@@ -1,3 +1,4 @@
+import os
 from src.app.Model.Abstract.DbConnection import DbConnection
 import config, psycopg2
 
@@ -11,7 +12,7 @@ class System(DbConnection):
         try:
             db = self.getConnection()
             cur = db.cursor()
-            cur.execute(open(config.BASE_DIR + config.DUMP_FILE_PATH + "dump.sql", "r").read())
+            cur.execute(open(os.path.join(config.BASE_DIR, config.DUMP_FILE_PATH, "dump.sql"), "r").read())
             db.close()
         except (Exception, psycopg2.DatabaseError) as error:
             db.rollback()
@@ -25,7 +26,7 @@ class System(DbConnection):
         db = self.getConnection()
         cur = db.cursor()
         try:
-            cur.execute(open(config.BASE_DIR + config.DUMP_FILE_PATH + version + ".sql", "r").read())
+            cur.execute(open(os.path.join(config.BASE_DIR, config.DUMP_FILE_PATH, version + ".sql"), "r").read())
             query = "INSERT INTO app_version (app_version) VALUES (%(version)s);"
             cur.execute(query, {'version': version})
         except (Exception, psycopg2.DatabaseError) as error:
@@ -44,4 +45,5 @@ class System(DbConnection):
         except (Exception, psycopg2.DatabaseError) as error:
             result = None
             db.rollback()
+            print(error)
         return result
