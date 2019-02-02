@@ -1,3 +1,16 @@
+-- -- Database: bbd
+--
+-- -- DROP DATABASE bbd;
+
+ CREATE DATABASE bbd
+     WITH
+     OWNER = bbd
+     ENCODING = 'UTF8'
+     LC_COLLATE = 'Polish_Poland.1250'
+     LC_CTYPE = 'Polish_Poland.1250'
+     TABLESPACE = pg_default
+     CONNECTION LIMIT = -1;
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -17,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 CREATE TABLE public.acquisition (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     image_type character varying(256),
     "pixelsX" character varying(256),
     "pixelsY" character varying(256)
@@ -26,7 +39,7 @@ CREATE TABLE public.acquisition (
 ALTER TABLE public.acquisition OWNER TO bbd;
 
 CREATE TABLE public.clinical (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     age_approx integer,
     anatom_site_general character varying(256),
     benign_malignant character varying(256),
@@ -39,7 +52,7 @@ CREATE TABLE public.clinical (
 ALTER TABLE public.clinical OWNER TO bbd;
 
 CREATE TABLE public.creator (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     _id character varying(256),
     name character varying(256)
 );
@@ -47,7 +60,7 @@ CREATE TABLE public.creator (
 ALTER TABLE public.creator OWNER TO bbd;
 
 CREATE TABLE public.dataset (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     _access_level integer,
     _id character varying(256),
     description character varying(256),
@@ -59,7 +72,7 @@ CREATE TABLE public.dataset (
 ALTER TABLE public.dataset OWNER TO bbd;
 
 CREATE TABLE public.meta (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     acquisition_id integer,
     clinical_id integer,
     unstructured_id integer
@@ -68,7 +81,7 @@ CREATE TABLE public.meta (
 ALTER TABLE public.meta OWNER TO bbd;
 
 CREATE TABLE public.metadata (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     _model_type character varying(256),
     created timestamp(6) with time zone,
     dataset_id integer,
@@ -84,25 +97,23 @@ CREATE TABLE public.metadata (
 ALTER TABLE public.metadata OWNER TO bbd;
 
 CREATE TABLE public.notes (
-     id integer NOT NULL PRIMARY KEY,
-    accepted boolean,
-    "time" timestamp(6) with time zone,
-    user_id character varying(256)
+    id SERIAL PRIMARY KEY,
+    reviewed integer
 );
 
 
 ALTER TABLE public.notes OWNER TO bbd;
 
 CREATE TABLE public.tags (
-     id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     data json,
-    note_id integer
+    notes_id integer
 );
 
 ALTER TABLE public.tags OWNER TO bbd;
 
 CREATE TABLE public.unstructured (
-    id integer NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     diagnosis character varying(256),
     id1 character varying(256),
     localization character varying(256),
@@ -112,7 +123,7 @@ CREATE TABLE public.unstructured (
 ALTER TABLE public.unstructured OWNER TO bbd;
 
 CREATE TABLE public.users (
-    id SERIAL,
+    id SERIAL PRIMARY KEY,
     username character varying(128),
     name character varying(128),
     surname character varying(128),
@@ -124,11 +135,28 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO bbd;
 
 CREATE TABLE public.app_version (
-    id SERIAL,
+    id SERIAL PRIMARY KEY,
     app_version real NOT NULL
 );
 
+CREATE TABLE public.reviewed
+(
+    id SERIAL PRIMARY KEY,
+    accepted boolean,
+    "userId" character varying(255)[]
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public.reviewed
+    OWNER to bbd;
+
+
 ALTER TABLE public.app_version OWNER TO bbd;
+
+CREATE INDEX "fki_FK_notes_ids" ON public.tags(notes_id);
+
 
 CREATE INDEX "fki_FK_acquisition" ON public.meta USING btree (acquisition_id);
 
@@ -142,7 +170,7 @@ CREATE INDEX "fki_FK_meta" ON public.metadata USING btree (meta_id);
 
 CREATE INDEX "fki_FK_notes" ON public.metadata USING btree (notes_id);
 
-CREATE INDEX "fki_FK_notes_tags" ON public.tags USING btree (note_id);
+CREATE INDEX "fki_FK_notes_tags" ON public.tags USING btree (notes_id);
 
 ALTER TABLE ONLY public.meta
     ADD CONSTRAINT "FK_acquisition" FOREIGN KEY (acquisition_id) REFERENCES public.acquisition(id) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -163,10 +191,13 @@ ALTER TABLE ONLY public.metadata
     ADD CONSTRAINT "FK_notes" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY public.tags
-    ADD CONSTRAINT "FK_notes" FOREIGN KEY (note_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_notes" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY public.tags
-    ADD CONSTRAINT "FK_notes_tags" FOREIGN KEY (note_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_notes_tags" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY public.meta
     ADD CONSTRAINT "FK_unstructured" FOREIGN KEY (id) REFERENCES public.unstructured(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE public.tags
+    ADD CONSTRAINT "FK_notes_ids" FOREIGN KEY (notes_id) REFERENCES public.notes (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;

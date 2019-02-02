@@ -23,9 +23,9 @@ class Creator(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO creator (id, _id, name)" \
-                " VALUES (%(id)s, %(_id)s, %(name)s);"
-        cur.execute(query, {'id': data['id'], "_id": data['_id'], "name": data['name']})
+        query = "INSERT INTO creator (_id, name)" \
+                " VALUES (%(_id)s, %(name)s);"
+        cur.execute(query, {"_id": data['_id'], "name": data['name']})
         cur.execute('SELECT LASTVAL()')
         result = cur.fetchone()
         return result[0]

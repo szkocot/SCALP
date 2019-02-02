@@ -36,8 +36,8 @@ class Metadata(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO metadata(id, _model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id)" \
-                " VALUES (%(id)s, %(_model_type)s, %(created)s, %(dataset_id)s, %(name)s, %(notes_id)s, %(updated)s, %(_id)s, %(creator_id)s, %(meta_id)s);"
+        query = "INSERT INTO metadata(_model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id)" \
+                " VALUES (%(_model_type)s, %(created)s, %(dataset_id)s, %(name)s, %(notes_id)s, %(updated)s, %(_id)s, %(creator_id)s, %(meta_id)s);"
         cur.execute(query,
                     {'id': data['id'], "_model_type": data['_model_type'], "created": data['created'],
                      'dataset_id': data['dataset_id'], "name": data['name'], "notes_id": data['notes_id'],

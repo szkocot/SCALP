@@ -59,19 +59,22 @@ class JsonDataParser:
             elif element == 'created':
                 continue
             elif element == 'creator':
-                self.creator.insert(metadata['creator'])
+                creatorId = self.creator.insert(metadata['creator'])
             elif element == 'dataset':
-                self.dataset.insert(metadata['dataset'])
+                datasetId = self.dataset.insert(metadata['dataset'])
             elif element == 'meta':
-                self.parseMeta(metadata['meta'])
+                metaId = self.parseMeta(metadata['meta'])
             elif element == 'name':
                 continue
             elif element == 'notes':
-                self.parseNotes(metadata['notes'])
+                notesId = self.parseNotes(metadata['notes'])
             elif element == 'updated':
                 continue
-
-
+        data = { "_model_type": metadata['_model_type'], "created": metadata['created'],
+                     'dataset_id': datasetId, "name": metadata['name'], "notes_id": notesId,
+                     'updated': metadata['updated'], "_id": metadata['_id'], "creator_id": creatorId,
+                     'meta_id': metaId}
+        self.metadata.insert()
 
 
         return
