@@ -1,3 +1,6 @@
+#app version
+VERSION = 0.11
+
 HOST = "127.0.0.1"
 PORT = "4000"
 # debug
@@ -5,7 +8,7 @@ DEBUG = True
 
 # CREATE DB FROM DUMP FILE
 CREATE_DB = True
-DUMP_FILE_PATH = "\\db\\dump.sql"
+DUMP_FILE_PATH = "\\db\\"
 
 # Define the application directory
 import os

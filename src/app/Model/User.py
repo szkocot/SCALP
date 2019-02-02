@@ -1,7 +1,11 @@
-from .DbConnection import DbConnection
+from src.app.Model.Abstract.DbConnection import DbConnection
 
 
 class User(DbConnection):
+
+    def __init__(self):
+        super().__init__()
+
     def userExsists(self, username):
         db = self.getConnection()
         cur = db.cursor()
@@ -34,5 +38,4 @@ class User(DbConnection):
         query = "INSERT INTO users (username, password, name, surname, email) VALUES (%(username)s, %(password)s, %(name)s, %(surname)s, %(email)s);"
         cur.execute(query,
                     {'username': username, "password": password, "name": name, "surname": surname, "email": email})
-        db.commit()
         return

@@ -1,12 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 10.5
--- Dumped by pg_dump version 10.5
-
--- Started on 2018-10-25 01:07:32
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -17,31 +8,13 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 1 (class 3079 OID 12924)
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
-
---
--- TOC entry 2886 (class 0 OID 0)
--- Dependencies: 1
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
---
--- TOC entry 196 (class 1259 OID 16655)
--- Name: acquisition; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.acquisition (
      id integer NOT NULL PRIMARY KEY,
@@ -50,13 +23,7 @@ CREATE TABLE public.acquisition (
     "pixelsY" character varying(256)
 );
 
-
 ALTER TABLE public.acquisition OWNER TO bbd;
-
---
--- TOC entry 197 (class 1259 OID 16661)
--- Name: clinical; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.clinical (
      id integer NOT NULL PRIMARY KEY,
@@ -69,13 +36,7 @@ CREATE TABLE public.clinical (
     sex character varying(256)
 );
 
-
 ALTER TABLE public.clinical OWNER TO bbd;
-
---
--- TOC entry 198 (class 1259 OID 16667)
--- Name: creator; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.creator (
      id integer NOT NULL PRIMARY KEY,
@@ -83,13 +44,7 @@ CREATE TABLE public.creator (
     name character varying(256)
 );
 
-
 ALTER TABLE public.creator OWNER TO bbd;
-
---
--- TOC entry 199 (class 1259 OID 16673)
--- Name: dataset; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.dataset (
      id integer NOT NULL PRIMARY KEY,
@@ -101,13 +56,7 @@ CREATE TABLE public.dataset (
     updated character varying(256)
 );
 
-
 ALTER TABLE public.dataset OWNER TO bbd;
-
---
--- TOC entry 200 (class 1259 OID 16679)
--- Name: meta; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.meta (
      id integer NOT NULL PRIMARY KEY,
@@ -116,13 +65,7 @@ CREATE TABLE public.meta (
     unstructured_id integer
 );
 
-
 ALTER TABLE public.meta OWNER TO bbd;
-
---
--- TOC entry 201 (class 1259 OID 16682)
--- Name: metadata; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.metadata (
      id integer NOT NULL PRIMARY KEY,
@@ -140,11 +83,6 @@ CREATE TABLE public.metadata (
 
 ALTER TABLE public.metadata OWNER TO bbd;
 
---
--- TOC entry 202 (class 1259 OID 16688)
--- Name: notes; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.notes (
      id integer NOT NULL PRIMARY KEY,
     accepted boolean,
@@ -155,24 +93,13 @@ CREATE TABLE public.notes (
 
 ALTER TABLE public.notes OWNER TO bbd;
 
---
--- TOC entry 203 (class 1259 OID 16691)
--- Name: tags; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.tags (
      id integer NOT NULL PRIMARY KEY,
     data json,
     note_id integer
 );
 
-
 ALTER TABLE public.tags OWNER TO bbd;
-
---
--- TOC entry 204 (class 1259 OID 16697)
--- Name: unstructured; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.unstructured (
     id integer NOT NULL PRIMARY KEY,
@@ -182,13 +109,7 @@ CREATE TABLE public.unstructured (
     site character varying(256)
 );
 
-
 ALTER TABLE public.unstructured OWNER TO bbd;
-
---
--- TOC entry 205 (class 1259 OID 16703)
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.users (
     id SERIAL,
@@ -202,143 +123,50 @@ CREATE TABLE public.users (
 
 ALTER TABLE public.users OWNER TO bbd;
 
+CREATE TABLE public.app_version (
+    id SERIAL,
+    app_version real NOT NULL
+);
 
+ALTER TABLE public.app_version OWNER TO bbd;
 
 CREATE INDEX "fki_FK_acquisition" ON public.meta USING btree (acquisition_id);
 
-
---
--- TOC entry 2721 (class 1259 OID 16730)
--- Name: fki_FK_clinical; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX "fki_FK_clinical" ON public.meta USING btree (clinical_id);
-
-
---
--- TOC entry 2724 (class 1259 OID 16731)
--- Name: fki_FK_creator; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX "fki_FK_creator" ON public.metadata USING btree (creator_id);
 
-
---
--- TOC entry 2725 (class 1259 OID 16732)
--- Name: fki_FK_dataset; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX "fki_FK_dataset" ON public.metadata USING btree (dataset_id);
-
-
---
--- TOC entry 2726 (class 1259 OID 16733)
--- Name: fki_FK_meta; Type: INDEX; Schema: public; Owner: postgres
---
 
 CREATE INDEX "fki_FK_meta" ON public.metadata USING btree (meta_id);
 
-
---
--- TOC entry 2727 (class 1259 OID 16734)
--- Name: fki_FK_notes; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX "fki_FK_notes" ON public.metadata USING btree (notes_id);
 
-
---
--- TOC entry 2732 (class 1259 OID 16786)
--- Name: fki_FK_notes_tags; Type: INDEX; Schema: public; Owner: postgres
---
-
 CREATE INDEX "fki_FK_notes_tags" ON public.tags USING btree (note_id);
-
-
---
--- TOC entry 2739 (class 2606 OID 16736)
--- Name: meta FK_acquisition; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.meta
     ADD CONSTRAINT "FK_acquisition" FOREIGN KEY (acquisition_id) REFERENCES public.acquisition(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- TOC entry 2740 (class 2606 OID 16741)
--- Name: meta FK_clinical; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.meta
     ADD CONSTRAINT "FK_clinical" FOREIGN KEY (clinical_id) REFERENCES public.clinical(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 2742 (class 2606 OID 16746)
--- Name: metadata FK_creator; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.metadata
     ADD CONSTRAINT "FK_creator" FOREIGN KEY (creator_id) REFERENCES public.creator(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- TOC entry 2743 (class 2606 OID 16751)
--- Name: metadata FK_dataset; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.metadata
     ADD CONSTRAINT "FK_dataset" FOREIGN KEY (dataset_id) REFERENCES public.dataset(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 2744 (class 2606 OID 16756)
--- Name: metadata FK_meta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.metadata
     ADD CONSTRAINT "FK_meta" FOREIGN KEY (meta_id) REFERENCES public.meta(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- TOC entry 2745 (class 2606 OID 16761)
--- Name: metadata FK_notes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.metadata
     ADD CONSTRAINT "FK_notes" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 2746 (class 2606 OID 16776)
--- Name: tags FK_notes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.tags
     ADD CONSTRAINT "FK_notes" FOREIGN KEY (note_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- TOC entry 2747 (class 2606 OID 16781)
--- Name: tags FK_notes_tags; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.tags
     ADD CONSTRAINT "FK_notes_tags" FOREIGN KEY (note_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
---
--- TOC entry 2741 (class 2606 OID 16771)
--- Name: meta FK_unstructured; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.meta
     ADD CONSTRAINT "FK_unstructured" FOREIGN KEY (id) REFERENCES public.unstructured(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
--- Completed on 2018-10-25 01:07:33
-
---
--- PostgreSQL database dump complete
---
-

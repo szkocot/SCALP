@@ -1,15 +1,14 @@
-from flask import Flask, flash, redirect, render_template, request, session, abort
-import os, config
+from flask import Flask, flash, render_template, request, session
+import config
 from src.app.Service.AuthService import AuthService
+from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.Prediction import Prediction
-from src.app.Helper.utils import b64ToImg, idToPath
-from src.app.Model.DbConnection import DbConnection
+from src.app.Helper.utils import b64ToImg
 
 app = Flask(__name__)
 
-if config.CREATE_DB:
-    db = DbConnection()
-    con = db.initDB()
+system = SystemManager()
+system.validate()
 
 
 @app.route('/')
@@ -23,7 +22,6 @@ def index():
 @app.route('/login', methods=['POST', "GET"])
 def login():
     if request.method == "POST":
-        print(request)
         auth = AuthService()
         data = request.form.to_dict(flat=True)
         status = auth.login(data)
