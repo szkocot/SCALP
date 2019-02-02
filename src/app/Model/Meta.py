@@ -1,0 +1,32 @@
+from src.app.Model.Abstract.DbConnection import DbConnection
+
+
+class Meta(DbConnection):
+
+    def __init__(self):
+        super().__init__()
+        self.id = None
+        self.acquisition_id = None
+        self.clinical_id = None
+        self.unstructured_id = None
+
+    def getData(self, id):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT id, _acquisition_id, _clinical_id, unstructured_id FROM meta WHERE id = %(id)s"
+        cur.execute(query, {'id': id})
+        result = cur.fetchone()
+        self.id = result[0]
+        self.acquisition_id = result[1]
+        self.clinical_id = result[2]
+        self.unstructured_id = result[3]
+
+    def insert(self, data):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "INSERT INTO meta ( id, _acquisition_id, _clinical_id, unstructured_id)" \
+                " VALUES (%(id)s, %(_acquisition_id)s, %(_clinical_id)s, %(unstructured_id)s);"
+        cur.execute(query,
+                    {'id': data['id'], "_acquisition_id": data['_acquisition_id'], "_clinical_id": data['_clinical_id'],
+                     'unstructured_id': data['unstructured_id']})
+        return
