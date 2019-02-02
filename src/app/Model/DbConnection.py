@@ -33,5 +33,11 @@ class DbConnection:
         self.connection = None
 
     def initDB(self):
-        # todo auto import db if doesnt exsist
+        db = self.getConnection()
+        cur = db.cursor()
+        try:
+            cur.execute(open(config.BASE_DIR + config.DUMP_FILE_PATH, "r").read())
+            db.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
         return

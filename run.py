@@ -3,8 +3,13 @@ import os, config
 from src.app.Service.AuthService import AuthService
 from src.app.Service.ML.Prediction import Prediction
 from src.app.Helper.utils import b64ToImg, idToPath
+from src.app.Model.DbConnection import DbConnection
 
 app = Flask(__name__)
+
+if config.CREATE_DB:
+    db = DbConnection()
+    con = db.initDB()
 
 
 @app.route('/')
@@ -59,15 +64,14 @@ def predictMalignancy():
 
     return y_pred
 
-@app.route("/reset", methods=['GET','POST'])
+
+@app.route("/reset", methods=['GET', 'POST'])
 def reset():
     return index()
 
 
-
 if __name__ == '__main__':
-
-    app.secret_key=config.CSRF_SESSION_KEY
+    app.secret_key = config.CSRF_SESSION_KEY
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)

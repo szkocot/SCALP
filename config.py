@@ -3,6 +3,10 @@ PORT = "4000"
 # debug
 DEBUG = True
 
+# CREATE DB FROM DUMP FILE
+CREATE_DB = True
+DUMP_FILE_PATH = "\\db\\dump.sql"
+
 # Define the application directory
 import os
 
@@ -25,7 +29,7 @@ CSRF_ENABLED = True
 # secret is not so secret but its just a random project xD
 CSRF_SESSION_KEY = "secret"
 
-#ML vars
+# ML vars
 PREDICTOR = {
     'img_mean': [27.99144619, 19.51839209, 16.42992409],
     'img_std': [64.7680645, 47.09696396, 41.13751611],
