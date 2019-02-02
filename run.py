@@ -4,6 +4,7 @@ from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.Prediction import Prediction
 from src.app.Helper.utils import b64ToImg
+from src.app.Collection import UserCollection
 
 app = Flask(__name__)
 
@@ -70,6 +71,12 @@ def predictMalignancy():
 
     return y_pred
 
+@app.route("/adminPage", methods=['GET', 'POST'])
+def adminPage():
+   userCollection = UserCollection()
+   result = userCollection.getUserCollection()
+   return render_template('adminPage.html')
+
 
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
@@ -81,3 +88,5 @@ if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
+
+
