@@ -15,7 +15,8 @@ system = SystemManager()
 system.validate()
 
 end = timeit.timeit()
-print (end - start)
+print(end - start)
+
 
 @app.route('/')
 def index():
@@ -87,6 +88,24 @@ def adminPage():
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
     return index()
+
+
+@app.route("/binary", methods=['GET', 'POST'])
+def binary():
+    if request.method == "POST":
+        binImage = "this will be image"
+        return render_template('binarization.html', binImage=binImage)
+
+    return render_template('binarization.html')
+
+
+@app.route("/binary", methods=['GET', 'POST'])
+def binary():
+    if request.method == "POST":
+        segmentedImage = "this will be image"
+        return render_template('segmentation.html', binImage=segmentedImage)
+
+    return render_template('segmentation.html')
 
 
 if __name__ == '__main__':

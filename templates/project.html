@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Project</h5>
+                        
+                        <h5 id="scalp-skin-cancer-classification-platform">SCALP (Skin Cancer Classification Platform)</h5>
+                        <p>This project is an university assignment task.</p>
+                        <h5 id="goal">Goal</h5>
+                        <p>The goal of this project was to create a prototype platform for skin cancer classification.</p>
+                        <h5 id="introduction">Introduction</h5>
+                        <p>Skin cancer is one of most common type of cancer. Early and precise diagnosys can help make this disease less seviere and to treat it easier.</p>
+                        <h5 id="isic-dataset">ISIC Dataset</h5>
+                        <blockquote>
+                        <p>The International Skin Imaging Collaboration: Melanoma Project is an academia and industry partnership designed to facilitate the application of digital skin imaging to help reduce melanoma mortality. -- <cite>[ISIC website][1]</cite></p>
+                        </blockquote>
+                        <p>It contains thousands of skin images, annotated by professionals as well as non-profesional volunteers.</p>
+                        <p>Labels are following: * malignant * benign * unknown</p>
+                        <p>It's download can be much easier, by using ISIC Archive Downloader[2]</p>
+                        <h5 id="functionalities">Functionalities</h5>
+                        <h5 id="malignancy-classification">Malignancy classification</h5>
+                        <p>References:<br />[1]:https://isdis.org/isic-project/<br />
+                                            [2]:https://github.com/GalAvineri/ISIC-Archive-Downloader</p>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
