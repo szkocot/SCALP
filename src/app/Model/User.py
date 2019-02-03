@@ -41,3 +41,11 @@ class User(DbConnection):
         cur.execute('SELECT LASTVAL()')
         result = cur.fetchone()
         return result[0]
+
+    def checkAdmin(self, username):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT admin FROM users WHERE username = %(username)s"
+        cur.execute(query, {'username': username})
+        result = cur.fetchone()
+        return result[0]

@@ -34,6 +34,7 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
+            auth.checkAdmin(data['username'])
             return render_template('success.html')
         else:
             flash(status)
@@ -80,9 +81,12 @@ def predictMalignancy():
 
 @app.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
-    userCollection = UserCollection()
-    users = userCollection.getUserCollection()
-    return render_template('adminPage.html', users=users)
+    if session['logged_in'] and session['isAdmin']:
+        userCollection = UserCollection()
+        users = userCollection.getUserCollection()
+        return render_template('adminPage.html', users=users)
+    else:
+        return redirect(url_for('/'), 403, flash('Restricted!'))
 
 
 @app.route("/reset", methods=['GET', 'POST'])

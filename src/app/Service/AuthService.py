@@ -1,5 +1,6 @@
 from src.app.Model.User import User
 import bcrypt
+from flask import session
 
 
 class AuthService:
@@ -49,3 +50,9 @@ class AuthService:
             return True
         else:
             return False
+
+    def checkAdmin(self, username):
+        if self.user.checkAdmin(username) == True:
+            session['isAdmin'] = True
+        else:
+            session['isAdmin'] = False
