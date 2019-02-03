@@ -32,8 +32,8 @@ class Dataset(DbConnection):
         cur = db.cursor()
         query = "INSERT INTO dataset (_access_level, _id, description, license, name, updated)" \
                 " VALUES (%(_access_level)s, %(_id)s, %(description)s, %(license)s, %(name)s, %(updated)s);"
-        cur.execute(query, {"_access_level": data['_accessLevel'], "_id": data['_id'],
-                            'description': data['description'], "license": data['license'], "name": data['name'],
-                            'updated': data['updated'], })
+        cur.execute(query, {"_access_level": data.get('_accessLevel'), "_id": data.get('_id'),
+                            'description': data.get('description'), "license": data.get('license'), "name": data.get('name'),
+                            'updated': data.get('updated'), })
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

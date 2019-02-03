@@ -25,6 +25,6 @@ class Reviewed(DbConnection):
         db = self.getConnection()
         cur = db.cursor()
         query = 'INSERT INTO reviewed (accepted, "userId", "time") VALUES (%(accepted)s, %(userId)s, %(time)s);'
-        cur.execute(query, {"accepted": data['accepted'], 'userId': data['userId'], 'time': data['time']})
+        cur.execute(query, {"accepted": data.get('accepted'), 'userId': data.get('userId'), 'time': data.get('time')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

@@ -9,7 +9,6 @@ class Notes(DbConnection):
         self.reviewed = None
         self.tag = None
 
-    # todo to jest zjebane do przepisania
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
@@ -22,7 +21,7 @@ class Notes(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = 'INSERT INTO notes("reviewedId",tags) VALUES (%(reviewedId)s, %s(tags)s);'
-        cur.execute(query,data)
+        query = 'INSERT INTO notes(reviewed_id, tags) VALUES (%(reviewed_id)s, %(tags)s);'
+        cur.execute(query, {'reviewed_id': data.get('reviewedId'), 'tags': data.get('tags')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

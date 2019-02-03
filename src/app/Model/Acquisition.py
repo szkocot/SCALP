@@ -26,6 +26,6 @@ class Acquisition(DbConnection):
         db = self.getConnection()
         cur = db.cursor()
         query = 'INSERT INTO acquisition (image_type, "pixelsX", "pixelsY") VALUES (%(image_type)s, %(pixelsX)s, %(pixelsY)s);'
-        cur.execute(query, {"image_type": data['image_type'], "pixelsX": data['pixelsX'], "pixelsY": data['pixelsY']})
+        cur.execute(query, {"image_type": data.get('image_type'), "pixelsX": data.get('pixelsX'), "pixelsY": data.get('pixelsY')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

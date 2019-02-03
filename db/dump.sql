@@ -98,7 +98,7 @@ ALTER TABLE public.metadata OWNER TO bbd;
 
 CREATE TABLE public.notes (
     id SERIAL PRIMARY KEY,
-    reviewedId integer,
+    reviewed_id integer,
     tags character varying(255)
 );
 
@@ -106,7 +106,7 @@ ALTER TABLE public.notes OWNER TO bbd;
 
 CREATE TABLE public.tag (
     id SERIAL PRIMARY KEY,
-    data character varchar 255
+    data character varying(255)
 );
 
 ALTER TABLE public.tag OWNER TO bbd;
@@ -175,10 +175,4 @@ ALTER TABLE ONLY public.metadata ADD CONSTRAINT "FK_dataset" FOREIGN KEY (datase
 
 ALTER TABLE ONLY public.metadata ADD CONSTRAINT "FK_meta" FOREIGN KEY (meta_id) REFERENCES public.meta(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-ALTER TABLE ONLY public.tag ADD CONSTRAINT "FK_notes" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE ONLY public.tag ADD CONSTRAINT "FK_notes_tags" FOREIGN KEY (notes_id) REFERENCES public.notes(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
 ALTER TABLE ONLY public.meta ADD CONSTRAINT "FK_unstructured" FOREIGN KEY (id) REFERENCES public.unstructured(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE public.tag ADD CONSTRAINT "FK_notes_ids" FOREIGN KEY (notes_id) REFERENCES public.notes (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;

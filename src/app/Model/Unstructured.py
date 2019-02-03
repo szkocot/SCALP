@@ -24,7 +24,7 @@ class Unstructured(DbConnection):
         cur = db.cursor()
         query = "INSERT INTO unstructured(diagnosis, id1, localization, site)" \
                 " VALUES (%(diagnosis)s, %(id1)s, %(localization)s, %(site)s);"
-        cur.execute(query, {"diagnosis": data['diagnosis'], "id1": data['id1'],
-                            'localization': data['localization'], "site": data['site']})
+        cur.execute(query, {"diagnosis": data.get('diagnosis'), "id1": data.get('id1'),
+                            'localization': data.get('localization'), "site": data.get('site')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

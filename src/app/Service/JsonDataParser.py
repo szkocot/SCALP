@@ -33,14 +33,9 @@ class JsonDataParser:
         self.path = path
 
     def parseMeta(self, meta):
-        for element in meta:
-            if element == "acquisition":
-                acquisitionId = self.acquisition.insert(meta['acquisition'])
-            elif element == 'clinical':
-                clinicalId = self.clinical.insert(meta['clinical'])
-            elif element == "unstructured":
-                unstructuredId = self.unstructured.insert(meta['unstructured'])
-
+        acquisitionId = self.acquisition.insert(meta.get('acquisition'))
+        clinicalId = self.clinical.insert(meta.get('clinical'))
+        unstructuredId = self.unstructured.insert(meta.get('unstructured'))
         return self.meta.insert(
             {"acquisitionId": acquisitionId, "clinicalId": clinicalId, 'unstructuredId': unstructuredId})
 
@@ -51,47 +46,29 @@ class JsonDataParser:
         return tagIds
 
     def parseNotes(self, notes):
-        for element in notes:
-            if element == "reviewed":
-                revievedId = self.reviewed.insert(notes['reviewed'])
-            elif element == 'tags':
-                tagIds = self.parseTags(notes['tags'])
+        revievedId = self.reviewed.insert(notes.get('reviewed'))
+        tagIds = self.parseTags(notes.get('tags'))
         tagIds = ', '.join(map(str, tagIds))
         return self.notes.insert({'reviewedId': revievedId, 'tags': tagIds})
 
     def parseFile(self, metadata):
-        for element in metadata:
-            if element == '_id':
-                continue
-            elif element == '_modelType':
-                continue
-            elif element == 'created':
-                continue
-            elif element == 'creator':
-                creatorId = self.creator.insert(metadata['creator'])
-            elif element == 'dataset':
-                datasetId = self.dataset.insert(metadata['dataset'])
-            elif element == 'meta':
-                metaId = self.parseMeta(metadata['meta'])
-            elif element == 'name':
-                continue
-            elif element == 'notes':
-                notesId = self.parseNotes(metadata['notes'])
-            elif element == 'updated':
-                continue
-                #todo
-        data = {"_model_type": metadata['_model_type'], "created": metadata['created'],
-                'dataset_id': datasetId, "name": metadata['name'], "notes_id": notesId,
-                'updated': metadata['updated'], "_id": metadata['_id'], "creator_id": creatorId,
+        creatorId = self.creator.insert(metadata.get('creator'))
+        datasetId = self.dataset.insert(metadata.get('dataset'))
+        metaId = self.parseMeta(metadata.get('meta'))
+        notesId = self.parseNotes(metadata.get('notes'))
+        data = {"_model_type": metadata.get('_modelType'), "created": metadata.get('created'),
+                'dataset_id': datasetId, "name": metadata.get('name'), "notes_id": notesId,
+                'updated': metadata.get('updated'), "_id": metadata.get('_id'), "creator_id": creatorId,
                 'meta_id': metaId}
-        self.metadata.insert()
-
-        return
+        return self.metadata.insert(data)
 
     def getFileList(self):
         return os.listdir(self.path)
 
     def importFiles(self):
+        insertedIDs = []
         for fileName in self.getFileList():
             metadata = json.load(open(self.path + "\\" + fileName))
-            self.parseFile(metadata)
+            insertedIDs.append(self.parseFile(metadata))
+
+        print(insertedIDs)

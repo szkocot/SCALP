@@ -35,9 +35,9 @@ class Clinical(DbConnection):
         cur = db.cursor()
         query = "INSERT INTO clinical (age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex)" \
                 " VALUES (%(age_approx)s, %(anatom_site_general)s, %(benign_malignant)s, %(diagnosis)s, %(diagnosis_confirm_type)s, %(melanocytic)s, %(sex)s);"
-        cur.execute(query, {"age_approx": data['age_approx'], "anatom_site_general": data['anatom_site_general'],
-                            "benign_malignant": data['benign_malignant'], "diagnosis": data['diagnosis'],
-                            "diagnosis_confirm_type": data['diagnosis_confirm_type'],
-                            "melanocytic": data['melanocytic'], "sex": data['sex']})
+        cur.execute(query, {"age_approx": data.get('age_approx'), "anatom_site_general": data.get('anatom_site_general'),
+                            "benign_malignant": data.get('benign_malignant'), "diagnosis": data.get('diagnosis'),
+                            "diagnosis_confirm_type": data.get('diagnosis_confirm_type'),
+                            "melanocytic": data.get('melanocytic'), "sex": data.get('sex')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

@@ -39,9 +39,9 @@ class Metadata(DbConnection):
         query = "INSERT INTO metadata(_model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id)" \
                 " VALUES (%(_model_type)s, %(created)s, %(dataset_id)s, %(name)s, %(notes_id)s, %(updated)s, %(_id)s, %(creator_id)s, %(meta_id)s);"
         cur.execute(query,
-                    {'id': data['id'], "_model_type": data['_model_type'], "created": data['created'],
-                     'dataset_id': data['dataset_id'], "name": data['name'], "notes_id": data['notes_id'],
-                     'updated': data['updated'], "_id": data['_id'], "creator_id": data['creator_id'],
-                     'meta_id': data['meta_id']})
+                    {"_model_type": data.get('_model_type'), "created": data.get('created'),
+                     'dataset_id': data.get('dataset_id'), "name": data.get('name'), "notes_id": data.get('notes_id'),
+                     'updated': data.get('updated'), "_id": data.get('_id'), "creator_id": data.get('creator_id'),
+                     'meta_id': data.get('meta_id')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

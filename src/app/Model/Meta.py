@@ -27,7 +27,7 @@ class Meta(DbConnection):
         query = "INSERT INTO meta (acquisition_id, clinical_id, unstructured_id)" \
                 " VALUES (%(acquisition_id)s, %(clinical_id)s, %(unstructured_id)s);"
         cur.execute(query,
-                    {"acquisition_id": data['acquisitionId'], "clinical_id": data['clinicalId'],
-                     'unstructured_id': data['unstructuredId']})
+                    {"acquisition_id": data.get('acquisitionId'), "clinical_id": data.get('clinicalId'),
+                     'unstructured_id': data.get('unstructuredId')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]
