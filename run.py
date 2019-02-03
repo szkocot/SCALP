@@ -99,8 +99,8 @@ def binary():
     return render_template('binarization.html')
 
 
-@app.route("/binary", methods=['GET', 'POST'])
-def binary():
+@app.route("/segmentation", methods=['GET', 'POST'])
+def segmentation():
     if request.method == "POST":
         segmentedImage = "this will be image"
         return render_template('segmentation.html', binImage=segmentedImage)
