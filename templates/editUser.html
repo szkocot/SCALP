@@ -20,15 +20,21 @@
                             <label for="email">E-mail</label>
                             <input name="email" type="email" id="email" class="form-control form-label-group"
                                    value="{{ userData[4] }}">
-                            <label for="email">Admin access</label>
-                            <input name="admin" type="checkbox" id="admin" {{ 'checked' if userData[5] else '' }}>
+                                   
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" name="admin" type="checkbox" id="admin" {{ 'checked' if userData[5] else '' }}>
+                                <label class="custom-control-label" for="admin">Admin access </label>
+                            </div>
+                        <div class="dropdown-divider"></div>
                             <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update data
                             </button>
                         </form>
-                        <button class="btn btn-lg btn-block btn-red text-uppercase"
+                        <div class="dropdown-divider"></div>
+                        <form class="form-signin">
+                        <button class="btn btn-lg btn-block btn-outline-danger text-uppercase"
                                 onclick="window.location.href='/delete?id={{ userData[0] }}'"
-                                id="btn-{{ userData[0] }}">Delete User
-                        </button>
+                                id="btn-{{ userData[0] }}"><i class="far fa-trash-alt"></i> Delete User
+                        </button></form>
                     </div>
                 </div>
             </div>
