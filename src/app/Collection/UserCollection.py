@@ -10,7 +10,7 @@ class UserCollection(DbConnection):
     def getUserCollection(self):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, username, name, surname, email, admin FROM users"
+        query = "SELECT id, username, name, surname, email, admin FROM users ORDER BY id ASC"
         cur.execute(query)
         return cur.fetchall()
 
