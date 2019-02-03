@@ -1,4 +1,4 @@
-# Project Description
+# SCALP (Skin Cancer Classification Platform)
 
 This project is an university assignment task.
 
