@@ -6,15 +6,16 @@ from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.Prediction import Prediction
 from src.app.Helper.utils import b64ToImg
 from src.app.Collection.UserCollection import UserCollection
+import timeit
 
+start = timeit.timeit()
 app = Flask(__name__)
 
 system = SystemManager()
 system.validate()
 
-jsons = JsonDataParser()
-fileList = jsons.importFiles('malignant')
-fileList = jsons.importFiles('benign')
+end = timeit.timeit()
+print (end - start)
 
 @app.route('/')
 def index():
