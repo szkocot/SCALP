@@ -2,27 +2,49 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Administration Panel</h5>
                     {% if users %}
-                        <table>
-                            <th> todo header</th>
+                    <h6> User List</h6>
+                    
+                    <div class="table-responsive">
+                       <table id="dt-basic-checkbox" data-click-to-select="true" class="table table-sm" cellspacing="0" width="100%">
+
+                         <thead>
+                         <tr>
+                            <th class="th-sm"><input type="checkbox" class="select-all checkbox" name="select-all" /></th>
+                            <th class="th-sm" data-sortable="true">#</th>
+                            <th class="th-sm" data-sortable="true">Username</th>
+                            <th class="th-sm" data-sortable="true">Name</th>
+                            <th class="th-sm" data-sortable="true">Surname</th>
+                            <th class="th-sm" data-sortable="true">E-mail</th>
+                            <th class="th-sm" data-sortable="true">Admin</th>
+                            </tr>
+                            </tread>
                             {% for user in users %}
-                                <tr>
+                            <tbody>
+                                <tr> 
+                                    <td>  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        </td>
                                     {% for field in user %}
+                                   
                                         <td>
                                             {{ field }}
                                         </td>
                                     {% endfor %}
                                 </tr>
+                                </tbody>
                             {% endfor %}
                         </table>
+                    </div>
                     {% endif %}
                     </div>
+                    
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

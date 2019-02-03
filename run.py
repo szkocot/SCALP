@@ -69,6 +69,11 @@ def success():
     return render_template('success.html')
 
 
+@app.route('/project')
+def project():
+    return render_template('project.html')
+
+
 @app.route("/predict", methods=['GET', 'POST'])
 def predictMalignancy():
     img = b64ToImg(request.form.get('img_b64'))

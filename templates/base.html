@@ -8,8 +8,11 @@
     <link rel="stylesheet" type="text/css" href="../static/css.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-     <script src="../static/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+    <script src="../static/jquery-3.3.1.min.js"></script>
     <title>BBD</title>
+    {% block javascript %}
+    {% endblock %}
 </head>
 <body>
 {% block header %}
@@ -22,7 +25,7 @@
         <div class="navbar-collapse collapse" id="collapsingNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Project</a>
+                    <a class="nav-link" href="{{ url_for('project') }}">Project</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Python</a>
@@ -93,5 +96,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+
+
 </body>
 </html>
