@@ -1,8 +1,8 @@
 from flask import Flask, flash, render_template, request, session, redirect, url_for
 import config
 from src.app.Service.AuthService import AuthService
-from src.app.Service.JsonDataParser import JsonDataParser
 from src.app.Service.SystemManager import SystemManager
+from src.app.Model.User import User
 from src.app.Service.ML.Prediction import Prediction
 from src.app.Helper.utils import b64ToImg
 from src.app.Collection.UserCollection import UserCollection
@@ -18,6 +18,7 @@ end = timeit.timeit()
 print(end - start)
 
 
+@app.route('/index')
 @app.route('/')
 def index():
     if not session.get('logged_in'):
@@ -35,7 +36,7 @@ def login():
         if status == "Success":
             session['logged_in'] = True
             auth.checkAdmin(data['username'])
-            return render_template('success.html')
+            return redirect(url_for('index'), 302)
         else:
             flash(status)
     return index()
@@ -43,7 +44,7 @@ def login():
 
 @app.route('/logout', methods=['GET'])
 def logout():
-    session['logged_in'] = False
+    session.clear()
     return index()
 
 
@@ -91,7 +92,7 @@ def adminPage():
         users = userCollection.getUserCollection()
         return render_template('adminPage.html', users=users)
     else:
-        return redirect(url_for('/'), 403, flash('Restricted!'))
+        return redirect('index', 403, flash('Restricted!'))
 
 
 @app.route("/reset", methods=['GET', 'POST'])
@@ -115,6 +116,18 @@ def segmentation():
         return render_template('segmentation.html', binImage=segmentedImage)
 
     return render_template('segmentation.html')
+
+
+@app.route("/editUser", methods=['GET', 'POST'])
+def editUser():
+    if request.method == "POST":
+        user = User()
+        user.update(request.form.to_dict(flat=True))
+        return redirect(url_for('adminPage'),302,flash('Changes has been saved!'))
+    id = request.args.get('id')
+    userData = User()
+    userData = userData.getUserById(id)
+    return render_template("editUser.html", userData=userData)
 
 
 if __name__ == '__main__':

@@ -20,8 +20,9 @@ class User(DbConnection):
     def getUserById(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, username, name, surname, email FROM users WHERE id = %(id)s"
-        result = cur.execute(query, {'id': id})
+        query = "SELECT id, username, name, surname, email, admin FROM users WHERE id = %(id)s"
+        cur.execute(query, {'id': id})
+        result = cur.fetchone()
         return result
 
     def getUserPasswordHash(self, username):
@@ -49,3 +50,14 @@ class User(DbConnection):
         cur.execute(query, {'username': username})
         result = cur.fetchone()
         return result[0]
+
+    def update(self, data):
+        if data.get('admin') == 'on':
+            admin = True
+        else:
+            admin = False
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "UPDATE users SET name = %(name)s, surname = %(surname)s, email = %(email)s , admin = %(admin)s WHERE id = %(id)s "
+        return cur.execute(query, {'name': data['name'], 'surname': data['surname'], 'email': data['email'], 'id':data['id'], 'admin': admin})
+
