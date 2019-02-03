@@ -30,9 +30,9 @@ class Dataset(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO dataset (id, _access_level, _id, description, license, name, updated)" \
-                " VALUES (%(id)s, %(_access_level)s, %(_id)s, %(description)s, %(license)s, %(name)s, %(updated)s);"
-        cur.execute(query, {'id': data['id'], "_access_level": data['_access_level'], "_id": data['_id'],
+        query = "INSERT INTO dataset (_access_level, _id, description, license, name, updated)" \
+                " VALUES (%(_access_level)s, %(_id)s, %(description)s, %(license)s, %(name)s, %(updated)s);"
+        cur.execute(query, {"_access_level": data['_accessLevel'], "_id": data['_id'],
                             'description': data['description'], "license": data['license'], "name": data['name'],
                             'updated': data['updated'], })
         cur.execute('SELECT LASTVAL()')

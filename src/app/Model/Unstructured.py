@@ -22,9 +22,9 @@ class Unstructured(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO unstructured(id, diagnosis, id1, localization, site)" \
-                " VALUES (%(id)s, %(diagnosis)s, %(id1)s, %(localization)s, %(site)s);"
-        cur.execute(query, {'id': data['id'], "diagnosis": data['diagnosis'], "id1": data['id1'],
+        query = "INSERT INTO unstructured(diagnosis, id1, localization, site)" \
+                " VALUES (%(diagnosis)s, %(id1)s, %(localization)s, %(site)s);"
+        cur.execute(query, {"diagnosis": data['diagnosis'], "id1": data['id1'],
                             'localization': data['localization'], "site": data['site']})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

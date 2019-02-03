@@ -6,15 +6,13 @@ from src.app.Model.Meta import Meta
 from src.app.Model.Metadata import Metadata
 from src.app.Model.Notes import Notes
 from src.app.Model.Reviewed import Reviewed
-from src.app.Model.Tags import Tags
+from src.app.Model.Tag import Tag
 from src.app.Model.Unstructured import Unstructured
 
 import os, json
 
 
 class JsonDataParser:
-
-
 
     def __init__(self):
         self.acquisition = Acquisition()
@@ -23,7 +21,7 @@ class JsonDataParser:
         self.dataset = Dataset()
         self.meta = Meta()
         self.metadata = Metadata()
-        self.tags = Tags()
+        self.tag = Tag()
         self.notes = Notes()
         self.unstructured = Unstructured()
         self.reviewed = Reviewed()
@@ -34,22 +32,33 @@ class JsonDataParser:
     def setPath(self, path):
         self.path = path
 
-    def parseMeta(self,meta):
-        return
+    def parseMeta(self, meta):
+        for element in meta:
+            if element == "acquisition":
+                acquisitionId = self.acquisition.insert(meta['acquisition'])
+            elif element == 'clinical':
+                clinicalId = self.clinical.insert(meta['clinical'])
+            elif element == "unstructured":
+                unstructuredId = self.unstructured.insert(meta['unstructured'])
+
+        return self.meta.insert(
+            {"acquisitionId": acquisitionId, "clinicalId": clinicalId, 'unstructuredId': unstructuredId})
 
     def parseTags(self, notes):
+        tagIds = []
         for note in notes:
-            self.notes.insert(note)
+            tagIds.append(self.tag.insert(note))
+        return tagIds
 
-    def parseNotes(self,notes):
+    def parseNotes(self, notes):
         for element in notes:
             if element == "reviewed":
-                self.reviewed.insert(notes['reviewed'])
+                revievedId = self.reviewed.insert(notes['reviewed'])
             elif element == 'tags':
-                self.parseTags(notes['tags'])
-        return
+                tagIds = self.parseTags(notes['tags'])
+        tagIds = ', '.join(map(str, tagIds))
+        return self.notes.insert({'reviewedId': revievedId, 'tags': tagIds})
 
-    # todo here we need the magic to happen
     def parseFile(self, metadata):
         for element in metadata:
             if element == '_id':
@@ -70,12 +79,12 @@ class JsonDataParser:
                 notesId = self.parseNotes(metadata['notes'])
             elif element == 'updated':
                 continue
-        data = { "_model_type": metadata['_model_type'], "created": metadata['created'],
-                     'dataset_id': datasetId, "name": metadata['name'], "notes_id": notesId,
-                     'updated': metadata['updated'], "_id": metadata['_id'], "creator_id": creatorId,
-                     'meta_id': metaId}
+                #todo
+        data = {"_model_type": metadata['_model_type'], "created": metadata['created'],
+                'dataset_id': datasetId, "name": metadata['name'], "notes_id": notesId,
+                'updated': metadata['updated'], "_id": metadata['_id'], "creator_id": creatorId,
+                'meta_id': metaId}
         self.metadata.insert()
-
 
         return
 

@@ -24,10 +24,10 @@ class Meta(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO meta ( id, _acquisition_id, _clinical_id, unstructured_id)" \
-                " VALUES (%(id)s, %(_acquisition_id)s, %(_clinical_id)s, %(unstructured_id)s);"
+        query = "INSERT INTO meta (acquisition_id, clinical_id, unstructured_id)" \
+                " VALUES (%(acquisition_id)s, %(clinical_id)s, %(unstructured_id)s);"
         cur.execute(query,
-                    {'id': data['id'], "_acquisition_id": data['_acquisition_id'], "_clinical_id": data['_clinical_id'],
-                     'unstructured_id': data['unstructured_id']})
+                    {"acquisition_id": data['acquisitionId'], "clinical_id": data['clinicalId'],
+                     'unstructured_id': data['unstructuredId']})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]
