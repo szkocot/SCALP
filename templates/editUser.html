@@ -22,9 +22,13 @@
                                    value="{{ userData[4] }}">
                             <label for="email">Admin access</label>
                             <input name="admin" type="checkbox" id="admin" {{ 'checked' if userData[5] else '' }}>
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update data</button>
-                            <button class="btn btn-lg btn-block btn-red text-uppercase" onclick="window.location.href='/delete?id={{ userData[0]  }}'" id="btn-{{ userData[0] }}">Delete User</button>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update data
+                            </button>
                         </form>
+                        <button class="btn btn-lg btn-block btn-red text-uppercase"
+                                onclick="window.location.href='/delete?id={{ userData[0] }}'"
+                                id="btn-{{ userData[0] }}">Delete User
+                        </button>
                     </div>
                 </div>
             </div>

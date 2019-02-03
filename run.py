@@ -134,7 +134,7 @@ def editUser():
 def deleteUser():
     if (session['isAdmin'] is not True):
         return redirect(url_for('index'), 302, flash("Admin privileges required"))
-    id = request.form.get('id')
+    id = request.args.get('id')
     userData = User()
     userData = userData.deleteUser(id)
     return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
