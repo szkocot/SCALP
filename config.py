@@ -32,6 +32,9 @@ CSRF_ENABLED = True
 # secret is not so secret but its just a random project xD
 CSRF_SESSION_KEY = "secret"
 
+# data path
+DATA_PATH = "D:\\ISIC\\ISIC\\"
+
 # ML vars
 PREDICTOR = {
     'img_mean': [27.99144619, 19.51839209, 16.42992409],

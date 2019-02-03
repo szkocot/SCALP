@@ -13,8 +13,8 @@ system = SystemManager()
 system.validate()
 
 jsons = JsonDataParser()
-jsons.setPath("D:\\ISIC\\ISIC\\benign\\description")
-fileList = jsons.importFiles()
+fileList = jsons.importFiles('malignant')
+fileList = jsons.importFiles('benign')
 
 @app.route('/')
 def index():

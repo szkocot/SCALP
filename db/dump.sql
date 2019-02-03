@@ -90,7 +90,9 @@ CREATE TABLE public.metadata (
     updated timestamp(6) with time zone,
     _id character varying(255),
     creator_id integer,
-    meta_id integer
+    meta_id integer,
+    image character varying (255),
+    segmentation character varying (255)
 );
 
 
