@@ -61,3 +61,8 @@ class User(DbConnection):
         query = "UPDATE users SET name = %(name)s, surname = %(surname)s, email = %(email)s , admin = %(admin)s WHERE id = %(id)s "
         return cur.execute(query, {'name': data['name'], 'surname': data['surname'], 'email': data['email'], 'id':data['id'], 'admin': admin})
 
+    def deleteUser(self,id):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "DELETE FROM users WHERE id = %(id)s"
+        return cur.execute(query, {'id': id})

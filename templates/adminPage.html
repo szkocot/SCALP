@@ -8,7 +8,6 @@
                         <h5 class="card-title text-center">Administration Panel</h5>
                         {% if users %}
                             <h6> User List</h6>
-
                             <div class="table-responsive">
                                 <table id="dt-basic-checkbox" data-click-to-select="true" class="table table-sm"
                                        cellspacing="0" width="100%">
@@ -29,7 +28,7 @@
                                                     {{ field }}
                                                 </td>
                                             {% endfor %}
-                                            <td><button class="btn btn-block text-uppercase" onclick="window.location.href='/editUser?id={{ user[0]  }}'" id="btn-{{ user['id'] }}"><i class="fas fa-edit"></i></button></td>
+                                            <td><button class="btn btn-block text-uppercase" onclick="window.location.href='/editUser?id={{ user[0]  }}'" id="btn-{{ user[0] }}"><i class="fas fa-edit"></i></button></td>
                                         </tr>
                                         </tbody>
                                     {% endfor %}
@@ -37,10 +36,8 @@
                             </div>
                         {% endif %}
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}

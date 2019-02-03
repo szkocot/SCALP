@@ -123,11 +123,21 @@ def editUser():
     if request.method == "POST":
         user = User()
         user.update(request.form.to_dict(flat=True))
-        return redirect(url_for('adminPage'),302,flash('Changes has been saved!'))
+        return redirect(url_for('adminPage'), 302, flash('Changes has been saved!'))
     id = request.args.get('id')
     userData = User()
     userData = userData.getUserById(id)
     return render_template("editUser.html", userData=userData)
+
+
+@app.route("/delete", methods=["GET"])
+def deleteUser():
+    if (session['isAdmin'] is not True):
+        return redirect(url_for('index'), 302, flash("Admin privileges required"))
+    id = request.form.get('id')
+    userData = User()
+    userData = userData.deleteUser(id)
+    return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
 
 
 if __name__ == '__main__':
