@@ -3,7 +3,7 @@ import config, os
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Model.User import User
-from src.app.Service.ML.Prediction import Prediction
+from src.app.Service.ML.ml import Predictor
 from src.app.Helper.utils import b64ToImg, allowedFile
 from src.app.Collection.UserCollection import UserCollection
 from werkzeug.utils import secure_filename
@@ -19,6 +19,7 @@ system.validate()
 end = timeit.timeit()
 print(end - start)
 
+predictor = Predictor()
 
 @app.route('/index')
 @app.route('/')
@@ -78,7 +79,7 @@ def success():
 def project():
     return render_template('project.html')
 
-
+'''
 @app.route("/predict", methods=['GET', 'POST'])
 def predictMalignancy():
     img = b64ToImg(request.form.get('img_b64'))
@@ -87,7 +88,7 @@ def predictMalignancy():
         y_pred = Prediction.predictor(img, mask)
 
     return y_pred
-
+'''
 
 @app.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
@@ -156,7 +157,6 @@ def deleteUser():
         userData = User()
         userData = userData.deleteUser(id)
         return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
-
 
 if __name__ == '__main__':
     app.secret_key = config.CSRF_SESSION_KEY
