@@ -1,7 +1,7 @@
 import keras
 import tensorflow as tf
 import config
-from src.app.Service.ML.Preprocessing import Preprocessor
+from src.app.Service.ML.preprocessing import Preprocessor
 from src.app.Helper.utils import idToPath
 
 
