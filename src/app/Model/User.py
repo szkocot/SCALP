@@ -3,8 +3,18 @@ from src.app.Model.Abstract.DbConnection import DbConnection
 
 class User(DbConnection):
 
+    userId = None
+
     def __init__(self):
         super().__init__()
+
+    def getUserId(self, username):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT id FROM users WHERE username = %(username)s"
+        cur.execute(query, {'username': username})
+        result = cur.fetchone()
+        return result[0]
 
     def userExsists(self, username):
         db = self.getConnection()

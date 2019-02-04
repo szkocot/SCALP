@@ -35,6 +35,7 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
+            session['user_id'] = auth.user.getUserId(data['username'])
             auth.checkAdmin(data['username'])
             return redirect(url_for('index'), 302)
         else:
@@ -120,6 +121,8 @@ def segmentation():
 
 @app.route("/editUser", methods=['GET', 'POST'])
 def editUser():
+    if not session['logged_in'] and session['isAdmin']:
+        return redirect(url_for('index'), 302, flash("Restricted!"))
     if request.method == "POST":
         user = User()
         user.update(request.form.to_dict(flat=True))
@@ -135,9 +138,12 @@ def deleteUser():
     if (session['isAdmin'] is not True):
         return redirect(url_for('index'), 302, flash("Admin privileges required"))
     id = request.args.get('id')
-    userData = User()
-    userData = userData.deleteUser(id)
-    return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
+    if (session['user_id'] == id):
+        return redirect(url_for('adminPage'), 302, flash('You cannot delete yourself'))
+    else:
+        userData = User()
+        userData = userData.deleteUser(id)
+        return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
 
 
 if __name__ == '__main__':
