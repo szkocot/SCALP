@@ -161,6 +161,5 @@ def deleteUser():
 if __name__ == '__main__':
     app.secret_key = config.CSRF_SESSION_KEY
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['UPLOAD_FOLDER'] = config.PATH_TO_UPLOAD
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)

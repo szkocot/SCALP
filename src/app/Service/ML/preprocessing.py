@@ -1,6 +1,6 @@
 import numpy as np
 import config
-
+from PIL import Image
 
 class Preprocessor():
     """Preprocesses given image data, so it can be used for CNN prediction.
@@ -39,3 +39,6 @@ class Preprocessor():
     def resize_to_np(self, img):
         return np.array(img.resize(
             reversed(self.img_target_size)))
+
+    def load_img(self,img_path):
+        return Image.open(img_path)
