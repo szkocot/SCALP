@@ -29,8 +29,8 @@ class Predictor(Preprocessor):
 
         # resize to N,W,H,C format (N==1)
         img_ready.shape = (1, *img_ready.shape)
-
-        y_pred = self.model.predict(img_ready)
+        with self.graph:
+            y_pred = self.model.predict(img_ready)
 
         y_dict = {'benign': y_pred[0][0],
                   'malignant': y_pred[0][1]}
