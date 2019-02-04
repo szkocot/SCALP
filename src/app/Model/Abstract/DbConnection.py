@@ -3,12 +3,6 @@ import config
 
 
 class DbConnection:
-    _host = ''
-    _port = ''
-    _user = ''
-    _password = ''
-    _db = ''
-    connection = None
 
     def __init__(self):
         self._host = config.DATABASE_CONFIG['host']
