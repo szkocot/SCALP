@@ -36,3 +36,8 @@ def b64ToImg(img_b64):
     image = Image.open(BytesIO(base64.b64decode(image_data)))
 
     return image
+
+
+def allowedFile(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in config.ALLOWED_EXTENSIONS

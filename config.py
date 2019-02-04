@@ -1,10 +1,13 @@
 #app version
-VERSION = 0.11
+VERSION = 0.12
 
 HOST = "127.0.0.1"
 PORT = "4000"
 # debug
 DEBUG = True
+
+PATH_TO_UPLOAD = "/"
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # CREATE DB FROM DUMP FILE
 CREATE_DB = True

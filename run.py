@@ -1,11 +1,13 @@
 from flask import Flask, flash, render_template, request, session, redirect, url_for
-import config
+import config, os
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Model.User import User
 from src.app.Service.ML.Prediction import Prediction
-from src.app.Helper.utils import b64ToImg
+from src.app.Helper.utils import b64ToImg, allowedFile
 from src.app.Collection.UserCollection import UserCollection
+from werkzeug.utils import secure_filename
+
 import timeit
 
 start = timeit.timeit()
@@ -35,7 +37,8 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
-            (session['user_id'], session['name'], session['surname'], session['email']) = auth.user.getUserData(data['username'])
+            (session['user_id'], session['name'], session['surname'], session['email']) = auth.user.getUserData(
+                data['username'])
             auth.checkAdmin(data['username'])
             return redirect(url_for('index'), 302)
         else:
@@ -103,9 +106,18 @@ def reset():
 
 @app.route("/binary", methods=['GET', 'POST'])
 def binary():
-    if request.method == "POST":
-        binImage = "this will be image"
-        return render_template('binarization.html', binImage=binImage)
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url, 302, flash("Please upload correct file!"))
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowedFile(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
 
     return render_template('binarization.html')
 
@@ -149,5 +161,6 @@ def deleteUser():
 if __name__ == '__main__':
     app.secret_key = config.CSRF_SESSION_KEY
     app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['UPLOAD_FOLDER'] = config.PATH_TO_UPLOAD
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
