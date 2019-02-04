@@ -31,7 +31,7 @@ class SystemManager():
         while not self.isDbSchemaCorrect():
             if self.dbVersion is None:
                 self.installSchema()
-                self.jsons.importFiles('malignant')
-                self.jsons.importFiles('benign')
+            #    self.jsons.importFiles('malignant')
+              #  self.jsons.importFiles('benign')
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
