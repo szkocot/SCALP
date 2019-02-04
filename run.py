@@ -79,17 +79,6 @@ def success():
 def project():
     return render_template('project.html')
 
-'''
-@app.route("/predict", methods=['GET', 'POST'])
-def predictMalignancy():
-    img = b64ToImg(request.form.get('img_b64'))
-    mask = b64ToImg(request.form.get('mask_b64'))
-    with Prediction.graph.as_default():
-        y_pred = Prediction.predictor(img, mask)
-
-    return y_pred
-'''
-
 @app.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
     if session['logged_in'] and session['isAdmin']:
@@ -104,6 +93,16 @@ def adminPage():
 def reset():
     return index()
 
+
+'''
+@app.route("/predict", methods=['GET', 'POST'])
+def predictMalignancy():
+    img = b64ToImg(request.form.get('img_b64'))
+    mask = b64ToImg(request.form.get('mask_b64'))
+    with Prediction.graph.as_default():
+        y_pred = Prediction.predictor(img, mask)
+
+    return y_pred
 
 @app.route("/binary", methods=['GET', 'POST'])
 def binary():
@@ -122,7 +121,6 @@ def binary():
 
     return render_template('binarization.html')
 
-
 @app.route("/segmentation", methods=['GET', 'POST'])
 def segmentation():
     if request.method == "POST":
@@ -130,7 +128,15 @@ def segmentation():
         return render_template('segmentation.html', binImage=segmentedImage)
 
     return render_template('segmentation.html')
+'''
 
+@app.route("/binary", methods=['GET', 'POST'])
+def binary():
+    return render_template('binarization.html')
+
+@app.route("/segmentation", methods=['GET', 'POST'])
+def segmentation():
+    return render_template('segmentation.html')
 
 @app.route("/editUser", methods=['GET', 'POST'])
 def editUser():
