@@ -8,13 +8,13 @@ class User(DbConnection):
     def __init__(self):
         super().__init__()
 
-    def getUserId(self, username):
+    def getUserData(self, username):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id FROM users WHERE username = %(username)s"
+        query = "SELECT id, name, surname, email FROM users WHERE username = %(username)s"
         cur.execute(query, {'username': username})
         result = cur.fetchone()
-        return result[0]
+        return result
 
     def userExsists(self, username):
         db = self.getConnection()

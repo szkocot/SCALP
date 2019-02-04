@@ -35,7 +35,7 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
-            session['user_id'] = auth.user.getUserId(data['username'])
+            (session['user_id'], session['name'], session['surname'], session['email']) = auth.user.getUserData(data['username'])
             auth.checkAdmin(data['username'])
             return redirect(url_for('index'), 302)
         else:
