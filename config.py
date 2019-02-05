@@ -1,10 +1,12 @@
 #app version
-VERSION = 0.11
+VERSION = 0.12
 
 HOST = "127.0.0.1"
 PORT = "4000"
 # debug
 DEBUG = True
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'bmp'])
 
 # CREATE DB FROM DUMP FILE
 CREATE_DB = True
@@ -40,6 +42,6 @@ PREDICTOR = {
     'img_mean': [27.99144619, 19.51839209, 16.42992409],
     'img_std': [64.7680645, 47.09696396, 41.13751611],
     'img_target_size': (96, 128),
-    'model_path': '/CNN/models/CNN_binary_v1.h5',
+    'model_path': os.path.join(BASE_DIR,'CNN/models/CNN_binary_v1.h5'),
     'data_path': 'data/ISIC'
 }

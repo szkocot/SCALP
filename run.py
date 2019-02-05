@@ -1,22 +1,20 @@
 from flask import Flask, flash, render_template, request, session, redirect, url_for
-import config
+import tensorflow as tf
+import config, os
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Model.User import User
-from src.app.Service.ML.Prediction import Prediction
-from src.app.Helper.utils import b64ToImg
+from src.app.Service.ML.ml import Predictor
+from src.app.Helper.utils import b64ToImg, allowedFile
 from src.app.Collection.UserCollection import UserCollection
-import timeit
 
-start = timeit.timeit()
 app = Flask(__name__)
 
 system = SystemManager()
 system.validate()
 
-end = timeit.timeit()
-print(end - start)
-
+predictor = Predictor()
+graph = tf.get_default_graph()
 
 @app.route('/index')
 @app.route('/')
@@ -35,7 +33,8 @@ def login():
         status = auth.login(data)
         if status == "Success":
             session['logged_in'] = True
-            (session['user_id'], session['name'], session['surname'], session['email']) = auth.user.getUserData(data['username'])
+            (session['user_id'], session['name'], session['surname'], session['email']) = auth.user.getUserData(
+                data['username'])
             auth.checkAdmin(data['username'])
             return redirect(url_for('index'), 302)
         else:
@@ -75,17 +74,6 @@ def success():
 def project():
     return render_template('project.html')
 
-
-@app.route("/predict", methods=['GET', 'POST'])
-def predictMalignancy():
-    img = b64ToImg(request.form.get('img_b64'))
-    mask = b64ToImg(request.form.get('mask_b64'))
-    with Prediction.graph.as_default():
-        y_pred = Prediction.predictor(img, mask)
-
-    return y_pred
-
-
 @app.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
     if session['logged_in'] and session['isAdmin']:
@@ -101,14 +89,37 @@ def reset():
     return index()
 
 
+'''
+@app.route("/predict", methods=['GET', 'POST'])
+def predictMalignancy():
+    img = b64ToImg(request.form.get('img_b64'))
+    mask = b64ToImg(request.form.get('mask_b64'))
+    with Prediction.graph.as_default():
+        y_pred = Prediction.predictor(img, mask)
+
+    return y_pred
+
 @app.route("/binary", methods=['GET', 'POST'])
 def binary():
-    if request.method == "POST":
-        binImage = "this will be image"
-        return render_template('binarization.html', binImage=binImage)
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url, 302, flash("Please upload correct file!"))
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowedFile(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
 
     return render_template('binarization.html')
+ '''
 
+@app.route("/binary", methods=['GET', 'POST'])
+def binary():
+    return render_template('binarization.html')
 
 @app.route("/segmentation", methods=['GET', 'POST'])
 def segmentation():
@@ -118,6 +129,27 @@ def segmentation():
 
     return render_template('segmentation.html')
 
+@app.route("/classification", methods=['GET', 'POST'])
+def classification():
+    if request.method == 'POST':
+        files = {'image':request.files['image'], 'mask':request.files['mask']}
+        for _,v in files.items():
+            if not allowedFile(v.filename):
+                flash('Wrong extension')
+                return redirect(request.url)
+            if v.filename == '':
+                flash('No selected file')
+            else:
+                try:
+                    with graph.as_default():
+                        y_pred = predictor(request.files['image'],request.files['mask'])
+                        return str(y_pred)
+
+                except ValueError as e:
+                    print(e)
+                    flash('Wrong img size')     
+
+    return render_template('classification.html')
 
 @app.route("/editUser", methods=['GET', 'POST'])
 def editUser():
@@ -145,9 +177,10 @@ def deleteUser():
         userData = userData.deleteUser(id)
         return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
 
-
 if __name__ == '__main__':
+
     app.secret_key = config.CSRF_SESSION_KEY
     app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)

@@ -3,8 +3,6 @@ from src.app.Model.Abstract.DbConnection import DbConnection
 
 class User(DbConnection):
 
-    userId = None
-
     def __init__(self):
         super().__init__()
 

@@ -4,9 +4,6 @@ from src.app.Service.JsonDataParser import JsonDataParser
 
 
 class SystemManager():
-    system = None
-    dbVersion = None
-    jsons = None
 
     def __init__(self):
         self.system = System()

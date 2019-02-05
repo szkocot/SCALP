@@ -4,7 +4,6 @@ from flask import session
 
 
 class AuthService:
-    user = None
 
     def __init__(self):
         self.user = User()
