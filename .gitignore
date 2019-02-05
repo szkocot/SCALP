@@ -6,4 +6,5 @@ notebooks/.ipynb_checkpoints
 .idea/
 .vs
 __pycache__
+.idea
 
