@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+  Image
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=image>
+      <input type=file name=mask>
+      <input name="upload" type=submit value=Upload>
+    </form>
+{% endblock %}
