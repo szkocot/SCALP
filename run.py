@@ -1,4 +1,5 @@
 from flask import Flask, flash, render_template, request, session, redirect, url_for
+import tensorflow as tf
 import config, os
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
@@ -6,20 +7,14 @@ from src.app.Model.User import User
 from src.app.Service.ML.ml import Predictor
 from src.app.Helper.utils import b64ToImg, allowedFile
 from src.app.Collection.UserCollection import UserCollection
-from werkzeug.utils import secure_filename
 
-import timeit
-
-start = timeit.timeit()
 app = Flask(__name__)
 
 system = SystemManager()
 system.validate()
 
-end = timeit.timeit()
-print(end - start)
-
 predictor = Predictor()
+graph = tf.get_default_graph()
 
 @app.route('/index')
 @app.route('/')
@@ -120,6 +115,11 @@ def binary():
             return redirect(url_for('uploaded_file', filename=filename))
 
     return render_template('binarization.html')
+ '''
+
+@app.route("/binary", methods=['GET', 'POST'])
+def binary():
+    return render_template('binarization.html')
 
 @app.route("/segmentation", methods=['GET', 'POST'])
 def segmentation():
@@ -128,15 +128,28 @@ def segmentation():
         return render_template('segmentation.html', binImage=segmentedImage)
 
     return render_template('segmentation.html')
-'''
 
-@app.route("/binary", methods=['GET', 'POST'])
-def binary():
-    return render_template('binarization.html')
+@app.route("/classification", methods=['GET', 'POST'])
+def classification():
+    if request.method == 'POST':
+        files = {'image':request.files['image'], 'mask':request.files['mask']}
+        for _,v in files.items():
+            if not allowedFile(v.filename):
+                flash('Wrong extension')
+                return redirect(request.url)
+            if v.filename == '':
+                flash('No selected file')
+            else:
+                try:
+                    with graph.as_default():
+                        y_pred = predictor(request.files['image'],request.files['mask'])
+                        return str(y_pred)
 
-@app.route("/segmentation", methods=['GET', 'POST'])
-def segmentation():
-    return render_template('segmentation.html')
+                except ValueError as e:
+                    print(e)
+                    flash('Wrong img size')     
+
+    return render_template('classification.html')
 
 @app.route("/editUser", methods=['GET', 'POST'])
 def editUser():
@@ -165,7 +178,9 @@ def deleteUser():
         return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
 
 if __name__ == '__main__':
+
     app.secret_key = config.CSRF_SESSION_KEY
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+
     app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
