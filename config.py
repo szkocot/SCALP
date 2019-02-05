@@ -6,8 +6,7 @@ PORT = "4000"
 # debug
 DEBUG = True
 
-PATH_TO_UPLOAD = "/"
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','bmp'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'bmp'])
 
 # CREATE DB FROM DUMP FILE
 CREATE_DB = True
