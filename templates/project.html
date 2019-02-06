@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
-{% block body %}
-
+{% block project %}
+<div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                            {% block body %}
                         <h5 class="card-title text-center">About</h5>
                         
                         <h5 id="scalp-skin-cancer-classification-platform">SCALP (Skin Cancer Classification Platform)</h5>
@@ -22,8 +27,12 @@
                         <p>References:<br />[1]:<a href="https://isdis.org/isic-project/">https://isdis.org/isic-project/</a><br />
                                             [2]:<a href="https://github.com/GalAvineri/ISIC-Archive-Downloader">https://github.com/GalAvineri/ISIC-Archive-Downloader</a></p>
                                             
-                        
+                                            {% endblock %}
 
-
+                                        </div>
+                                    </div>
+                               </div>
+                           </div>
+                    </div>
 
 {% endblock %}
