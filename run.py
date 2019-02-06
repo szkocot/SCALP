@@ -132,24 +132,27 @@ def segmentation():
 @app.route("/classification", methods=['GET', 'POST'])
 def classification():
     if request.method == 'POST':
-        files = {'image':request.files['image'], 'mask':request.files['mask']}
+        try:
+            files = {'image':request.files['image'], 'mask':request.files['mask']}
+        except KeyError as e:
+            flash('No selected file')
+            return redirect(request.url)
+            
         for _,v in files.items():
             if not allowedFile(v.filename):
-                flash('Wrong extension')
+                flash('Wrong file extension')
                 return redirect(request.url)
-            if v.filename == '':
-                flash('No selected file')
-            else:
-                try:
-                    with graph.as_default():
-                        y_pred = predictor(request.files['image'],request.files['mask'])
+        try:
+            with graph.as_default():
+                y_pred = predictor(request.files['image'],request.files['mask'])
 
-                    img_masked = np_img_to_b64((mask_img(request.files['image'],request.files['mask'])))
-                    return render_template("result.html",pred = str(y_pred), img_masked = img_masked)
-                    
-                except ValueError as e:
-                    print(e)
-                    flash('Wrong img size')     
+            img_masked = np_img_to_b64((mask_img(request.files['image'],request.files['mask'])))
+            return render_template("result.html",pred = str(y_pred), img_masked = img_masked)
+
+        except ValueError as e:
+            print(e)
+            flash('Wrong img size')
+            return redirect(request.url)     
 
 
     return render_template('classification.html')
