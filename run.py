@@ -143,10 +143,14 @@ def classification():
                 try:
                     with graph.as_default():
                         y_pred = predictor(request.files['image'],request.files['mask'])
-                        return render_template("result.html",pred = str(y_pred), img_masked = np_img_to_b64((mask_img(request.files['image'],request.files['mask']))))
+
+                    img_masked = np_img_to_b64((mask_img(request.files['image'],request.files['mask'])))
+                    return render_template("result.html",pred = str(y_pred), img_masked = img_masked)
+                    
                 except ValueError as e:
                     print(e)
                     flash('Wrong img size')     
+
 
     return render_template('classification.html')
 
