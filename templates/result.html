@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block body %}
+{{ pred }}
+<p>Masked image</p>
+<img src="data:image/jpg;base64,{{ img_masked }}"/>
+
+{% endblock %}
