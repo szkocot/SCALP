@@ -36,7 +36,7 @@ def login():
             (session['user_id'], session['name'], session['surname'], session['email']) = (
                 userData.id, userData.name, userData.surname, userData.email)
             auth.checkAdmin(data['username'])
-            return redirect(url_for('index'), 302)
+            return redirect(url_for('main.index'), 302)
         else:
             flash(status)
     return index()
@@ -77,7 +77,7 @@ def register():
         newUser = auth.createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
-            return redirect(url_for("success"), code=302)
+            return redirect(url_for("main.success"), code=302)
 
         else:
             flash(newUser)
@@ -141,11 +141,11 @@ def classification():
 @main.route("/editUser", methods=['GET', 'POST'])
 def editUser():
     if not session['logged_in'] and session['isAdmin']:
-        return redirect(url_for('index'), 302, flash("Restricted!"))
+        return redirect(url_for('main.index'), 302, flash("Restricted!"))
     if request.method == "POST":
         user = User()
         user.update(request.form.to_dict(flat=True))
-        return redirect(url_for('adminPage'), 302, flash('Changes has been saved!'))
+        return redirect(url_for('main.adminPage'), 302, flash('Changes has been saved!'))
     id = request.args.get('id')
     userData = User()
     userData = userData.getUserById(id).__dict__1
@@ -155,11 +155,11 @@ def editUser():
 @main.route("/delete", methods=["GET"])
 def deleteUser():
     if (session['isAdmin'] is not True):
-        return redirect(url_for('index'), 302, flash("Admin privileges required"))
+        return redirect(url_for('main.index'), 302, flash("Admin privileges required"))
     id = request.args.get('id')
     if (session['user_id'] == id):
-        return redirect(url_for('adminPage'), 302, flash('You cannot delete yourself'))
+        return redirect(url_for('main.adminPage'), 302, flash('You cannot delete yourself'))
     else:
         userData = User()
         userData = userData.deleteUser(id)
-        return redirect(url_for('adminPage'), 302, flash('Deleted user!'))
+        return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))

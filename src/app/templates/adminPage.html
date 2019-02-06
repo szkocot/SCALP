@@ -26,8 +26,9 @@
                             </td>
                         {% endfor %}
                         <td>
-                            <button class="btn" onclick="window.location.href='/editUser?id={{  user.__dict__.get('id') }}'"
-                                    id="btn-{{  user.__dict__.get('id') }}"><i class="fas fa-edit"></i></button>
+                            <button class="btn"
+                                    onclick="window.location.href='/editUser?id={{ user.__dict__.get('id') }}'"
+                                    id="btn-{{ user.__dict__.get('id') }}"><i class="fas fa-edit"></i></button>
                         </td>
                     </tr>
                     </tbody>

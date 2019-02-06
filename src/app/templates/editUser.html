@@ -6,7 +6,7 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Edit</h5>
-                        <form class="form-signin" method="post" action="{{ url_for('editUser') }}">
+                        <form class="form-signin" method="post" action="{{ url_for('main.editUser') }}">
                             <input type="hidden" name="id" id="userId" value="{{ userData.get('id') }}">
                             <label for="username">Username</label>
                             <input disabled name="username" type="text" id="username"
