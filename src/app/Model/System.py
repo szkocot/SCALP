@@ -32,6 +32,7 @@ class System(DbConnection):
         except (Exception, psycopg2.DatabaseError) as error:
             db.rollback()
             print(error)
+            exit(1)
         return
 
     def getDbVersion(self):

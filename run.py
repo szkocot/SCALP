@@ -1,4 +1,4 @@
-from flask import Flask, flash, render_template, request, session, redirect, url_for
+from flask import Flask, flash, render_template, request, session, redirect, url_for, current_app
 import tensorflow as tf
 import config, os
 from src.app.Service.AuthService import AuthService
@@ -41,12 +41,29 @@ def login():
             flash(status)
     return index()
 
+@app.route('/preview')
+def preview(page=1):
+
+    return render_template('preview.html', models=models, page=page)
 
 @app.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return index()
 
+@app.route('/more')
+def more():
+    # this route will only be called from JavaScript when the page is scrolled
+
+    # read query parameters to know what data to get
+    page = request.args.get('page', 1)
+    per_page = request.args.get('per_page', 20)
+
+    # get the requested set of data
+    data = get_some_data(page, per_page)
+
+    # return it as json
+    return jsonify(data=format_data_appropriate_for_jsonify(data))
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():

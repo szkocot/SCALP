@@ -19,16 +19,16 @@ class SystemManager():
     def installSchema(self):
         self.system.initDB()
 
-    # each schema change needs dump into filename with upgraded version + new line here
     def upgradeSchema(self):
         self.system.updateDB('0.11')
+        self.system.updateDB('0.12')
         return
 
     def validate(self):
         while not self.isDbSchemaCorrect():
             if self.dbVersion is None:
                 self.installSchema()
-            #    self.jsons.importFiles('malignant')
-              #  self.jsons.importFiles('benign')
+                #self.jsons.importFiles('malignant')
+                #self.jsons.importFiles('benign')
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
