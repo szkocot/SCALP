@@ -1,5 +1,5 @@
-ALTER TABLE public.users
-    ADD CONSTRAINT username_unique UNIQUE (username);
+SET session_replication_role = 'replica';
+
 --
 -- TOC entry 2915 (class 0 OID 17227)
 -- Dependencies: 197
@@ -2006,16 +2006,6 @@ INSERT INTO public.acquisition (id, image_type, "pixelsX", "pixelsY") VALUES (19
 INSERT INTO public.acquisition (id, image_type, "pixelsX", "pixelsY") VALUES (1998, 'dermoscopic', '3024', '2016');
 INSERT INTO public.acquisition (id, image_type, "pixelsX", "pixelsY") VALUES (1999, 'dermoscopic', '3024', '2016');
 INSERT INTO public.acquisition (id, image_type, "pixelsX", "pixelsY") VALUES (2000, 'dermoscopic', '3024', '2016');
-
-
---
--- TOC entry 2935 (class 0 OID 17329)
--- Dependencies: 217
--- Data for Name: app_version; Type: TABLE DATA; Schema: public; Owner: bbd
---
-
-INSERT INTO public.app_version (id, app_version) VALUES (1, 0.100000001);
-INSERT INTO public.app_version (id, app_version) VALUES (2, 0.109999999);
 
 
 --
@@ -22068,3 +22058,5 @@ INSERT INTO public.unstructured (id, diagnosis, id1, localization, site) VALUES 
 INSERT INTO public.unstructured (id, diagnosis, id1, localization, site) VALUES (1998, 'nevus', NULL, NULL, NULL);
 INSERT INTO public.unstructured (id, diagnosis, id1, localization, site) VALUES (1999, 'nevus', NULL, NULL, NULL);
 INSERT INTO public.unstructured (id, diagnosis, id1, localization, site) VALUES (2000, 'nevus', NULL, NULL, NULL);
+
+SET session_replication_role = 'origin';

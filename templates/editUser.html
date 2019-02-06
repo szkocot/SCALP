@@ -7,37 +7,47 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Edit</h5>
                         <form class="form-signin" method="post" action="{{ url_for('editUser') }}">
-                            <input type="hidden" name="id" value="{{ userData[0] }}">
+                            <input type="hidden" name="id" id="userId" value="{{ userData.get('id') }}">
                             <label for="username">Username</label>
                             <input disabled name="username" type="text" id="username"
-                                   class="form-control form-label-group" value="{{ userData[1] }}">
+                                   class="form-control form-label-group" value="{{ userData.get('username') }}">
                             <label for="name">Name</label>
                             <input name="name" type="text" id="name" class="form-control form-label-group"
-                                   value="{{ userData[2] }}">
+                                   value="{{ userData.get('name') }}">
                             <label for="Surname">Surname</label>
                             <input name="surname" type="text" id="surname" class="form-control form-label-group"
-                                   value="{{ userData[3] }}">
+                                   value="{{ userData.get('surname') }}">
                             <label for="email">E-mail</label>
                             <input name="email" type="email" id="email" class="form-control form-label-group"
-                                   value="{{ userData[4] }}">
-                                   
+                                   value="{{ userData.get('email') }}">
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" name="admin" type="checkbox" id="admin" {{ 'checked' if userData[5] else '' }}>
+                                <input class="custom-control-input" name="admin" type="checkbox"
+                                       id="admin" {{ 'checked' if userData.get('admin') else '' }}>
                                 <label class="custom-control-label" for="admin">Admin access </label>
                             </div>
-                        <div class="dropdown-divider"></div>
+                            <div class="dropdown-divider"></div>
                             <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update data
                             </button>
                         </form>
                         <div class="dropdown-divider"></div>
                         <form class="form-signin">
-                        <button class="btn btn-lg btn-block btn-outline-danger text-uppercase"
-                                onclick="window.location.href='/delete?id={{ userData[0] }}'"
-                                id="btn-{{ userData[0] }}"><i class="far fa-trash-alt"></i> Delete User
-                        </button></form>
+                            <button class="btn btn-lg btn-block btn-outline-danger text-uppercase"
+                                    id="btn-delete"><i class="far fa-trash-alt"></i> Delete User
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('btn-delete').onclick = function () {
+            let userId = parseInt(document.getElementById('userId').value);
+            if (confirm("Are you sure? This action cannot be undone")) {
+                window.location.href = '/delete?id=' + userId;
+            } else {
+                return false;
+            }
+        };
+    </script>
 {% endblock %}

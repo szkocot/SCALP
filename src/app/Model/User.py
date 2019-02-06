@@ -5,14 +5,31 @@ class User(DbConnection):
 
     def __init__(self):
         super().__init__()
+        self.id = None
+        self.username = None
+        self.password = None
+        self.name = None
+        self.surname = None
+        self.email = None
+        self.admin = None
 
     def getUserData(self, username):
-        db = self.getConnection()
-        cur = db.cursor()
-        query = "SELECT id, name, surname, email FROM users WHERE username = %(username)s"
-        cur.execute(query, {'username': username})
-        result = cur.fetchone()
-        return result
+        if self.username is None:
+            db = self.getConnection()
+            cur = db.cursor()
+            query = "SELECT id, username, password, name, surname, email, admin FROM users WHERE username = %(username)s"
+            cur.execute(query, {'username': username})
+            result = cur.fetchone()
+            self.id = result[0]
+            self.username = result[1]
+            self.password = result[2]
+            self.name = result[3]
+            self.surname = result[4]
+            self.email = result[5]
+            self.admin = result[6]
+            return self
+        else:
+            return self
 
     def userExsists(self, username):
         db = self.getConnection()
@@ -26,20 +43,33 @@ class User(DbConnection):
             return False
 
     def getUserById(self, id):
-        db = self.getConnection()
-        cur = db.cursor()
-        query = "SELECT id, username, name, surname, email, admin FROM users WHERE id = %(id)s"
-        cur.execute(query, {'id': id})
-        result = cur.fetchone()
-        return result
+        if self.id is None:
+            db = self.getConnection()
+            cur = db.cursor()
+            query = "SELECT id, username, password, name, surname, email, admin FROM users WHERE id = %(id)s"
+            cur.execute(query, {'id': id})
+            result = cur.fetchone()
+            self.id = result[0]
+            self.username = result[1]
+            self.password = result[2]
+            self.name = result[3]
+            self.surname = result[4]
+            self.email = result[5]
+            self.admin = result[6]
+            return self
+        else:
+            return self
 
     def getUserPasswordHash(self, username):
-        db = self.getConnection()
-        cur = db.cursor()
-        query = "SELECT password FROM users WHERE username = %(username)s"
-        cur.execute(query, {'username': username})
-        result = cur.fetchone()
-        return result[0]
+        if self.password is None:
+            db = self.getConnection()
+            cur = db.cursor()
+            query = "SELECT password FROM users WHERE username = %(username)s"
+            cur.execute(query, {'username': username})
+            result = cur.fetchone()
+            return result[0]
+        else:
+            return self.password
 
     def create(self, username, password, name=None, surname=None, email=None):
         db = self.getConnection()
@@ -52,12 +82,15 @@ class User(DbConnection):
         return result[0]
 
     def checkAdmin(self, username):
-        db = self.getConnection()
-        cur = db.cursor()
-        query = "SELECT admin FROM users WHERE username = %(username)s"
-        cur.execute(query, {'username': username})
-        result = cur.fetchone()
-        return result[0]
+        if self.admin is None:
+            db = self.getConnection()
+            cur = db.cursor()
+            query = "SELECT admin FROM users WHERE username = %(username)s"
+            cur.execute(query, {'username': username})
+            result = cur.fetchone()
+            return result[0]
+        else:
+            return self.admin
 
     def update(self, data):
         if data.get('admin') == 'on':
@@ -67,9 +100,11 @@ class User(DbConnection):
         db = self.getConnection()
         cur = db.cursor()
         query = "UPDATE users SET name = %(name)s, surname = %(surname)s, email = %(email)s , admin = %(admin)s WHERE id = %(id)s "
-        return cur.execute(query, {'name': data['name'], 'surname': data['surname'], 'email': data['email'], 'id':data['id'], 'admin': admin})
+        return cur.execute(query,
+                           {'name': data['name'], 'surname': data['surname'], 'email': data['email'], 'id': data['id'],
+                            'admin': admin})
 
-    def deleteUser(self,id):
+    def deleteUser(self, id):
         db = self.getConnection()
         cur = db.cursor()
         query = "DELETE FROM users WHERE id = %(id)s"
