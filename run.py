@@ -5,7 +5,7 @@ from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Model.User import User
 from src.app.Service.ML.ml import Predictor
-from src.app.Helper.utils import b64ToImg, allowedFile
+from src.app.Helper.utils import b64ToImg, allowedFile, mask_img, np_img_to_b64
 from src.app.Collection.UserCollection import UserCollection
 
 app = Flask(__name__)
@@ -143,8 +143,7 @@ def classification():
                 try:
                     with graph.as_default():
                         y_pred = predictor(request.files['image'],request.files['mask'])
-                        return str(y_pred)
-
+                        return render_template("result.html",pred = str(y_pred), img_masked = np_img_to_b64((mask_img(request.files['image'],request.files['mask']))))
                 except ValueError as e:
                     print(e)
                     flash('Wrong img size')     
