@@ -47,19 +47,18 @@ def allowedFile(filename):
 
 def mask_img(img_path, mask_path):
 
-    img = np.array(Image.open(img_path))
-    mask = np.array(Image.open(mask_path))
+    img = Image.open(img_path)
+    mask = Image.open(mask_path)
 
-    img = img[:, :, :3]
-    mask = mask == 255
+    img_transp = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    img_transp.paste(img, (0,0), mask=mask)
 
-    return img * np.stack((mask, mask, mask), axis=2)
+    return img_transp
 
-def np_img_to_b64(img_np):
+def np_img_to_b64(pil_img):
 
-    pil_img = Image.fromarray(img_np)
     img_io = io.BytesIO()
-    pil_img.save(img_io, 'jpeg', quality=100)
+    pil_img.save(img_io, 'png', quality=100)
     img_io.seek(0)
     img = base64.b64encode(img_io.getvalue())
 
