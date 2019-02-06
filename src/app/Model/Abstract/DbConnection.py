@@ -5,18 +5,19 @@ import config
 class DbConnection:
 
     def __init__(self):
-        self._host = config.DATABASE_CONFIG['host']
-        self._port = config.DATABASE_CONFIG['port']
-        self._db = config.DATABASE_CONFIG['dbname']
-        self._user = config.DATABASE_CONFIG['user']
-        self._password = config.DATABASE_CONFIG['password']
+        self.connection = None
 
     def getConnection(self):
         try:
-            self.connection = psycopg2.connect(host=self._host,
-                                               user=self._user,
-                                               password=self._password,
-                                               dbname=self._db)
+            _host = config.DATABASE_CONFIG['host']
+            _port = config.DATABASE_CONFIG['port']
+            _db = config.DATABASE_CONFIG['dbname']
+            _user = config.DATABASE_CONFIG['user']
+            _password = config.DATABASE_CONFIG['password']
+            self.connection = psycopg2.connect(host=_host,
+                                           user=_user,
+                                           password=_password,
+                                           dbname=_db)
             self.connection.autocommit = True
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
