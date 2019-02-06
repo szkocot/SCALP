@@ -17,4 +17,11 @@ class UserCollection(Collection):
         collection = []
         for row in result:
             user = User()
-
+            user.id = row[0]
+            user.username = row[1]
+            user.name = row[2]
+            user.surname = row[3]
+            user.email = row[4]
+            user.admin = row[5]
+            collection.append(user)
+        return collection
