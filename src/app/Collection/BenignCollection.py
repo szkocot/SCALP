@@ -10,7 +10,7 @@ from src.app.Model.Reviewed import Reviewed
 from src.app.Model.Tag import Tag
 from src.app.Model.Unstructured import Unstructured
 
-class IsicCollection(Collection):
+class BenignCollection(Collection):
 
     def __init__(self):
         super().__init__()
@@ -18,5 +18,11 @@ class IsicCollection(Collection):
         self.clinical = Clinical()
         self.creator = Creator()
         self.dataset = Dataset()
+        self.meta = Meta()
+        self.metadata = Metadata()
+        self.tag = Tag()
+        self.notes = Notes()
+        self.unstructured = Unstructured()
+        self.reviewed = Reviewed()
 
 

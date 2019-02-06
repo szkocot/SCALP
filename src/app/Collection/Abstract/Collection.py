@@ -1,6 +1,10 @@
-class Collection:
+from src.app.Model.Abstract.DbConnection import DbConnection
+
+
+class Collection(DbConnection):
 
     def __init__(self):
+        super().__init__()
         self.limit = 20
         self.offset = 0
         self.field = None

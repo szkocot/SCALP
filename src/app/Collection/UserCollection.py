@@ -1,7 +1,7 @@
-from src.app.Model.Abstract.DbConnection import DbConnection
+from src.app.Collection.Abstract.Collection import Collection
 
 
-class UserCollection(DbConnection):
+class UserCollection(Collection):
 
     def __init__(self):
         super().__init__()
