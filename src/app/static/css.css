@@ -115,3 +115,20 @@ body {
   align-items: center;
   justify-content: center;
 }
+.textarea {
+  background: transparent;
+  border-width: 1px;
+  border-color:#ced4da;
+  border-style: solid;
+  color: #000000;
+  border-radius: .25rem;
+  width: 100%;}
+  
+  .input {background: transparent;
+      border-width: 1px;
+      border-color:#ced4da;
+      border-style: solid;
+      color: #000000;
+      border-radius: .25rem;
+      width: 100%;background: transparent;
+ ;}
