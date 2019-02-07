@@ -30,3 +30,9 @@ class Creator(DbConnection):
         cur.execute('SELECT LASTVAL()')
         result = cur.fetchone()
         return result[0]
+
+    def update(self):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "UPDATE public.creator SET _id = %(_id)s, name= %(name)s WHERE id = %(id)s;"
+        cur.execute(query, {"_id": self._id, "name": self.name, 'id': self.id})

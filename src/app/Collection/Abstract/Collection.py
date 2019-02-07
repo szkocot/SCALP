@@ -9,6 +9,7 @@ class Collection(DbConnection):
         self.offset = 0
         self.field = None
         self.value = None
+        self.collection = None
 
     def setLimit(self, limit):
         self.limit = limit

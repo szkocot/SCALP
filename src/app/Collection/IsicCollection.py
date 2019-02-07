@@ -28,7 +28,7 @@ class IsicCollection(Collection):
         self.reviewed = Reviewed()
         self.parser = JsonDataParser()
 
-
+    # todo
     def insert(self, data):
         creatorId = self.creator.insert(data.get('creator'))
         datasetId = self.dataset.insert(data.get('dataset'))
@@ -40,26 +40,27 @@ class IsicCollection(Collection):
                 'meta_id': metaId, 'image': data['image'], 'segmentation': data['segmentation']}
         return self.metadata.insert(data)
 
+    # todo fetch whole object not ids
     def getCollection(self):
-        db = self.getConnection()
-        cur = db.cursor()
-        query = "SELECT id, _model_type, _created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata"
-        cur.execute(query, {'id': id})
-        result = cur.fetchone()
-
-        #todo
-        collection = []
-        for row in result:
-            row = Metadata()
-
-            self.id = result[0]
-            self._model_type = result[1]
-            self.created = result[2]
-            self.dataset_id = result[3]
-            self.name = result[4]
-            self.notes_id = result[5]
-            self.updated = result[6]
-            self._id = result[7]
-            self.creator_id = result[8]
-            self.meta_id = result[9]
-        return self
+        if self.collection is None:
+            db = self.getConnection()
+            cur = db.cursor()
+            query = "SELECT id, __model_type, _created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata ORDER BY id ASC"
+            cur.execute(query)
+            result = cur.fetchall()
+            collection = []
+            for row in result:
+                metadata = Metadata()
+                metadata.id = row[0]
+                metadata._model_type = row[1]
+                metadata.created = row[2]
+                metadata.dataset_id = row[3]
+                metadata.name = row[4]
+                metadata.notes_id = row[5]
+                metadata.updated = row[6]
+                metadata._id = row[7]
+                metadata.creator_id = row[8]
+                metadata.meta_id = row[9]
+                collection.append(metadata)
+            self.collection = collection
+        return self.collection
