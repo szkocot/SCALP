@@ -29,6 +29,7 @@ class Clinical(DbConnection):
         self.diagnosis_confirm_type = result[3]
         self.melanocytic = result[3]
         self.sex = result[3]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

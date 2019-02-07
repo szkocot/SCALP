@@ -26,3 +26,5 @@ class IsicCollection(Collection):
         self.reviewed = Reviewed()
 
 
+    def getCollection(self):
+        db = self.getConnection()

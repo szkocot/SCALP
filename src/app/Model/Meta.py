@@ -20,6 +20,7 @@ class Meta(DbConnection):
         self.acquisition_id = result[1]
         self.clinical_id = result[2]
         self.unstructured_id = result[3]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

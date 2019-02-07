@@ -26,6 +26,7 @@ class Dataset(DbConnection):
         self.license = result[4]
         self.name = result[5]
         self.updated = result[6]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

@@ -34,6 +34,7 @@ class Metadata(DbConnection):
         self._id = result[7]
         self.creator_id = result[8]
         self.meta_id = result[9]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

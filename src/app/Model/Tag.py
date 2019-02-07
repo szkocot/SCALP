@@ -13,6 +13,7 @@ class Tag(DbConnection):
         query = "SELECT id, data, notes_id FROM tag WHERE notes_id = %(id)s"
         cur.execute(query, {'id': id})
         self.tag = cur.fetchAll()
+        return self
 
     def insert(self, data):
         db = self.getConnection()

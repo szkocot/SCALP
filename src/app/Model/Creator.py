@@ -19,6 +19,7 @@ class Creator(DbConnection):
         self.id = result[0]
         self._id = result[1]
         self.name = result[2]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

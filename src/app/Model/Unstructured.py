@@ -18,6 +18,7 @@ class Unstructured(DbConnection):
         self.id = result[0]
         self.data = result[1]
         self.note_id = result[2]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

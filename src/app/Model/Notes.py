@@ -17,6 +17,7 @@ class Notes(DbConnection):
         result = cur.fetchone()
         self.id = result[0]
         self.reviewed = result[1]
+        return self
 
     def insert(self, data):
         db = self.getConnection()

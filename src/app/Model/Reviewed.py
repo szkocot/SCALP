@@ -20,6 +20,7 @@ class Reviewed(DbConnection):
         self.accepted = result[1]
         self.time = result[2]
         self.userId = result[3]
+        return self
 
     def insert(self, data):
         db = self.getConnection()
