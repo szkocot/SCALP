@@ -7,7 +7,7 @@ class UserCollection(Collection):
     def __init__(self):
         super().__init__()
 
-    def getUserCollection(self):
+    def getCollection(self):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
