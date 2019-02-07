@@ -21,7 +21,7 @@ class Metadata(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, __model_type, _created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata WHERE id = %(id)s"
+        query = "SELECT id, _model_type, _created, dataset_id, \"name\", notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata WHERE id = %(id)s"
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
@@ -34,6 +34,8 @@ class Metadata(DbConnection):
         self._id = result[7]
         self.creator_id = result[8]
         self.meta_id = result[9]
+        self.image = result[10]
+        self.segmentation = result[11]
         return self
 
     def insert(self, data):
@@ -45,7 +47,7 @@ class Metadata(DbConnection):
                     {"_model_type": data.get('_model_type'), "created": data.get('created'),
                      'dataset_id': data.get('dataset_id'), "name": data.get('name'), "notes_id": data.get('notes_id'),
                      'updated': data.get('updated'), "_id": data.get('_id'), "creator_id": data.get('creator_id'),
-                     'meta_id': data.get('meta_id'),'image': data.get('image'),'segmentation': data.get('segmentation')})
+                     'meta_id': data.get('meta_id'), 'image': data.get('image'),
+                     'segmentation': data.get('segmentation')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]
-

@@ -5,12 +5,13 @@ class Tag(DbConnection):
 
     def __init__(self):
         super().__init__()
-        self.tag = None
+        self.data = None
+        self.id = None
 
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, data, notes_id FROM tag WHERE notes_id = %(id)s"
+        query = "SELECT id, data, FROM tag WHERE notes_id = %(id)s"
         cur.execute(query, {'id': id})
         self.tag = cur.fetchAll()
         return self

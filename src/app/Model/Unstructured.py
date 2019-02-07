@@ -6,8 +6,10 @@ class Unstructured(DbConnection):
     def __init__(self):
         super().__init__()
         self.id = None
-        self.data = None
-        self.note_id = None
+        self.diagnosis = None
+        self.id1 = None
+        self.localization = None
+        self.site = None
 
     def getData(self, id):
         db = self.getConnection()
@@ -16,8 +18,10 @@ class Unstructured(DbConnection):
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
-        self.data = result[1]
-        self.note_id = result[2]
+        self.diagnosis = result[1]
+        self.id1 = result[2]
+        self.localization = result[3]
+        self.site = result[4]
         return self
 
     def insert(self, data):
