@@ -78,7 +78,6 @@ def register():
         if newUser == "Success":
             session['logged_in'] = True
             return redirect(url_for("main.success"), code=302)
-
         else:
             flash(newUser)
     return index()
@@ -140,15 +139,28 @@ def classification():
 
 @main.route("/editUser", methods=['GET', 'POST'])
 def editUser():
+    userData = User()
+    auth = AuthService()
     if not session['logged_in'] and session['isAdmin']:
-        return redirect(url_for('main.index'), 302, flash("Restricted!"))
+        return redirect(url_for('main.index'), 403, flash("Restricted!"))
     if request.method == "POST":
+        id = request.form.get('id')
+        oldData = userData.getUserById(id)
+        newpassword = auth.encodePassword(request.form.get('password')) if oldData.password != request.form.get(
+            'password') else oldData.password
         user = User()
-        user.update(request.form.to_dict(flat=True))
+        data = request.form.to_dict(flat=True)
+        user.id = data.get('id')
+        user.name = data.get('name')
+        user.surname = data.get('surname')
+        user.email = data.get('email')
+        user.password = newpassword
+        user.admin = data.get('admin')
+        user.username = data.get('username')
+        user.update()
         return redirect(url_for('main.adminPage'), 302, flash('Changes has been saved!'))
     id = request.args.get('id')
-    userData = User()
-    userData = userData.getUserById(id).__dict__1
+    userData = userData.getUserById(id).__dict__
     return render_template("editUser.html", userData=userData)
 
 
@@ -161,5 +173,6 @@ def deleteUser():
         return redirect(url_for('main.adminPage'), 302, flash('You cannot delete yourself'))
     else:
         userData = User()
-        userData = userData.deleteUser(id)
+        userData.id = id
+        userData = userData.deleteUser()
         return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))

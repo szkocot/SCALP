@@ -32,8 +32,13 @@ class AuthService:
             return "Username taken!"
         else:
             password = self.encodePassword(data['password'])
-            self.user.create(data['username'], password, data['name'],
-                             data['surname'], data['email'])
+            user = User()
+            user.username = data['username']
+            user.name = data['name']
+            user.surname = data['surname']
+            user.email = data['email']
+            user.password = password
+            user.create()
             return "Success"
 
     def encodePassword(self, password):

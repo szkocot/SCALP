@@ -36,9 +36,28 @@ class Clinical(DbConnection):
         cur = db.cursor()
         query = "INSERT INTO clinical (age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex)" \
                 " VALUES (%(age_approx)s, %(anatom_site_general)s, %(benign_malignant)s, %(diagnosis)s, %(diagnosis_confirm_type)s, %(melanocytic)s, %(sex)s);"
-        cur.execute(query, {"age_approx": data.get('age_approx'), "anatom_site_general": data.get('anatom_site_general'),
-                            "benign_malignant": data.get('benign_malignant'), "diagnosis": data.get('diagnosis'),
-                            "diagnosis_confirm_type": data.get('diagnosis_confirm_type'),
-                            "melanocytic": data.get('melanocytic'), "sex": data.get('sex')})
+        cur.execute(query,
+                    {"age_approx": data.get('age_approx'), "anatom_site_general": data.get('anatom_site_general'),
+                     "benign_malignant": data.get('benign_malignant'), "diagnosis": data.get('diagnosis'),
+                     "diagnosis_confirm_type": data.get('diagnosis_confirm_type'),
+                     "melanocytic": data.get('melanocytic'), "sex": data.get('sex')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]
+
+    def update(self):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "UPDATE public.clinical SET" \
+                "age_approx = %(age_approx)s," \
+                "anatom_site_general = %(anatom_site_general)s," \
+                "benign_malignant = %(benign_malignant)s," \
+                "diagnosis = %(diagnosis)s," \
+                "diagnosis_confirm_type =%(diagnosis_confirm_type)s," \
+                "melanocytic =%(melanocytic)s," \
+                "sex = %(sex)s" \
+                "WHERE id = %(id)s"
+        cur.execute(query,
+                    {"age_approx": self.age_approx, "anatom_site_general": self.anatom_site_general,
+                     "benign_malignant": self.benign_malignant, "diagnosis": self.diagnosis,
+                     "diagnosis_confirm_type": self.diagnosis_confirm_type,
+                     "melanocytic": self.melanocytic, "sex": self.sex, 'id': self.id})

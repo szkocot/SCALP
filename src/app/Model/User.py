@@ -49,7 +49,7 @@ class User(DbConnection):
             query = "SELECT id, username, password, name, surname, email, admin FROM users WHERE id = %(id)s"
             cur.execute(query, {'id': id})
             result = cur.fetchone()
-            self.id = result[0]
+            self.id = id
             self.username = result[1]
             self.password = result[2]
             self.name = result[3]
@@ -71,12 +71,12 @@ class User(DbConnection):
         else:
             return self.password
 
-    def create(self, username, password, name=None, surname=None, email=None):
+    def create(self):
         db = self.getConnection()
         cur = db.cursor()
         query = "INSERT INTO users (username, password, name, surname, email) VALUES (%(username)s, %(password)s, %(name)s, %(surname)s, %(email)s);"
         cur.execute(query,
-                    {'username': username, "password": password, "name": name, "surname": surname, "email": email})
+                    {'username': self.username, "password": self.password, "name": self.name, "surname": self.surname, "email": self.email})
         cur.execute('SELECT LASTVAL()')
         result = cur.fetchone()
         return result[0]
@@ -92,20 +92,21 @@ class User(DbConnection):
         else:
             return self.admin
 
-    def update(self, data):
-        if data.get('admin') == 'on':
+    def update(self):
+        if self.admin == 'on':
             admin = True
         else:
             admin = False
         db = self.getConnection()
+        self.password
         cur = db.cursor()
-        query = "UPDATE users SET name = %(name)s, surname = %(surname)s, email = %(email)s , admin = %(admin)s WHERE id = %(id)s "
+        query = "UPDATE users SET name = %(name)s, surname = %(surname)s, password = %(password)s, email = %(email)s , admin = %(admin)s WHERE id = %(id)s "
         return cur.execute(query,
-                           {'name': data['name'], 'surname': data['surname'], 'email': data['email'], 'id': data['id'],
-                            'admin': admin})
+                           {'name': self.name, 'surname': self.surname, 'email': self.email, 'id': self.id,
+                            'admin': admin, 'password': self.password })
 
-    def deleteUser(self, id):
+    def deleteUser(self):
         db = self.getConnection()
         cur = db.cursor()
         query = "DELETE FROM users WHERE id = %(id)s"
-        return cur.execute(query, {'id': id})
+        return cur.execute(query, {'id': self.id})
