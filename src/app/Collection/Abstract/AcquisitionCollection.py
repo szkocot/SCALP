@@ -2,7 +2,7 @@ from src.app.Collection.Abstract.Collection import Collection
 from src.app.Model.Acquisition import Acquisition
 
 
-class UserCollection(Collection):
+class AcquisitionCollection(Collection):
 
     def __init__(self):
         super().__init__()
@@ -11,7 +11,7 @@ class UserCollection(Collection):
     def getUserCollection(self):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, image_type, pixelsX, pixelsY FROM users ORDER BY id ASC"
+        query = "SELECT id, image_type, pixelsX, pixelsY FROM acquisition ORDER BY id ASC"
         cur.execute(query)
         result = cur.fetchall()
 
