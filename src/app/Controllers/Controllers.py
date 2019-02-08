@@ -47,10 +47,13 @@ def logout():
     return index()
 
 
-@main.route('/classifier-data', methods=['POST','GET'])
+@main.route('/classifier-data', methods=['POST', 'GET'])
 def classifierData():
+    # todo pagination
+    # todo filters
+
     # this route will only be called from JavaScript when the page is scrolled
-    isic = IsicCollection().getCollection()
+    isic = IsicCollection().getFilteredCollection('asdf')
     # read query parameters to know what data to get
     # page = request.args.get('page', 1)
     # per_page = request.args.get('per_page', 20)

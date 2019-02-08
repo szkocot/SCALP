@@ -10,6 +10,7 @@ from src.app.Collection.ReviewedCollection import ReviewedCollection, Reviewed
 from src.app.Collection.TagCollection import TagCollection, Tag
 from src.app.Collection.UnstructuredCollection import UnstructuredCollection, Unstructured
 from src.app.Service.JsonDataParser import JsonDataParser
+from src.app.Model.Isic import Isic
 
 
 class IsicCollection(Collection):
@@ -38,19 +39,66 @@ class IsicCollection(Collection):
         if self.collection is None:
             collection = []
             for row in self.metadata:
-                metadata = Metadata()
-                self.id = row[0]
-                self._model_type = row[1]
-                self.created = row[2]
-                self.dataset_id = row[3]
-                self.name = row[4]
-                self.notes_id = row[5]
-                self.updated = row[6]
-                self._id = row[7]
-                self.creator_id = row[8]
-                self.meta_id = row[9]
-                self.image = row[10]
-                self.segmentation = row[11]
-
-            collection.append(metadata)
+                isic = Isic()
+                isic.id = row.id
+                isic._model_type = row._model_type
+                isic.created = row.created
+                isic.dataset_id = row.dataset_id
+                isic.name = row.name
+                isic.notes = self.getNotesById(row.notes_id)
+                isic.updated = row.updated
+                isic._id = row._id
+                isic.creator = self.getCreatorById(row.creator_id)
+                isic.meta = self.getMetaById(row.meta_id)
+                isic.image = row.image
+                isic.segmentation = row.segmentation
+                collection.append(isic)
+            self.collection = collection
         return self.collection
+
+    def getNotesById(self, id):
+        for note in self.notes:
+            if id is not None and id == note.id:
+                note.reviewed = self.getReviewedById(note.reviewedId)
+                note.tags = self.getTagsByIds(note.tags)
+                return note
+        return None
+
+    def getReviewedById(self, id):
+        for reviewed in self.reviewed:
+            if id is not None and id == reviewed.id:
+                return reviewed
+        return None
+
+    def getTagsByIds(self, id):
+        out = []
+        if id is '':
+            return None
+        ids = id.split(', ')
+        for id in ids:
+            id = int(id)
+            for tag in self.tag:
+                if id is not None and id == tag.id:
+                    out.append(tag)
+                    break
+        return out
+
+    def getCreatorById(self, id):
+        for creator in self.creator:
+            if id is not None and id == creator.id:
+                return creator
+        return None
+
+
+    def getMetaById(self,id):
+        for meta in self.meta:
+            if id is not None and id == meta.id:
+                return meta
+        return None
+
+    # todo filters on collection
+    def getFilteredCollection(self,filters):
+        collection = self.collection
+        return collection
+
+    # todo pagination
