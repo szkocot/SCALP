@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
+<h5 class="card-title text-center">Result of SCALP</h5>
     Malignant: {{ p_mal }} <br>
     Benign: {{ p_ben }}
-    <p>Masked image</p>
-    <img src="data:image/png;base64,{{ img_masked }}"/>
+    
+    <div class="dropdown-divider"></div>
+    <p>Masked image:</p>
+    <img src="data:image/png;base64,{{ img_masked }}" class="img-fluid" alt="Responsive image"/>
 
 {% endblock %}
