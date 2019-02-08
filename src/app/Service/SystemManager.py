@@ -8,6 +8,10 @@ class SystemManager():
     def __init__(self):
         self.system = System()
         self.jsons = JsonDataParser()
+        try:
+            self.jsonsCall()
+        except Exception as e:
+            print("classfier data already in db")
 
     def isDbSchemaCorrect(self):
         self.dbVersion = self.system.getDbVersion()
@@ -28,7 +32,9 @@ class SystemManager():
         while not self.isDbSchemaCorrect():
             if self.dbVersion is None:
                 self.installSchema()
-                #self.jsons.importFiles('malignant')
-                #self.jsons.importFiles('benign')
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
+
+    def jsonsCall(self):
+        self.jsons.importFiles('malignant')
+        self.jsons.importFiles('benign')

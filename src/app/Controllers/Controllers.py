@@ -2,10 +2,10 @@ from flask import Blueprint, flash, render_template, request, session, redirect,
 import tensorflow as tf
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
-from src.app.Model.User import User
 from src.app.Service.ML.ml import Predictor
 from src.app.Helper.utils import b64ToImg, allowedFile, mask_img, np_img_to_b64
-from src.app.Collection.UserCollection import UserCollection
+from src.app.Collection.UserCollection import UserCollection, User
+from src.app.Collection.IsicCollection import IsicCollection
 
 main = Blueprint('main', __name__)
 
@@ -27,24 +27,18 @@ def index():
 @main.route('/login', methods=['POST', "GET"])
 def login():
     if request.method == "POST":
-        auth = AuthService()
         data = request.form.to_dict(flat=True)
-        status = auth.login(data)
+        status = AuthService().login(data)
         if status == "Success":
             session['logged_in'] = True
-            userData = auth.user.getUserData(data['username'])
+            userData = AuthService().user.getUserData(data['username'])
             (session['user_id'], session['name'], session['surname'], session['email']) = (
                 userData.id, userData.name, userData.surname, userData.email)
-            auth.checkAdmin(data['username'])
+            AuthService().checkAdmin(data['username'])
             return redirect(url_for('main.index'), 302)
         else:
             flash(status)
     return index()
-
-
-@main.route('/preview')
-def preview(page=1):
-    return render_template('preview.html', models=models, page=page)
 
 
 @main.route('/logout', methods=['GET'])
@@ -53,28 +47,27 @@ def logout():
     return index()
 
 
-# @main.route('/more')
-# def more():
-#     # this route will only be called from JavaScript when the page is scrolled
-#
-#     # read query parameters to know what data to get
-#     page = request.args.get('page', 1)
-#     per_page = request.args.get('per_page', 20)
-#
-#     # get the requested set of data
-#     data = get_some_data(page, per_page)
-#
-#     # return it as json
-#     return jsonify(data=format_data_mainropriate_for_jsonify(data))
+@main.route('/classifier-data', methods=['POST','GET'])
+def classifierData():
+    # this route will only be called from JavaScript when the page is scrolled
+    isic = IsicCollection().getCollection()
+    # read query parameters to know what data to get
+    # page = request.args.get('page', 1)
+    # per_page = request.args.get('per_page', 20)
+
+    # get the requested set of data
+
+    # return it as json
+    return render_template('classifierData.html', data=isic)
+
 
 @main.route('/register', methods=['POST', 'GET'])
 def register():
-    auth = AuthService()
     if request.method == "GET":
         return render_template('register.html')
     if request.method == "POST":
         data = request.form.to_dict(flat=True)
-        newUser = auth.createUser(data)
+        newUser = AuthService().createUser(data)
         if newUser == "Success":
             session['logged_in'] = True
             return redirect(url_for("main.success"), code=302)
@@ -96,8 +89,7 @@ def project():
 @main.route("/adminPage", methods=['GET', 'POST'])
 def adminPage():
     if session['logged_in'] and session['isAdmin']:
-        userCollection = UserCollection()
-        users = userCollection.getCollection()
+        users = UserCollection().getCollection()
         return render_template('adminPage.html', users=users)
     else:
         return redirect('index', 403, flash('Restricted!'))
@@ -139,14 +131,13 @@ def classification():
 
 @main.route("/editUser", methods=['GET', 'POST'])
 def editUser():
-    userData = User()
-    auth = AuthService()
     if not session['logged_in'] and session['isAdmin']:
         return redirect(url_for('main.index'), 403, flash("Restricted!"))
     if request.method == "POST":
         id = request.form.get('id')
-        oldData = userData.getUserById(id)
-        newpassword = auth.encodePassword(request.form.get('password')) if oldData.password != request.form.get(
+        oldData = User().getUserById(id)
+        newpassword = AuthService().encodePassword(
+            request.form.get('password')) if oldData.password != request.form.get(
             'password') else oldData.password
         user = User()
         data = request.form.to_dict(flat=True)
@@ -160,7 +151,7 @@ def editUser():
         user.update()
         return redirect(url_for('main.adminPage'), 302, flash('Changes has been saved!'))
     id = request.args.get('id')
-    userData = userData.getUserById(id).__dict__
+    userData = User().getUserById(id).__dict__
     return render_template("editUser.html", userData=userData)
 
 
