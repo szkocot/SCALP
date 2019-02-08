@@ -36,7 +36,21 @@ class IsicCollection(Collection):
     # todo fetch whole object not ids
     def getCollection(self):
         if self.collection is None:
+            collection = []
             for row in self.metadata:
-                row
+                metadata = Metadata()
+                self.id = row[0]
+                self._model_type = row[1]
+                self.created = row[2]
+                self.dataset_id = row[3]
+                self.name = row[4]
+                self.notes_id = row[5]
+                self.updated = row[6]
+                self._id = row[7]
+                self.creator_id = row[8]
+                self.meta_id = row[9]
+                self.image = row[10]
+                self.segmentation = row[11]
 
+            collection.append(metadata)
         return self.collection
