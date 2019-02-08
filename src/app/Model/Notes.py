@@ -12,7 +12,7 @@ class Notes(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = 'SELECT id, "reviewedId", tags FROM notes WHERE id = %(id)s'
+        query = 'SELECT id, reviewed_id, tags FROM notes WHERE id = %(id)s'
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]

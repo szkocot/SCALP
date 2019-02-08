@@ -11,7 +11,7 @@ class NotesCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, \"reviewedId\", tags FROM notes ORDER BY id ASC"
+            query = "SELECT id, reviewed_id, tags FROM notes ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
             collection = []
