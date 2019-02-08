@@ -2,7 +2,7 @@ from src.app.Collection.Abstract.Collection import Collection
 from src.app.Model.Creator import Creator
 
 
-class ClinicalCollection(Collection):
+class CreatorCollection(Collection):
 
     def __init__(self):
         super().__init__()
