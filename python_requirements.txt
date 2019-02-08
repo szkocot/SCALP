@@ -4,4 +4,6 @@ Pillow
 numpy
 flask
 autopep8
-flask-restplus
+psycopg2
+psycopg2-binary
+bcrypt

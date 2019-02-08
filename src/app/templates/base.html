@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/css.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+    <script src="../static/jquery-3.3.1.min.js"></script>
+    <title>Skin Cancer Classification Platform</title>
+
+</head>
+<body>
+{% block header %}
+    <!-- Navbar content -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="fas fa-paw"></i> SCALP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.project') }}">About</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Image processing
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('main.classification') }}">Classification</a>
+                        <a class="dropdown-item" href="#">Summary</a>
+                    </div>
+                </li>
+
+            </ul>
+
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    {% if session['logged_in'] %}
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <span><i class="fas fa-address-card"></i> You're logged as: </span>
+                            </div>
+                            <div class="col-sm-7">
+                                <span>{{ session['name'] }} {{ session['surname'] }} </span>
+                            </div>
+                        </div>
+                        </li>
+                    {% endif %}
+
+                {% if session['logged_in'] %}
+                    {% if session['isAdmin'] %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.adminPage') }}"><i class="fas fa-cogs"></i> Admin
+                                Page</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.logout') }}"><i class="fas fa-user"></i> Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.login') }}"><i class="fas fa-user"></i> Sign In</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+<!-- messages -->
+{% block messages %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="col-sm-10 col-md-10 col-lg-10 mx-auto"></div>
+            {% for message in messages %}
+                <div class="alert alert-warning text-center" role="alert">
+                    <span>{{ message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
+
+
+
+<!-- body content for pages -->
+{% if session['logged_in'] %}
+    {% block editUser %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            {% block body %}
+
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% else %}
+    {% block loginelse %}
+    {% endblock %}
+    {% block project %}
+    {% endblock %}
+
+{% endif %}
+
+
+
+
+
+{% block footer %}
+    <footer class="page-footer font-small blue pt-4">
+        <div class="footer-copyright text-center py-3">
+            <span>Copyright &#169 Szymon Kocot, Wojciech Opoczyński, Kamila Wasilewska</span>
+        </div>
+    </footer>
+{% endblock %}
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>

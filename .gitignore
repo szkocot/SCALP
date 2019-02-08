@@ -1,6 +1,10 @@
 data
 notebooks/.ipynb_checkpoints
 .vscode/settings.json
-models/keras_model.h5
 *.pyc
 .vscode/launch.json
+.idea/
+.vs
+__pycache__
+.idea
+

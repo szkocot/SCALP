@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="container">
+        {% if models %}
+            <div class="js-infinite-layout">
+                {% include "models/items.html" %}
+                <div class="js-infinite-navigation">
+                    <a href="{{ request.url }}/page/{{ page + 1 }}"></a>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">
+                No jobs yet
+            </p>
+        {% endif %}
+    </div>
+    <script src="/src/app/static/dist/js/jquery/jquery.infinitescroll.js"></script>
+    <script src="/src/app/static/dist/js/theme.js"></script>
+{% endblock %}

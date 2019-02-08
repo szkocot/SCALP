@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block loginelse %}
+    {% if session['logged_in'] %}
+    {% else %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Sign In</h5>
+                            <form class="form-signin" action="{{ url_for('main.login') }}" method="post">
+                                <label for="username">Username</label>
+                                <input name="username" type="text" id="username" class="form-control form-label-group"
+                                       placeholder="Login"
+                                       required autofocus>
+                                <label for="inputPassword">Password</label>
+                                <input type="password" name="password" id="inputPassword"
+                                       class="form-control form-label-group"
+                                       placeholder="Password" required>
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ url_for('main.register') }}">New around here? Sign up</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
