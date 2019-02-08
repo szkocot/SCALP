@@ -97,7 +97,7 @@ def project():
 def adminPage():
     if session['logged_in'] and session['isAdmin']:
         userCollection = UserCollection()
-        users = userCollection.getUserCollection()
+        users = userCollection.getCollection()
         return render_template('adminPage.html', users=users)
     else:
         return redirect('index', 403, flash('Restricted!'))
