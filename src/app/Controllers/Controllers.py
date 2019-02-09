@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, render_template, request, session, redirect, url_for
-import tensorflow as tf
+import tensorflow as tf, json
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.ml import Predictor
@@ -192,12 +192,7 @@ def deleteUser():
         userData = User()
         userData.id = id
         userData = userData.deleteUser()
-        return redirect(url_for('main.userList'), 302, flash('Deleted user!'))
+        return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))
 
-@main.route("/fullPreview", methods=["GET"])
-def fullPreview():
-    if not session['logged_in']:
-        return redirect(url_for('main.index'), 403, flash("Restricted!"))
-    id = int(request.args.get('id'))
-    metadata = IsicCollection().getMetadataById(id)
-    return render_template("fullPreview.html", metadata = metadata)
+
+
