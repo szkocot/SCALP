@@ -20,17 +20,18 @@ class SystemManager():
         self.system.initDB()
 
     def upgradeSchema(self):
-        self.system.updateDB('0.11')
         return
 
     def validate(self):
+        imported = False
         while not self.isDbSchemaCorrect():
             if self.dbVersion is None:
                 self.installSchema()
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
-            if config.IMPORT == "json":
+            if config.IMPORT == "json" and imported is False:
                 self.jsonsCall()
+                imported = True
 
     def jsonsCall(self):
         self.jsons.importFiles('malignant')

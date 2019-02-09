@@ -10,7 +10,7 @@ from src.app.Model.Reviewed import Reviewed
 from src.app.Model.Tag import Tag
 from src.app.Model.Unstructured import Unstructured
 
-import os, json, config
+import os, config
 
 
 class MetadataCollection(Collection):
@@ -101,15 +101,14 @@ class MetadataCollection(Collection):
         return self.notes.insert({'reviewedId': revievedId, 'tags': tagIds})
 
     def parseMetadata(self, metadata):
-        image = "\\images\\" + metadata.get('name') + ".jpeg"
-        open(os.getcwd() + self.path + self.dir + image, 'r')
+        image = '\\static\\ISIC\\' + self.dir + "\\images\\" + metadata.get('name') + ".jpeg"
         try:
-            segmentation = "\\segmentation\\" + metadata.get('name') + "_expert.png"
-            open(os.getcwd() + self.path + self.dir + segmentation, 'r')
+            segmentation = '\\static\\ISIC\\' + self.dir + "\\segmentation\\" + metadata.get('name') + "_expert.png"
+            open(os.getcwd() + '\\src\\app' + segmentation, 'r')
         except Exception as e:
             try:
-                segmentation = "\\segmentation\\" + metadata.get('name') + "_novice.png"
-                open(os.getcwd() + self.path + self.dir + segmentation)
+                segmentation = '\\static\\ISIC\\' + self.dir + "\\segmentation\\" + metadata.get('name') + "_novice.png"
+                open(os.getcwd() + '\\src\\app' + segmentation, 'r')
             except Exception as e:
                 print(e)
         creatorId = self.creator.insert(metadata.get('creator'))

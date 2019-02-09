@@ -1,5 +1,5 @@
 #app version
-VERSION = 0.11
+VERSION = 1
 
 HOST = "127.0.0.1"
 PORT = "4000"

@@ -44,7 +44,7 @@ class IsicCollection(Collection):
                 isic.id = row.id
                 isic._model_type = row._model_type
                 isic.created = row.created
-                isic.dataset_id = self.getDatasetById(row[3])
+                isic.dataset_id = self.getDatasetById(row.dataset_id)
                 isic.name = row.name
                 isic.notes = self.getNotesById(row.notes_id)
                 isic.updated = row.updated

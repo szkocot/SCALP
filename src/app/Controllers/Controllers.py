@@ -1,9 +1,9 @@
 from flask import Blueprint, flash, render_template, request, session, redirect, url_for
-import tensorflow as tf, json
+import tensorflow as tf
 from src.app.Service.AuthService import AuthService
 from src.app.Service.SystemManager import SystemManager
 from src.app.Service.ML.ml import Predictor
-from src.app.Helper.utils import b64ToImg, allowedFile, mask_img, np_img_to_b64
+from src.app.Helper.utils import allowedFile, mask_img, np_img_to_b64
 from src.app.Collection.UserCollection import UserCollection, User
 from src.app.Collection.IsicCollection import IsicCollection
 
@@ -49,17 +49,23 @@ def logout():
 
 @main.route('/classifier-data', methods=['GET'])
 def classifierData():
+    if session.get('logged_in') is not True:
+        return redirect(url_for('main.index'), 302, flash("Restricted! Please register first."))
     isic = IsicCollection()
     try:
         page = int(request.args.get('page'))
-        page = page if page is not None and page < 0 else 0
+        if page is None or page < 0:
+            page = 0
     except Exception as e:
         page = 0
     if request.args.get('prev-page'):
         page -= 1
-        page = page if page < 0 else 0
+        if page < 0:
+            page = 0
+            flash('Minimal index reach!')
     if request.args.get('next-page'):
         page += 1
+
 
     filters = request.args.to_dict(flat=True)
     if len(filters) > 0:
@@ -74,12 +80,16 @@ def classifierData():
             None
         isic.parseFilters(filters)
 
-    start = 0
-    limit = offset = 20
+    offset = 0
+    limit = 20
     if page > 0:
         start = limit * page
         offset = start + 20
     pages = isic.getPages(limit)
+    if page > pages:
+        flash("There are no more records in DB!")
+        start = limit * (page-1)
+        offset = start + 20
     isic = isic.getCollection(offset, limit)
     return render_template('classifierData.html', data=isic, page=page, pages=pages)
 
@@ -115,7 +125,7 @@ def userList():
         users = UserCollection().getCollection()
         return render_template('userList.html', users=users)
     else:
-        return redirect('index', 403, flash('Restricted!'))
+        return redirect('index', 302, flash('Restricted!'))
 
 
 @main.route("/reset", methods=['GET', 'POST'])
@@ -125,6 +135,8 @@ def reset():
 
 @main.route("/classification", methods=['GET', 'POST'])
 def classification():
+    if session.get('logged_in') is not True:
+        return redirect(url_for('main.index'), 302, flash("Restricted! Please register first."))
     if request.method == 'POST':
         try:
             files = {'image': request.files['image'], 'mask': request.files['mask']}
@@ -158,7 +170,7 @@ def classification():
 @main.route("/editUser", methods=['GET', 'POST'])
 def editUser():
     if not session['logged_in'] and session['isAdmin']:
-        return redirect(url_for('main.index'), 403, flash("Restricted!"))
+        return redirect(url_for('main.index'), 302, flash("Restricted!"))
     if request.method == "POST":
         id = request.form.get('id')
         oldData = User().getUserById(id)
@@ -195,4 +207,10 @@ def deleteUser():
         return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))
 
 
-
+@main.route("/fullPreview", methods=["GET"])
+def fullPreview():
+    if not session['logged_in']:
+        return redirect(url_for('main.index'), 302, flash("Restricted!"))
+    id = int(request.args.get('id'))
+    metadata = IsicCollection().getMetadataById(id)
+    return render_template("fullPreview.html", metadata=metadata)

@@ -19,7 +19,7 @@ class System(DbConnection):
             return print(error)
         db = self.getConnection()
         cur = db.cursor()
-        cur.execute("INSERT INTO public.app_version (ver) VALUES (0.1);")
+        cur.execute("INSERT INTO public.app_version (ver) VALUES (1);")
         return
 
     def updateDB(self, version):

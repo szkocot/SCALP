@@ -31,12 +31,13 @@
 {{ metadata.notes.reviewed.accepted }}
 {{ metadata.notes.reviewed.time }}
 {{ metadata.notes.reviewed.userId }}
-{% for tag in metadata.notes.tags %}
-{{ tag.data }}
-{% endfor %}
+{% if metadata.notes.tags is not None %}
+    {% for tag in metadata.notes.tags %}
+        {{ tag.data }}
+    {% endfor %}
+{% endif %}
 {{ metadata.updated }}
 <div>
-<img src="{{ metadata.image }}">
 <img src="{{ metadata.image }}">
 </div>
 <div>
