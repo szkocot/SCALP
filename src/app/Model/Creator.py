@@ -12,7 +12,7 @@ class Creator(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, _id, name FROM creator WHERE id = %(id)s"
+        query = "SELECT id, _id, \"name\" FROM public.creator WHERE id = %(id)s"
         cur.execute(query, {'id': id})
         result = cur.fetchone()
 
@@ -24,7 +24,7 @@ class Creator(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO creator (_id, name)" \
+        query = "INSERT INTO public.creator (_id, \"name\")" \
                 " VALUES (%(_id)s, %(name)s);"
         cur.execute(query, {"_id": data.get('_id'), "name": data.get('name')})
         cur.execute('SELECT LASTVAL()')
@@ -34,5 +34,5 @@ class Creator(DbConnection):
     def update(self):
         db = self.getConnection()
         cur = db.cursor()
-        query = "UPDATE public.creator SET _id = %(_id)s, name= %(name)s WHERE id = %(id)s;"
+        query = "UPDATE public.creator SET _id = %(_id)s, \"name\"= %(name)s WHERE id = %(id)s;"
         cur.execute(query, {"_id": self._id, "name": self.name, 'id': self.id})

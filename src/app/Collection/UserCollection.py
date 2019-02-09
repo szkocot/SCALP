@@ -11,7 +11,7 @@ class UserCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, username, name, surname, email, admin, checked_images FROM users ORDER BY id ASC"
+            query = "SELECT id, username, name, surname, email, admin, checked_images FROM public.users ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
             collection = []

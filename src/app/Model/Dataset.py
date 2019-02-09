@@ -16,7 +16,7 @@ class Dataset(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, _access_level, _id, description, license, name, updated FROM dataset WHERE id = %(id)s"
+        query = "SELECT id, _access_level, _id, description, license, name, updated FROM public.dataset WHERE id = %(id)s"
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
@@ -31,7 +31,7 @@ class Dataset(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO dataset (_access_level, _id, description, license, name, updated)" \
+        query = "INSERT INTO public.dataset (_access_level, _id, description, license, name, updated)" \
                 " VALUES (%(_access_level)s, %(_id)s, %(description)s, %(license)s, %(name)s, %(updated)s);"
         cur.execute(query, {"_access_level": data.get('_accessLevel'), "_id": data.get('_id'),
                             'description': data.get('description'), "license": data.get('license'), "name": data.get('name'),

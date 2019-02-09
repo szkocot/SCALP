@@ -13,7 +13,7 @@ class Acquisition(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, image_type, pixelsX, pixelsY FROM acquisition WHERE id = %(id)s"
+        query = "SELECT id, image_type, \"pixelsX\", \"pixelsY\" FROM acquisition WHERE id = %(id)s"
         cur.execute(query, {'id': id})
         result = cur.fetchone()
 
@@ -35,7 +35,7 @@ class Acquisition(DbConnection):
     def update(self):
         db = self.getConnection()
         cur = db.cursor()
-        query = "UPDATE acquisition SET " \
+        query = "UPDATE public.acquisition SET " \
                 "image_type = %(image_type)s," \
                 "pixelsX = %(pixelsX)s," \
                 "pixelsY = %(pixelsY)s" \

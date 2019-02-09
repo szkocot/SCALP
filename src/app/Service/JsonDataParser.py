@@ -1,14 +1,4 @@
-from src.app.Model.Acquisition import Acquisition
-from src.app.Model.Clinical import Clinical
-from src.app.Model.Creator import Creator
-from src.app.Model.Dataset import Dataset
-from src.app.Model.Meta import Meta
-from src.app.Model.Metadata import Metadata
-from src.app.Model.Notes import Notes
-from src.app.Model.Reviewed import Reviewed
-from src.app.Model.Tag import Tag
-from src.app.Model.Unstructured import Unstructured
-from src.app.Collection.MetadataCollection import MetadataCollection
+from src.app.Collection.MetadataCollection import MetadataCollection, Acquisition, Clinical, Creator, Dataset, Meta, Metadata, Notes, Reviewed, Tag, Unstructured
 import os, json, config
 
 
@@ -35,15 +25,16 @@ class JsonDataParser:
 
 
     def getFileList(self):
-        return os.listdir(self.path + self.dir + "\\description")
+        self.path = os.getcwd() + self.path + self.dir + "\\description"
+        files = os.listdir(self.path)
+        return files
 
     def importFiles(self, catalog):
         insertedIDs = []
         self.setBaseDir(catalog)
         self.collection.dir = catalog
         for fileName in self.getFileList():
-            path = self.path + self.dir + "\\description\\" + fileName
-            metadata = json.load(open(path))
+            file = self.path + "\\" + fileName
+            metadata = json.load(open(file))
             insertedIDs.append(self.collection.parseMetadata(metadata))
-
         print(insertedIDs)

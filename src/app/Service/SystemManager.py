@@ -1,4 +1,4 @@
-import config, psycopg2
+import config
 from src.app.Model.System import System
 from src.app.Service.JsonDataParser import JsonDataParser
 
@@ -8,10 +8,6 @@ class SystemManager():
     def __init__(self):
         self.system = System()
         self.jsons = JsonDataParser()
-        try:
-            self.jsonsCall()
-        except Exception as e:
-            print("classfier data already in db")
 
     def isDbSchemaCorrect(self):
         self.dbVersion = self.system.getDbVersion()
@@ -25,7 +21,6 @@ class SystemManager():
 
     def upgradeSchema(self):
         self.system.updateDB('0.11')
-        self.system.updateDB('0.12')
         return
 
     def validate(self):
@@ -34,6 +29,10 @@ class SystemManager():
                 self.installSchema()
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
+        try:
+            self.jsonsCall()
+        except Exception as e:
+            print(e)
 
     def jsonsCall(self):
         self.jsons.importFiles('malignant')

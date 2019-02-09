@@ -11,7 +11,7 @@ class ClinicalCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex FROM clinical ORDER BY id ASC"
+            query = "SELECT id, age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex FROM public.clinical ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
 

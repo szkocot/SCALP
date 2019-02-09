@@ -13,7 +13,7 @@ class Reviewed(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = 'SELECT id, accepted, "userId" FROM reviewed WHERE id = %(id)s'
+        query = 'SELECT id, accepted, "userId" FROM public.reviewed WHERE id = %(id)s'
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
@@ -25,7 +25,7 @@ class Reviewed(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = 'INSERT INTO reviewed (accepted, "userId", "time") VALUES (%(accepted)s, %(userId)s, %(time)s);'
+        query = 'INSERT INTO public.reviewed (accepted, "userId", "time") VALUES (%(accepted)s, %(userId)s, %(time)s);'
         cur.execute(query, {"accepted": data.get('accepted'), 'userId': data.get('userId'), 'time': data.get('time')})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

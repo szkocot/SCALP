@@ -13,7 +13,7 @@ class Meta(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, _acquisition_id, _clinical_id, unstructured_id FROM meta WHERE id = %(id)s"
+        query = "SELECT id, _acquisition_id, _clinical_id, unstructured_id FROM public.meta WHERE id = %(id)s"
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
@@ -25,7 +25,7 @@ class Meta(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO meta (acquisition_id, clinical_id, unstructured_id)" \
+        query = "INSERT INTO public.meta (acquisition_id, clinical_id, unstructured_id)" \
                 " VALUES (%(acquisition_id)s, %(clinical_id)s, %(unstructured_id)s);"
         cur.execute(query,
                     {"acquisition_id": data.get('acquisitionId'), "clinical_id": data.get('clinicalId'),

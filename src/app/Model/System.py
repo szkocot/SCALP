@@ -19,7 +19,7 @@ class System(DbConnection):
             return print(error)
         db = self.getConnection()
         cur = db.cursor()
-        cur.execute("INSERT INTO app_version (app_version) VALUES (0.1);")
+        cur.execute("INSERT INTO public.app_version (ver) VALUES (0.1);")
         return
 
     def updateDB(self, version):
@@ -27,19 +27,18 @@ class System(DbConnection):
         cur = db.cursor()
         try:
             cur.execute(open(os.path.join(config.BASE_DIR, config.DUMP_FILE_PATH, version + ".sql"), "r").read())
-            query = "INSERT INTO app_version (app_version) VALUES (%(version)s);"
+            query = "INSERT INTO public.app_version (ver) VALUES (%(version)s);"
             cur.execute(query, {'version': version})
         except (Exception, psycopg2.DatabaseError) as error:
             db.rollback()
             print(error)
-            exit(1)
         return
 
     def getDbVersion(self):
         db = self.getConnection()
         cur = db.cursor()
         try:
-            query = "SELECT app_version FROM app_version ORDER BY id DESC;"
+            query = "SELECT ver FROM public.app_version ORDER BY id DESC;"
             cur.execute(query)
             result = cur.fetchone()
             result = result[0]

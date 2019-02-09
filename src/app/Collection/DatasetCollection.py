@@ -11,7 +11,7 @@ class DatasetCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, _access_level, _id, description, license, name, updated FROM dataset ORDER BY id ASC"
+            query = "SELECT id, _access_level, _id, description, license, name, updated FROM public.dataset ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
             collection = []

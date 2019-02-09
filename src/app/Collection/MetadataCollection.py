@@ -104,11 +104,11 @@ class MetadataCollection(Collection):
         image = self.path + self.dir + "\\images\\" + metadata.get('name') + ".jpeg"
         try:
             segmentation = self.path + self.dir + "\\segmentation\\" + metadata.get('name') + "_expert.png"
-            open(segmentation, 'r')
+            open(os.getcwd() + segmentation, 'r')
         except Exception as e:
             try:
                 segmentation = self.path + self.dir + "\\segmentation\\" + metadata.get('name') + "_novice.png"
-                open(segmentation)
+                open(os.getcwd() + segmentation)
             except Exception as e:
                 print (e)
         creatorId = self.creator.insert(metadata.get('creator'))

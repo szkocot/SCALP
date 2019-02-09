@@ -1,5 +1,5 @@
 #app version
-VERSION = 0.12
+VERSION = 0.11
 
 HOST = "127.0.0.1"
 PORT = "4000"
@@ -35,7 +35,7 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
 
 # data path
-DATA_PATH = "..\\..\\..\\img"
+DATA_PATH = "\\img\\ISIC\\"
 
 # ML vars
 PREDICTOR = {
