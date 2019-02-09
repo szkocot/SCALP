@@ -35,7 +35,7 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
 
 # data path
-DATA_PATH = "D:\\ISIC\\ISIC\\"
+DATA_PATH = "..\\..\\..\\img"
 
 # ML vars
 PREDICTOR = {

@@ -47,21 +47,41 @@ def logout():
     return index()
 
 
-@main.route('/classifier-data', methods=['POST', 'GET'])
+@main.route('/classifier-data', methods=['GET'])
 def classifierData():
-    # todo pagination
-    # todo filters
+    isic = IsicCollection()
+    try:
+        page = int(request.args.get('page'))
+        page = page if page is not None and page < 0 else 0
+    except Exception as e:
+        page = 0
+    if request.args.get('prev-page'):
+        page -= 1
+        page = page if page < 0 else 0
+    if request.args.get('next-page'):
+        page += 1
 
-    # this route will only be called from JavaScript when the page is scrolled
-    isic = IsicCollection().getFilteredCollection('asdf')
-    # read query parameters to know what data to get
-    # page = request.args.get('page', 1)
-    # per_page = request.args.get('per_page', 20)
+    filters = request.args.to_dict(flat=True)
+    if len(filters) > 0:
+        filters.pop('page')
+        try:
+            filters.pop('prev-page')
+        except Exception as e:
+            None
+        try:
+            filters.pop('next-page')
+        except Exception as e:
+            None
+        isic.parseFilters(filters)
 
-    # get the requested set of data
-
-    # return it as json
-    return render_template('classifierData.html', data=isic)
+    start = 0
+    limit = offset = 20
+    if page > 0:
+        start = limit * page
+        offset = start + 20
+    pages = isic.getPages(limit)
+    isic = isic.getCollection(offset, limit)
+    return render_template('classifierData.html', data=isic, page=page, pages=pages)
 
 
 @main.route('/register', methods=['POST', 'GET'])
@@ -89,11 +109,11 @@ def project():
     return render_template('project.html')
 
 
-@main.route("/adminPage", methods=['GET', 'POST'])
-def adminPage():
+@main.route("/userList", methods=['GET', 'POST'])
+def userList():
     if session['logged_in'] and session['isAdmin']:
         users = UserCollection().getCollection()
-        return render_template('adminPage.html', users=users)
+        return render_template('userList.html', users=users)
     else:
         return redirect('index', 403, flash('Restricted!'))
 
@@ -121,6 +141,9 @@ def classification():
                 y_pred = predictor(request.files['image'], request.files['mask'])
 
             img_masked = np_img_to_b64((mask_img(request.files['image'], request.files['mask'])))
+            user = User()
+            user.id = session['user_id']
+            user.updateCheckedImages()
             return render_template("result.html", p_mal=y_pred['malignant'], p_ben=y_pred['benign'],
                                    img_masked=img_masked)
 
@@ -152,9 +175,9 @@ def editUser():
         user.admin = data.get('admin')
         user.username = data.get('username')
         user.update()
-        return redirect(url_for('main.adminPage'), 302, flash('Changes has been saved!'))
+        return redirect(url_for('main.userList'), 302, flash('Changes has been saved!'))
     id = request.args.get('id')
-    userData = User().getUserById(id).__dict__
+    userData = User().getUserById(id)
     return render_template("editUser.html", userData=userData)
 
 
@@ -164,9 +187,9 @@ def deleteUser():
         return redirect(url_for('main.index'), 302, flash("Admin privileges required"))
     id = request.args.get('id')
     if (session['user_id'] == id):
-        return redirect(url_for('main.adminPage'), 302, flash('You cannot delete yourself'))
+        return redirect(url_for('main.userList'), 302, flash('You cannot delete yourself'))
     else:
         userData = User()
         userData.id = id
         userData = userData.deleteUser()
-        return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))
+        return redirect(url_for('main.userList'), 302, flash('Deleted user!'))

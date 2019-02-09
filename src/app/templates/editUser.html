@@ -2,30 +2,31 @@
 {% block editUser %}
     <div class="container">
         <div class="row">
+            {{ userData }}
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Edit</h5>
                         <form class="form-signin" method="post" action="{{ url_for('main.editUser') }}">
-                            <input type="hidden" name="id" id="userId" value="{{ userData.get('id') }}">
+                            <input type="hidden" name="id" id="userId" value="{{ userData.id }}">
                             <label for="username">Username</label>
                             <input disabled name="username" type="text" id="username"
-                                   class="form-control form-label-group" value="{{ userData.get('username') }}">
+                                   class="form-control form-label-group" value="{{ userData.username }}">
                             <label for="password">Password</label>
                             <input name="password" type="password" id="password"
-                                   class="form-control form-label-group" value="{{ userData.get('password') }}">
+                                   class="form-control form-label-group" value="{{ userData.password }}">
                             <label for="name">Name</label>
                             <input name="name" type="text" id="name" class="form-control form-label-group"
-                                   value="{{ userData.get('name') }}">
+                                   value="{{ userData.name }}">
                             <label for="Surname">Surname</label>
                             <input name="surname" type="text" id="surname" class="form-control form-label-group"
-                                   value="{{ userData.get('surname') }}">
+                                   value="{{ userData.surname }}">
                             <label for="email">E-mail</label>
                             <input name="email" type="email" id="email" class="form-control form-label-group"
-                                   value="{{ userData.get('email') }}">
+                                   value="{{ userData.email }}">
                             <div class="custom-control custom-checkbox">
                                 <input class="custom-control-input" name="admin" type="checkbox"
-                                       id="admin" {{ 'checked' if userData.get('admin') else '' }}>
+                                       id="admin" {{ 'checked' if userData.admin else '' }}>
                                 <label class="custom-control-label" for="admin">Admin access </label>
                             </div>
                             <div class="dropdown-divider"></div>
@@ -34,7 +35,7 @@
                         </form>
                         <div class="dropdown-divider"></div>
                         <form class="form-signin" method="get" action="{{ url_for("main.deleteUser") }}">
-                            <input name="id" type="hidden" value="{{ userData.get('id') }}">
+                            <input name="id" type="hidden" value="{{ userData.id }}">
                             <button class="btn btn-lg btn-block btn-outline-danger text-uppercase"
                                     id="btn-delete"><i class="far fa-trash-alt"></i> Delete User
                             </button>

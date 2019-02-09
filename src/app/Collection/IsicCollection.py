@@ -22,23 +22,23 @@ class IsicCollection(Collection):
         self.creator = CreatorCollection().getCollection()
         self.dataset = DatasetCollection().getCollection()
         self.meta = MetaCollection().getCollection()
-        self.metadata = MetadataCollection().getCollection()
+        self.metadata = MetadataCollection()
         self.tag = TagCollection().getCollection()
         self.notes = NotesCollection().getCollection()
         self.unstructured = UnstructuredCollection().getCollection()
         self.reviewed = ReviewedCollection().getCollection()
         self.parser = JsonDataParser()
         self.collection = None
+        self.where = None
 
     # todo i assume we are inserting same data struct as the one we take from json
     def insert(self, data):
         return MetadataCollection().parseMetadata(data)
 
-    # todo fetch whole object not ids
-    def getCollection(self):
-        if self.collection is None:
+    def getCollection(self, offset, limit):
+        if self.collection is None or self.where == '':
             collection = []
-            for row in self.metadata:
+            for row in self.metadata.getCollection(self.where, offset, limit):
                 isic = Isic()
                 isic.id = row.id
                 isic._model_type = row._model_type
@@ -89,16 +89,46 @@ class IsicCollection(Collection):
                 return creator
         return None
 
-
-    def getMetaById(self,id):
+    def getMetaById(self, id):
         for meta in self.meta:
             if id is not None and id == meta.id:
-                return meta
+                outMeta = Meta()
+                for acq in self.acquisition:
+                    if meta.acquisition_id == acq.id:
+                        outMeta.acquisition = acq
+                        break
+                for cli in self.clinical:
+                    if meta.clinical_id == cli.id:
+                        outMeta.clinical = cli
+                        break
+                for unstr in self.unstructured:
+                    if meta.unstructured_id == unstr.id:
+                        outMeta.unstructured = unstr
+                        break
+                del outMeta.unstructured_id
+                del outMeta.acquisition_id
+                del outMeta.clinical_id
+                outMeta.id = meta.id
+                return outMeta
         return None
 
-    # todo filters on collection
-    def getFilteredCollection(self,filters):
-        collection = self.collection
-        return collection
+    def parseFilters(self, filters):
+        sql = ''
+        i = 0
+        for key, val in filters.items():
+            if val is not '':
+                if i == 0:
+                    sql = key + "ilike '%" + val + "%'"
+                    i += 1
+                else:
+                    sql += "AND " + key + "ilike '%" + val + "%'"
+        self.where = sql
+        return
 
-    # todo pagination
+    def getPages(self, limit):
+        db = self.getConnection()
+        cur = db.cursor()
+        query = "SELECT count(id) FROM public.metadata"
+        cur.execute(query)
+        result = cur.fetchone()
+        return int(int(result[0]) / limit)

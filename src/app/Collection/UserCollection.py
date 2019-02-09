@@ -11,7 +11,7 @@ class UserCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, username, name, surname, email, admin FROM users ORDER BY id ASC"
+            query = "SELECT id, username, name, surname, email, admin, checked_images FROM users ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
             collection = []
@@ -23,6 +23,7 @@ class UserCollection(Collection):
                 user.surname = row[3]
                 user.email = row[4]
                 user.admin = row[5]
+                user.checked_images = row[6]
                 collection.append(user)
             self.collection = collection
         return self.collection

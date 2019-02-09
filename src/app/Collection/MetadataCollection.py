@@ -30,11 +30,35 @@ class MetadataCollection(Collection):
         self.dir = None
 
 
-    def getCollection(self):
+    def getCollection(self, where, offset = None, limit = None):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, _model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata ORDER BY id ASC"
+            query ="""SELECT
+                        m.id,
+                        m._model_type,
+                        m.created,
+                        m.dataset_id,
+                        m.name,
+                        m.notes_id,
+                        m.updated,
+                        m._id,
+                        m.creator_id,
+                        m.meta_id,
+                        m.image,
+                        m.segmentation
+                    FROM public.metadata m
+                    INNER JOIN public.dataset d on m.dataset_id = d.id
+                    INNER JOIN public.creator c ON c.id = m.creator_id
+                    INNER JOIN public.meta meta ON meta.id = m.meta_id 
+                    INNER JOIN public.acquisition a ON meta.acquisition_id = a.id
+                    INNER JOIN public.clinical cl ON meta.clinical_id = cl.id
+                    INNER JOIN public.unstructured u ON meta.unstructured_id = u.id"""
+            if where != '' and where is not None:
+                query += " WHERE " + where
+            query += " ORDER BY m.id ASC"
+            if offset is not None or limit is not None:
+                query += " LIMIT " + str(limit) + " OFFSET " + str(offset) + ";"
             cur.execute(query)
             result = cur.fetchall()
             collection = []
