@@ -105,6 +105,10 @@ def register():
             newUser = AuthService().createUser(data)
             if newUser == "Success":
                 session['logged_in'] = True
+                session['name'] = data.get('name')
+                session['surname'] = data.get('surname')
+                session['email'] = data.get('email')
+                session['admin'] = data.get('admin')
                 return redirect(url_for("main.success"), code=302)
             else:
                 flash(newUser)
