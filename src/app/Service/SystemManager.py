@@ -29,10 +29,8 @@ class SystemManager():
                 self.installSchema()
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
-        try:
-            self.jsonsCall()
-        except Exception as e:
-            print(e)
+            if config.IMPORT == "json":
+                self.jsonsCall()
 
     def jsonsCall(self):
         self.jsons.importFiles('malignant')

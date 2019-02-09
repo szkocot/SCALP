@@ -1,4 +1,5 @@
-from src.app.Collection.MetadataCollection import MetadataCollection, Acquisition, Clinical, Creator, Dataset, Meta, Metadata, Notes, Reviewed, Tag, Unstructured
+from src.app.Collection.MetadataCollection import MetadataCollection, Acquisition, Clinical, Creator, Dataset, Meta, \
+    Metadata, Notes, Reviewed, Tag, Unstructured
 import os, json, config
 
 
@@ -23,8 +24,6 @@ class JsonDataParser:
         if self.dir is None:
             self.dir = dir
 
-
-
     def getFileList(self):
         self.path = os.getcwd() + self.path + self.dir + "\\description"
         files = os.listdir(self.path)
@@ -38,4 +37,6 @@ class JsonDataParser:
             file = self.path + "\\" + fileName
             metadata = json.load(open(file))
             insertedIDs.append(self.collection.parseMetadata(metadata))
+        self.path = config.DATA_PATH  # reload the path after job done
+        self.dir = None
         print(insertedIDs)

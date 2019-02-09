@@ -11,6 +11,7 @@ from src.app.Collection.TagCollection import TagCollection, Tag
 from src.app.Collection.UnstructuredCollection import UnstructuredCollection, Unstructured
 from src.app.Service.JsonDataParser import JsonDataParser
 from src.app.Model.Isic import Isic
+import os
 
 
 class IsicCollection(Collection):
@@ -43,7 +44,7 @@ class IsicCollection(Collection):
                 isic.id = row.id
                 isic._model_type = row._model_type
                 isic.created = row.created
-                isic.dataset_id = row.dataset_id
+                isic.dataset_id = self.getDatasetById(row[3])
                 isic.name = row.name
                 isic.notes = self.getNotesById(row.notes_id)
                 isic.updated = row.updated
@@ -112,6 +113,11 @@ class IsicCollection(Collection):
                 return outMeta
         return None
 
+    def getDatasetById(self, id):
+        for dataset in self.dataset:
+            if id is not None and id == dataset.id:
+                return dataset
+
     def parseFilters(self, filters):
         sql = ''
         i = 0
@@ -155,16 +161,16 @@ class IsicCollection(Collection):
         cur.execute(query, {'id': id})
         row = cur.fetchone()
         isic = Isic()
-        isic.id = row.id
-        isic._model_type = row._model_type
-        isic.created = row.created
-        isic.dataset_id = row.dataset_id
-        isic.name = row.name
-        isic.notes = self.getNotesById(row.notes_id)
-        isic.updated = row.updated
-        isic._id = row._id
-        isic.creator = self.getCreatorById(row.creator_id)
-        isic.meta = self.getMetaById(row.meta_id)
-        isic.image = row.image
-        isic.segmentation = row.segmentation
+        isic.id = row[0]
+        isic._model_type = row[1]
+        isic.created = row[2]
+        isic.dataset = self.getDatasetById(row[3])
+        isic.name = row[4]
+        isic.notes = self.getNotesById(row[5])
+        isic.updated = row[6]
+        isic._id = row[7]
+        isic.creator = self.getCreatorById(row[8])
+        isic.meta = self.getMetaById(row[9])
+        isic.image = row[10].replace('\\', '/')
+        isic.segmentation = row[11].replace('\\', '/')
         return isic

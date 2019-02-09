@@ -45,5 +45,5 @@ class System(DbConnection):
         except (Exception, psycopg2.DatabaseError) as error:
             result = None
             db.rollback()
-            print(error)
+            print(str(error) + "\nno tables detected...\ncreating tables and setting the db relations")
         return result

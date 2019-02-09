@@ -198,6 +198,6 @@ def deleteUser():
 def fullPreview():
     if not session['logged_in']:
         return redirect(url_for('main.index'), 403, flash("Restricted!"))
-    id = request.args.get('id')
+    id = int(request.args.get('id'))
     metadata = IsicCollection().getMetadataById(id)
     return render_template("fullPreview.html", metadata = metadata)

@@ -12,6 +12,7 @@ from src.app.Model.Unstructured import Unstructured
 
 import os, json, config
 
+
 class MetadataCollection(Collection):
 
     def __init__(self):
@@ -29,12 +30,11 @@ class MetadataCollection(Collection):
         self.path = config.DATA_PATH
         self.dir = None
 
-
-    def getCollection(self, where, offset = None, limit = None):
+    def getCollection(self, where, offset=None, limit=None):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query ="""SELECT
+            query = """SELECT
                         m.id,
                         m._model_type,
                         m.created,
@@ -101,16 +101,17 @@ class MetadataCollection(Collection):
         return self.notes.insert({'reviewedId': revievedId, 'tags': tagIds})
 
     def parseMetadata(self, metadata):
-        image = self.path + self.dir + "\\images\\" + metadata.get('name') + ".jpeg"
+        image = "\\images\\" + metadata.get('name') + ".jpeg"
+        open(os.getcwd() + self.path + self.dir + image, 'r')
         try:
-            segmentation = self.path + self.dir + "\\segmentation\\" + metadata.get('name') + "_expert.png"
-            open(os.getcwd() + segmentation, 'r')
+            segmentation = "\\segmentation\\" + metadata.get('name') + "_expert.png"
+            open(os.getcwd() + self.path + self.dir + segmentation, 'r')
         except Exception as e:
             try:
-                segmentation = self.path + self.dir + "\\segmentation\\" + metadata.get('name') + "_novice.png"
-                open(os.getcwd() + segmentation)
+                segmentation = "\\segmentation\\" + metadata.get('name') + "_novice.png"
+                open(os.getcwd() + self.path + self.dir + segmentation)
             except Exception as e:
-                print (e)
+                print(e)
         creatorId = self.creator.insert(metadata.get('creator'))
         datasetId = self.dataset.insert(metadata.get('dataset'))
         metaId = self.parseMeta(metadata.get('meta'))
@@ -118,5 +119,5 @@ class MetadataCollection(Collection):
         data = {"_model_type": metadata.get('_modelType'), "created": metadata.get('created'),
                 'dataset_id': datasetId, "name": metadata.get('name'), "notes_id": notesId,
                 'updated': metadata.get('updated'), "_id": metadata.get('_id'), "creator_id": creatorId,
-                'meta_id': metaId,'image': image,'segmentation': segmentation}
+                'meta_id': metaId, 'image': image, 'segmentation': segmentation}
         return self.metadata.insert(data)

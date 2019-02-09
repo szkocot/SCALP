@@ -35,7 +35,7 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
 
 # data path
-DATA_PATH = "\\img\\ISIC\\"
+DATA_PATH = "\\src\\app\\static\\ISIC\\"
 
 # ML vars
 PREDICTOR = {
@@ -45,3 +45,5 @@ PREDICTOR = {
     'model_path': os.path.join(BASE_DIR,'CNN/models/CNN_binary_v1.h5'),
     'data_path': 'data/ISIC'
 }
+
+IMPORT = "dump" #json does import json / dump does dump db
