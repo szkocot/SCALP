@@ -38,7 +38,7 @@
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    {% if session['logged_in'] %}
+                    {% if session['logged_in'] and session['name'] | length > 0%}
                         <div class="row">
                             <div class="col-sm-9">
                                 <span><i class="fas fa-address-card"></i> You're logged as: </span>

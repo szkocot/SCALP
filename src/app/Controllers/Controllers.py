@@ -6,6 +6,7 @@ from src.app.Service.ML.ml import Predictor
 from src.app.Helper.utils import allowedFile, mask_img, np_img_to_b64
 from src.app.Collection.UserCollection import UserCollection, User
 from src.app.Collection.IsicCollection import IsicCollection
+import re
 
 main = Blueprint('main', __name__)
 
@@ -84,12 +85,12 @@ def classifierData():
     limit = 20
     if page > 0:
         start = limit * page
-        offset = start + 20
+        offset = start
     pages = isic.getPages(limit)
     if page > pages:
         flash("There are no more records in DB!")
         start = limit * (page-1)
-        offset = start + 20
+        offset = start
     isic = isic.getCollection(offset, limit)
     return render_template('classifierData.html', data=isic, page=page, pages=pages)
 
@@ -100,12 +101,15 @@ def register():
         return render_template('register.html')
     if request.method == "POST":
         data = request.form.to_dict(flat=True)
-        newUser = AuthService().createUser(data)
-        if newUser == "Success":
-            session['logged_in'] = True
-            return redirect(url_for("main.success"), code=302)
+        if re.match(r'^(?![-._])(?!.*[_.-]{2})[\w.-]{6,30}(?<![-._])$', data.get('username')) is not None:
+            newUser = AuthService().createUser(data)
+            if newUser == "Success":
+                session['logged_in'] = True
+                return redirect(url_for("main.success"), code=302)
+            else:
+                flash(newUser)
         else:
-            flash(newUser)
+            flash("Incorrect username")
     return index()
 
 
@@ -198,13 +202,13 @@ def deleteUser():
     if (session['isAdmin'] is not True):
         return redirect(url_for('main.index'), 302, flash("Admin privileges required"))
     id = request.args.get('id')
-    if (session['user_id'] == id):
+    if session.get('user_id') == int(id):
         return redirect(url_for('main.userList'), 302, flash('You cannot delete yourself'))
     else:
         userData = User()
         userData.id = id
         userData = userData.deleteUser()
-        return redirect(url_for('main.adminPage'), 302, flash('Deleted user!'))
+        return redirect(url_for('main.userList'), 302, flash('Deleted user!'))
 
 
 @main.route("/fullPreview", methods=["GET"])

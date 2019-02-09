@@ -124,10 +124,20 @@ class IsicCollection(Collection):
         for key, val in filters.items():
             if val is not '':
                 if i == 0:
-                    sql = key + "ilike '%" + val + "%'"
+                    if key == 'cl.age_approx' and val != '' and val.isdigit():
+                        sql = key + " =" + val + " "
+                    elif val != '' and key != 'cl.age_approx' and key != 'cl.sex':
+                        sql = key + " ilike '%" + val + "%' "
+                    elif val != '' and key == 'cl.sex':
+                        sql = key + " = '" + val + "' "
                     i += 1
                 else:
-                    sql += "AND " + key + "ilike '%" + val + "%'"
+                    if key == 'cl.age_approx' and val != '' and val.isdigit():
+                        sql += " AND " + key + " =" + val + " "
+                    elif val != '' and key != 'cl.age_approx' and key != 'cl.sex':
+                        sql += " AND " + key + " ilike '%" + val + "%' "
+                    elif val != '' and key == 'cl.sex':
+                        sql += " AND " + key + " = '" + val + "' "
         self.where = sql
         return
 

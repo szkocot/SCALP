@@ -7,12 +7,6 @@
                     Name
                 </th>
                 <th>
-                    Description
-                </th>
-                <th>
-                    Meta name
-                </th>
-                <th>
                     Creator name
                 </th>
                 <th>
@@ -36,22 +30,10 @@
                 <th>
                     Sex
                 </th>
-                <th>
-                    Unstructured diagnosis
-                </th>
-                <th>
-                    Localization
-                </th>
             </tr>
             <tr>
                 <th>
                     <input name="m.name" type="text" id="name" class="">
-                </th>
-                <th>
-                    <input name="meta.description" type="text" id="meta-description" class="">
-                </th>
-                <th>
-                    <input name="meta.name" type="text" id="meta-name" class="">
                 </th>
                 <th>
                     <input name="c.name" type="text" id="creator-name" class="">
@@ -64,6 +46,7 @@
                 </th>
                 <th>
                     <input name="cl.anatom_site_general" type="text" id="clinical-anatom-site-general" class="">
+{#                    dropdown benign albo malignant albo puste #}
                 </th>
                 <th>
                     <input name="cl.benign_malignant" type="text" id="clinical-type" class="">
@@ -76,12 +59,7 @@
                 </th>
                 <th>
                     <input name="cl.sex" type="text" id="clinical-sex" class="">
-                </th>
-                <th>
-                    <input name="u.diagnosis" type="text" id="unstructured-diagnosis" class="">
-                </th>
-                <th>
-                    <input name="u.localization" type="text" id="unstructured-localization" class="">
+{#                    to musi byc dropbox z 3 opcjami do wyboru pusta/male/female#}
                 </th>
             </tr>
         </table>
@@ -99,12 +77,6 @@
                 Name
             </th>
             <th>
-                Description
-            </th>
-            <th>
-                Meta name
-            </th>
-            <th>
                 Creator name
             </th>
             <th>
@@ -117,9 +89,6 @@
                 General anatomic site
             </th>
             <th>
-                Type
-            </th>
-            <th>
                 Diagnosis
             </th>
             <th>
@@ -129,12 +98,6 @@
                 Sex
             </th>
             <th>
-                Unstructured diagnosis
-            </th>
-            <th>
-                Localization
-            </th>
-            <th>
                 View Full
             </th>
         </tr>
@@ -142,13 +105,6 @@
             <tr>
                 <td>
                     {{ row.name }}
-                </td>
-                <td>
-                    {{ row.description }}
-
-                </td>
-                <td>
-                    {{ row.meta.name }}
                 </td>
                 <td>
                     {{ row.creator.name }}
@@ -163,9 +119,6 @@
                     {{ row.meta.clinical.anatom_site_general }}
                 </td>
                 <td>
-                    {{ row.meta.clinical.type }}
-                </td>
-                <td>
                     {{ row.meta.clinical.diagnosis }}
                 </td>
                 <td>
@@ -173,12 +126,6 @@
                 </td>
                 <td>
                     {{ row.meta.clinical.sex }}
-                </td>
-                <td>
-                    {{ row.meta.unstructured.diagnosis }}
-                </td>
-                <td>
-                    {{ row.meta.unstructured.localization }}
                 </td>
                 <td>
                     <button class="btn"
