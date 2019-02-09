@@ -20,7 +20,8 @@ class JsonDataParser:
         self.collection = MetadataCollection()
 
     def setBaseDir(self, dir):
-        self.dir = dir
+        if self.dir is None:
+            self.dir = dir
 
 
 

@@ -134,6 +134,9 @@
             <th>
                 Localization
             </th>
+            <th>
+                View Full
+            </th>
         </tr>
         {% for row in data %}
             <tr>
@@ -176,6 +179,11 @@
                 </td>
                 <td>
                     {{ row.meta.unstructured.localization }}
+                </td>
+                <td>
+                    <button class="btn"
+                            onclick="window.location.href='/fullPreview?id={{ row.id }}'"
+                            id="btn-{{ row.id }}"><i class="fas fa-edit"></i></button>
                 </td>
             </tr>
         {% endfor %}

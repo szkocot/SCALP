@@ -132,3 +132,39 @@ class IsicCollection(Collection):
         cur.execute(query)
         result = cur.fetchone()
         return int(int(result[0]) / limit)
+
+    def getMetadataById(self, id):
+
+        query = """SELECT
+                        m.id,
+                        m._model_type,
+                        m.created,
+                        m.dataset_id,
+                        m.name,
+                        m.notes_id,
+                        m.updated,
+                        m._id,
+                        m.creator_id,
+                        m.meta_id,
+                        m.image,
+                        m.segmentation
+                    FROM public.metadata m
+                    WHERE m.id = %(id)s;"""
+        db = self.getConnection()
+        cur = db.cursor()
+        cur.execute(query, {'id': id})
+        row = cur.fetchone()
+        isic = Isic()
+        isic.id = row.id
+        isic._model_type = row._model_type
+        isic.created = row.created
+        isic.dataset_id = row.dataset_id
+        isic.name = row.name
+        isic.notes = self.getNotesById(row.notes_id)
+        isic.updated = row.updated
+        isic._id = row._id
+        isic.creator = self.getCreatorById(row.creator_id)
+        isic.meta = self.getMetaById(row.meta_id)
+        isic.image = row.image
+        isic.segmentation = row.segmentation
+        return isic
