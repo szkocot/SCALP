@@ -1,19 +1,20 @@
 # SCALP (Skin Cancer Classification Platform)
 
+<img src="img/app.png?raw=true">
+
 ## Project Description
 
 [Please refer to](PROJECT-DESC.md)
 
 ## Requirements
 
-* Python 3.6 
+* Python 3.6 (3.5+ should work)
 You can install dependencies with: `pip install -r python_requirements.txt`   
 `python_requirements_extras.txt` contain additional dependencies, used for CNN training and other procedures.
 
-## ISIC dataset
-<img src="img/ISIC_0000000.jpg?raw=true" height="100">
-<img src="img/ISIC_0000010.jpg?raw=true" height="100">
-<img src="img/ISIC_0000020.jpg?raw=true" height="100">
+* PostgresSQL 10+ 
+You need to create `bbd` user and database with `bbd` owner. You can specify `bbd` user's password in `config.py` file. 
+Database dump will be transfered to psql during initial flask server run.
 
 ### Downloading the data
 
@@ -25,29 +26,11 @@ python ../ISIC-Archive-Downloader/download_archive.py --num-images 1000 -s --ima
 python ../ISIC-Archive-Downloader/download_archive.py --num-images 1000 -s --images-dir data/ISIC/malignant/images --descs-dir data/ISIC/malignant/description --seg-dir data/ISIC/malignant/segmentation --seg-skill expert --filter malignant --p 100
 ```
 
+By default Data should be located in `src/app/static/ISIC`. If you decide to choose other path, you should change it in both `db/dump.sql` and `config.py` files.
+
 ## Trubleshooting
 
 ### Model hdf5 file missing
-
-```shell
-Traceback (most recent call last):
-  File "python/api.py", line 22, in <module>
-    predictor = Predictor(config=config)
-  File "/home/szymon/Projects/Projekt-BBD/python/ml.py", line 31, in __init__
-    self.model = keras.models.load_model(config.model_path)
-  File "/home/szymon/miniconda3/envs/bbd/lib/python3.6/site-packages/keras/engine/saving.py", line 417, in load_model
-    f = h5dict(filepath, 'r')
-  File "/home/szymon/miniconda3/envs/bbd/lib/python3.6/site-packages/keras/utils/io_utils.py", line 186, in __init__
-    self.data = h5py.File(path, mode=mode)
-  File "/home/szymon/miniconda3/envs/bbd/lib/python3.6/site-packages/h5py/_hl/files.py", line 394, in __init__
-    swmr=swmr)
-  File "/home/szymon/miniconda3/envs/bbd/lib/python3.6/site-packages/h5py/_hl/files.py", line 170, in make_fid
-    fid = h5f.open(name, flags, fapl=fapl)
-  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
-  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
-  File "h5py/h5f.pyx", line 85, in h5py.h5f.open
-OSError: Unable to open file (file signature not found)
-```
 
 If `models/CNN_binary_v1.h5` size is <100MB you need to run:
 ```shell
