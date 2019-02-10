@@ -1,45 +1,83 @@
-{{ metadata._id }}
-{{ metadata._modelType }}
-{{ metadata.created }}
-{{ metadata.creator._id }}
-{{ metadata.creator.name }}
-{{ metadata.dataset._accessLevel }}
-{{ metadata.dataset._id }}
-{{ metadata.dataset.description }}
-{{ metadata.dataset.license }}
-{{ metadata.dataset.name }}
-{{ metadata.dataset.updated }}
-{{ metadata.meta.acquisition }}
-{{ metadata.meta.image_type }}
-{{ metadata.meta.pixelX }}
-{{ metadata.meta.pixelY }}
-{{ metadata.meta.clinical.age_approx }}
-{{ metadata.meta.clinical.anatom_site_general }}
-{{ metadata.meta.clinical.benign_malignant }}
-{{ metadata.meta.clinical.clin_size_long_diam_mm }}
-{{ metadata.meta.clinical.diagnosis }}
-{{ metadata.meta.clinical.diagnosis_confirm_type }}
-{{ metadata.meta.clinical.family_hx_mm }}
-{{ metadata.meta.clinical.melanocytic }}
-{{ metadata.meta.clinical.personal_hx_mm }}
-{{ metadata.meta.clinical.sex }}
-{{ metadata.meta.unstructured.diagnosis }}
-{{ metadata.meta.unstructured.id1 }}
-{{ metadata.meta.unstructured.localization }}
-{{ metadata.meta.unstructured.site }}
-{{ metadata.name }}
-{{ metadata.notes.reviewed.accepted }}
-{{ metadata.notes.reviewed.time }}
-{{ metadata.notes.reviewed.userId }}
-{% if metadata.notes.tags != None %}
+{% extends "base.html" %}
+{% block editUser %}
+
+<div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Date for {{ metadata.name }}</h5>
+<b>ID:</b> {{ metadata._id }}<br>
+<b>Model type:</b>  {{ metadata._modelType }}<br>
+<b>Created:</b>  {{ metadata.created }}<br>
+<b>Creator:</b>  
+    <div style="padding-LEFT: 20PX;">
+    <i>Id</i> {{ metadata.creator._id }}<br>
+    <i>Name</i> {{ metadata.creator.name }}</div>
+<br>
+<h5>Dataset</h5>
+<b>Access Level:</b> {{ metadata.dataset._accessLevel }}<br>
+<b>ID:</b> {{ metadata.dataset._id }}<br>
+<b>Descrpition:</b> {{ metadata.dataset.description }}<br>
+<b>License:</b> {{ metadata.dataset.license }}<br>
+<b>Name:</b> {{ metadata.dataset.name }}<br>
+<b>Updated</b> {{ metadata.dataset.updated }}<br>
+
+<br><!--meta data-->
+<h5>Acquisition:</h5>
+<b>Image type:</b> {{ metadata.meta.acquisition.image_type }}<br>
+<b>PixelsX:</b> {{ metadata.meta.acquisition.pixelsX }}<br>
+<b>PixelsY:</b> {{ metadata.meta.acquisition.pixelsY }}<br>
+
+<br>
+<h5>Clinical</h5>
+<b>Age Approx</b> {{ metadata.meta.clinical.age_approx }}<br>
+<b>Anatom site general:</b>  {{ metadata.meta.clinical.anatom_site_general }}<br>
+<b>Benign or Malignant:</b>  {{ metadata.meta.clinical.benign_malignant }}<br>
+<b>Size long diam mm:</b>  {{ metadata.meta.clinical.clin_size_long_diam_mm }}<br>
+<b>Diadnosis:</b>  {{ metadata.meta.clinical.diagnosis }}<br>
+<b>Diafnosis confirm type:</b>  {{ metadata.meta.clinical.diagnosis_confirm_type }}<br>
+<b>Family hx mm:</b>  {{ metadata.meta.clinical.family_hx_mm }}<br>
+<b>Melanocytic:</b>  {{ metadata.meta.clinical.melanocytic }}<br>
+<b>Personal hx mm:</b>  {{ metadata.meta.clinical.personal_hx_mm }}<br>
+<b>Sex:</b>  {{ metadata.meta.clinical.sex }}<br>
+
+<br>
+<h5>Unstructured</h5>
+<b>Diagnosis:</b>  {{ metadata.meta.unstructured.diagnosis }}<br>
+<b>ID:</b>  {{ metadata.meta.unstructured.id1 }}<br>
+<b>Localization:</b>  {{ metadata.meta.unstructured.localization }}<br>
+<b>Site:</b>  {{ metadata.meta.unstructured.site }}<br>
+<b>Name:</b>  {{ metadata.name }}<br>
+<b>Reviewed Accepted:</b>  {{ metadata.notes.reviewed.accepted }}<br>
+<b>Reviewed Time:</b>  {{ metadata.notes.reviewed.time }}<br>
+<b>Reviewed UserId:</b>  {{ metadata.notes.reviewed.userId }}<br>
+
+<b>Tag:</b>   <br>
+<div style="padding-LEFT: 20PX;">{% if metadata.notes.tags != None %}
     {% for tag in metadata.notes.tags %}
-        {{ tag.data }}
+        {{ tag.data }}<br>
     {% endfor %}
-{% endif %}
-{{ metadata.updated }}
-<div>
-    <img src="{{ metadata.image }}">
+{% endif %}</div>
+<b>Updated:</b>  
+{{ metadata.updated }}<br>
+
+
+<div class="row">
+        <div class="col">
+             <img src="{{ metadata.image }}" class="img-fluid" alt="Responsive image">   
+        </div>
+        <div class="col">
+            <img src="{{ metadata.segmentation }}" class="img-fluid" alt="Responsive image">
+        </div>
+    
 </div>
-<div>
-    <img src="{{ metadata.segmentation }}">
+
+
 </div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
