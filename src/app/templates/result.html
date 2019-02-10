@@ -35,8 +35,7 @@
 <script type="text/javascript">
     window.onload = function () {
 
-        let result = {{ p_mal }
-    } > {{ p_ben }} ?"malignant" : "benign";
+        let result = {{ p_mal }} > {{ p_ben }} ?"malignant" : "benign";
     let chart = new CanvasJS.Chart("chartContainer",
         {
             title: {
