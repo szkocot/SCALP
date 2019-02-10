@@ -34,8 +34,14 @@
                                     <b>General anatomic site</b><br>
                                     <input name="cl.anatom_site_general" type="text" id="clinical-anatom-site-general" class=""><br>
                                     <b>Type</b><br>
-                                    <input name="cl.benign_malignant" type="text" id="clinical-type" class=""><br>
-                                    {#                    dropdown benign albo malignant albo puste #}
+                                
+                                            <select>
+                                            <option name="cl.benign_malignant" id="clinical-type-0" class=""></option>
+                                            <option name="cl.benign_malignant" id="clinical-type-1" class="">benign</option>
+                                            <option name="cl.benign_malignant" id="clinical-type-2" class="">malignant</option>
+                                         
+                                            </select>
+                                            
                                 </div>
                                 <div class="col-sm-3">
                                     <b>Diagnosis</b><br>
@@ -50,7 +56,7 @@
                                 
  
                                     <input name="page" type="hidden" value="{{ page }}"><br>
-                                    <button class="badge badge-primary">Submit Filters</button><br>
+                                    <button class="badge badge-primary" value="reset-page">Submit Filters</button><br>
                                 </div>
                     </div>
                   </div>
