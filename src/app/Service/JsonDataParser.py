@@ -25,7 +25,7 @@ class JsonDataParser:
             self.dir = dir
 
     def getFileList(self):
-        self.path = os.getcwd() + self.path + self.dir + "\\description"
+        self.path = os.path.join(os.getcwd(), self.path, self.dir, "description")
         files = os.listdir(self.path)
         return files
 
@@ -34,7 +34,7 @@ class JsonDataParser:
         self.setBaseDir(catalog)
         self.collection.dir = catalog
         for fileName in self.getFileList():
-            file = self.path + "\\" + fileName
+            file = os.path.join(self.path, fileName)
             metadata = json.load(open(file))
             insertedIDs.append(self.collection.parseMetadata(metadata))
         self.path = config.DATA_PATH  # reload the path after job done
