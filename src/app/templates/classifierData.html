@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block editUser %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+    <form class="form-signin" method="get" action="{{ url_for('main.classifierData') }}">
+            <div class="table-responsive">
+                    <table id="dt-basic-checkbox" data-click-to-select="true" class="table table-sm"
+                           cellspacing="0" width="100%">
+            <tr>
+                <th>Name</th>
+                <th>Creator name</th>
+                <th>Image type</th>
+                <th>Age approx</th>
+                <th>General anatomic site</th>
+                <th>Type</th>
+                <th>Diagnosis</th>
+                <th>Diagnosis confirmed as</th>
+                <th>Sex</th>
+            </tr>
+            <tr>
+                <th><input name="m.name" type="text" id="name" class=""></th>
+                <th><input name="c.name" type="text" id="creator-name" class=""></th>
+                <th><input name="a.image_type" type="text" id="acquisition-image-type" class=""></th>
+                <th><input name="cl.age_approx" type="text" id="clinical-age-approx" class=""></th>
+                <th><input name="cl.anatom_site_general" type="text" id="clinical-anatom-site-general" class="">
+{#                    dropdown benign albo malignant albo puste #}
+                </th>
+                <th><input name="cl.benign_malignant" type="text" id="clinical-type" class=""></th>
+                <th><input name="cl.diagnosis" type="text" id="clinical-diagnosis" class=""></th>
+                <th><input name="cl.diagnosis_confirm_type" type="text" id="clinical-diagnosis-confirm" class=""></th>
+                <th><input name="cl.sex" type="text" id="clinical-sex" class="">
+{#                    to musi byc dropbox z 3 opcjami do wyboru pusta/male/female#}
+                </th>
+            </tr>
+        </table>
+        <input name="page" type="hidden" value="{{ page }}">
+        <button class="btn">Submit Filters</button>
+
+        <button class="btn" name="next-page" id="next-page" value="next-page">Next page</button>
+        <div>Current page {{ page }}</div>
+        <div>Total Pages {{ pages }}</div>
+        <button class="btn" name="prev-page" id="prev-page" value="prev-page">Prev page</button>
+    </form>
+
+    <div class="table-responsive">
+            <table id="dt-basic-checkbox" data-click-to-select="true" class="table table-sm"
+                   cellspacing="0" width="100%">
+        <tr>
+            <th>Name</th>
+            <th>Creator name</th>
+            <th>Image type</th>
+            <th>Age approx</th>
+            <th>General anatomic site</th>
+            <th>Diagnosis</th>
+            <th>Diagnosis confirmed as</th>
+            <th>Sex</th>
+            <th>View Full</th>
+        </tr>
+        {% for row in data %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.creator.name }}</td>
+                <td>{{ row.meta.acquisition.image_type }}</td>
+                <td>{{ row.meta.clinical.age_approx }}</td>
+                <td>{{ row.meta.clinical.anatom_site_general }}</td>
+                <td>{{ row.meta.clinical.diagnosis }}</td>
+                <td>{{ row.meta.clinical.diagnosis_confirm_type }}</td>
+                <td>{{ row.meta.clinical.sex }}</td>
+                <td>
+                    <button class="btn"
+                            onclick="window.location.href='/fullPreview?id={{ row.id }}'"
+                            id="btn-{{ row.id }}"><i class="fas fa-edit"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

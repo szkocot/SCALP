@@ -1,0 +1,45 @@
+{{ metadata._id }}
+{{ metadata._modelType }}
+{{ metadata.created }}
+{{ metadata.creator._id }}
+{{ metadata.creator.name }}
+{{ metadata.dataset._accessLevel }}
+{{ metadata.dataset._id }}
+{{ metadata.dataset.description }}
+{{ metadata.dataset.license }}
+{{ metadata.dataset.name }}
+{{ metadata.dataset.updated }}
+{{ metadata.meta.acquisition }}
+{{ metadata.meta.image_type }}
+{{ metadata.meta.pixelX }}
+{{ metadata.meta.pixelY }}
+{{ metadata.meta.clinical.age_approx }}
+{{ metadata.meta.clinical.anatom_site_general }}
+{{ metadata.meta.clinical.benign_malignant }}
+{{ metadata.meta.clinical.clin_size_long_diam_mm }}
+{{ metadata.meta.clinical.diagnosis }}
+{{ metadata.meta.clinical.diagnosis_confirm_type }}
+{{ metadata.meta.clinical.family_hx_mm }}
+{{ metadata.meta.clinical.melanocytic }}
+{{ metadata.meta.clinical.personal_hx_mm }}
+{{ metadata.meta.clinical.sex }}
+{{ metadata.meta.unstructured.diagnosis }}
+{{ metadata.meta.unstructured.id1 }}
+{{ metadata.meta.unstructured.localization }}
+{{ metadata.meta.unstructured.site }}
+{{ metadata.name }}
+{{ metadata.notes.reviewed.accepted }}
+{{ metadata.notes.reviewed.time }}
+{{ metadata.notes.reviewed.userId }}
+{% if metadata.notes.tags != None %}
+    {% for tag in metadata.notes.tags %}
+        {{ tag.data }}
+    {% endfor %}
+{% endif %}
+{{ metadata.updated }}
+<div>
+    <img src="{{ metadata.image }}">
+</div>
+<div>
+    <img src="{{ metadata.segmentation }}">
+</div>

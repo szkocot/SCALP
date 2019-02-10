@@ -11,7 +11,7 @@ class Tag(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, data, FROM tag WHERE notes_id = %(id)s"
+        query = "SELECT id, data, FROM public.tag WHERE notes_id = %(id)s"
         cur.execute(query, {'id': id})
         self.tag = cur.fetchAll()
         return self
@@ -19,7 +19,7 @@ class Tag(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = 'INSERT INTO tag("data") VALUES (%(data)s);'
+        query = 'INSERT INTO public.tag("data") VALUES (%(data)s);'
         cur.execute(query, {"data": data})
         cur.execute('SELECT LASTVAL()')
         return cur.fetchone()[0]

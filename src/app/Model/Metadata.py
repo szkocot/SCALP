@@ -21,7 +21,20 @@ class Metadata(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, _model_type, _created, dataset_id, \"name\", notes_id, updated, _id, creator_id, meta_id, image, segmentation FROM metadata WHERE id = %(id)s"
+        query = """SELECT id,
+                        _model_type,
+                        _created,
+                        dataset_id,
+                        \"name\",
+                        notes_id, 
+                        updated,
+                        _id, 
+                        creator_id, 
+                        meta_id,
+                        image,
+                        segmentation 
+                    FROM public.metadata 
+                    WHERE id = %(id)s"""
         cur.execute(query, {'id': id})
         result = cur.fetchone()
         self.id = result[0]
@@ -41,7 +54,7 @@ class Metadata(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO metadata(_model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation)" \
+        query = "INSERT INTO public.metadata(_model_type, created, dataset_id, name, notes_id, updated, _id, creator_id, meta_id, image, segmentation)" \
                 " VALUES (%(_model_type)s, %(created)s, %(dataset_id)s, %(name)s, %(notes_id)s, %(updated)s, %(_id)s, %(creator_id)s, %(meta_id)s, %(image)s, %(segmentation)s);"
         cur.execute(query,
                     {"_model_type": data.get('_model_type'), "created": data.get('created'),

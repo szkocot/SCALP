@@ -1,4 +1,4 @@
-import config, psycopg2
+import config
 from src.app.Model.System import System
 from src.app.Service.JsonDataParser import JsonDataParser
 
@@ -20,15 +20,19 @@ class SystemManager():
         self.system.initDB()
 
     def upgradeSchema(self):
-        self.system.updateDB('0.11')
-        self.system.updateDB('0.12')
         return
 
     def validate(self):
+        imported = False
         while not self.isDbSchemaCorrect():
             if self.dbVersion is None:
                 self.installSchema()
-                #self.jsons.importFiles('malignant')
-                #self.jsons.importFiles('benign')
             elif self.dbVersion != config.VERSION:
                 self.upgradeSchema()
+            if config.IMPORT == "json" and imported is False:
+                self.jsonsCall()
+                imported = True
+
+    def jsonsCall(self):
+        self.jsons.importFiles('malignant')
+        self.jsons.importFiles('benign')

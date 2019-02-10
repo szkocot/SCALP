@@ -12,23 +12,39 @@
                     <th class="th-sm" data-sortable="true">Username</th>
                     <th class="th-sm" data-sortable="true">Name</th>
                     <th class="th-sm" data-sortable="true">Surname</th>
-                    <th class="th-sm" data-sortable="true">E-mail</th>
+                    <th class="th-md" data-sortable="true">E-mail</th>
                     <th class="th-sm" data-sortable="true">Admin</th>
+                    <th class="th-sm" data-sortable="true">Checked images</th>
                     <th class="th-sm" data-sortable="true">Edit</th>
                 </tr>
                 {% for user in users %}
                     <tbody>
                     <tr>
-                        {% for field in user.__dict__ %}
-
-                            <td>
-                                {{ user.__dict__[field] }}
-                            </td>
-                        {% endfor %}
+                        <td>
+                            {{ user.id}}
+                        </td>
+                        <td>
+                            {{ user.username}}
+                        </td>
+                        <td>
+                            {{ user.name}}
+                        </td>
+                        <td>
+                            {{ user.surname}}
+                        </td>
+                        <td>
+                            {{ user.email}}
+                        </td>
+                        <td>
+                            {{ user.admin}}
+                        </td>
+                        <td>
+                            {{ user.checked_images}}
+                        </td>
                         <td>
                             <button class="btn"
-                                    onclick="window.location.href='/editUser?id={{ user.__dict__.get('id') }}'"
-                                    id="btn-{{ user.__dict__.get('id') }}"><i class="fas fa-edit"></i></button>
+                                    onclick="window.location.href='/editUser?id={{ user.id }}'"
+                                    id="btn-{{ user.id }}"><i class="fas fa-edit"></i></button>
                         </td>
                     </tr>
                     </tbody>

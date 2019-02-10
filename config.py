@@ -1,5 +1,5 @@
 #app version
-VERSION = 0.12
+VERSION = 1
 
 HOST = "127.0.0.1"
 PORT = "4000"
@@ -35,13 +35,14 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
 
 # data path
-DATA_PATH = "D:\\ISIC\\ISIC\\"
+DATA_PATH = "/static/ISIC/"
 
 # ML vars
 PREDICTOR = {
     'img_mean': [27.99144619, 19.51839209, 16.42992409],
     'img_std': [64.7680645, 47.09696396, 41.13751611],
     'img_target_size': (96, 128),
-    'model_path': os.path.join(BASE_DIR,'CNN/models/CNN_binary_v1.h5'),
-    'data_path': 'data/ISIC'
+    'model_path': os.path.join(BASE_DIR,'CNN/models/CNN_binary_v1.h5')
 }
+
+IMPORT = "dump" #json does import json / dump does dump db

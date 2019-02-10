@@ -17,7 +17,8 @@ class Clinical(DbConnection):
     def getData(self, id):
         db = self.getConnection()
         cur = db.cursor()
-        query = "SELECT id, age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex FROM clinical WHERE id = %(id)s"
+        query = """"SELECT id, age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex
+                FROM public.clinical WHERE id = %(id)s"""
         cur.execute(query, {'id': id})
         result = cur.fetchone()
 
@@ -34,8 +35,8 @@ class Clinical(DbConnection):
     def insert(self, data):
         db = self.getConnection()
         cur = db.cursor()
-        query = "INSERT INTO clinical (age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex)" \
-                " VALUES (%(age_approx)s, %(anatom_site_general)s, %(benign_malignant)s, %(diagnosis)s, %(diagnosis_confirm_type)s, %(melanocytic)s, %(sex)s);"
+        query = """INSERT INTO public.clinical (age_approx, anatom_site_general, benign_malignant, diagnosis, diagnosis_confirm_type, melanocytic, sex)
+                 VALUES (%(age_approx)s, %(anatom_site_general)s, %(benign_malignant)s, %(diagnosis)s, %(diagnosis_confirm_type)s, %(melanocytic)s, %(sex)s);"""
         cur.execute(query,
                     {"age_approx": data.get('age_approx'), "anatom_site_general": data.get('anatom_site_general'),
                      "benign_malignant": data.get('benign_malignant'), "diagnosis": data.get('diagnosis'),
@@ -47,15 +48,15 @@ class Clinical(DbConnection):
     def update(self):
         db = self.getConnection()
         cur = db.cursor()
-        query = "UPDATE public.clinical SET" \
-                "age_approx = %(age_approx)s," \
-                "anatom_site_general = %(anatom_site_general)s," \
-                "benign_malignant = %(benign_malignant)s," \
-                "diagnosis = %(diagnosis)s," \
-                "diagnosis_confirm_type =%(diagnosis_confirm_type)s," \
-                "melanocytic =%(melanocytic)s," \
-                "sex = %(sex)s" \
-                "WHERE id = %(id)s"
+        query = """UPDATE public.clinical SET
+                age_approx = %(age_approx)s,
+                anatom_site_general = %(anatom_site_general)s,
+                benign_malignant = %(benign_malignant)s,
+                diagnosis = %(diagnosis)s,
+                diagnosis_confirm_type =%(diagnosis_confirm_type)s,
+                melanocytic =%(melanocytic)s,
+                sex = %(sex)s
+                WHERE id = %(id)s"""
         cur.execute(query,
                     {"age_approx": self.age_approx, "anatom_site_general": self.anatom_site_general,
                      "benign_malignant": self.benign_malignant, "diagnosis": self.diagnosis,

@@ -11,7 +11,7 @@ class MetaCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, _acquisition_id, _clinical_id, unstructured_id FROM meta ORDER BY id ASC"
+            query = "SELECT id, acquisition_id, clinical_id, unstructured_id FROM public.meta ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
             collection = []

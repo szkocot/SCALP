@@ -2,7 +2,7 @@ from src.app.Collection.Abstract.Collection import Collection
 from src.app.Model.Creator import Creator
 
 
-class ClinicalCollection(Collection):
+class CreatorCollection(Collection):
 
     def __init__(self):
         super().__init__()
@@ -11,7 +11,7 @@ class ClinicalCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, _id, name FROM creator ORDER BY id ASC"
+            query = "SELECT id, _id, name FROM public.creator ORDER BY id ASC"
             cur.execute(query, {'id': id})
             result = cur.fetchall()
             collection = []

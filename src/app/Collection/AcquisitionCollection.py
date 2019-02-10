@@ -11,7 +11,7 @@ class AcquisitionCollection(Collection):
         if self.collection is None:
             db = self.getConnection()
             cur = db.cursor()
-            query = "SELECT id, image_type, pixelsX, pixelsY FROM acquisition ORDER BY id ASC"
+            query = "SELECT id, image_type, \"pixelsX\", \"pixelsY\" FROM public.acquisition ORDER BY id ASC"
             cur.execute(query)
             result = cur.fetchall()
 
