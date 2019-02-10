@@ -67,10 +67,14 @@ def classifierData():
     if request.args.get('next-page'):
         page += 1
 
-
     filters = request.args.to_dict(flat=True)
     if len(filters) > 0:
         filters.pop('page')
+        try:
+            filters.pop('reset-page')
+            page = 0
+        except Exception as e:
+            None
         try:
             filters.pop('prev-page')
         except Exception as e:
