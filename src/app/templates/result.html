@@ -1,42 +1,44 @@
 {% extends "base.html" %}
 {% block editUser %}
 <div class="container">
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
-                <div class="card card-signin my-5">
-                    <div class="card-body">
-                            <h5 class="card-title text-center">Result</h5>
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Result</h5>
 
-                       
-                            <div class="row">
+
+                    <div class="row">
                         <div class="col">
                             <div id="chartContainer" style="height: 300px;">
-                             </div>
+                            </div>
                         </div>
                         <div class="col">
-                                
-                            <span style="font-size: 21px;"><b><center>Masked melanoma image</center></b> </span>
-                            <img src="data:image/png;base64,{{ img_masked }}"  class="img-fluid" alt="Responsive image">
-                        </div>  
+
+                            <span style="font-size: 21px;"><b>
+                                    <center>Masked melanoma image</center>
+                                </b> </span>
+                            <img src="data:image/png;base64,{{ img_masked }}" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>
-                    
-
                 </div>
+
+
             </div>
         </div>
     </div>
+</div>
 
- 
 
 
-    <script type="text/javascript">
+
+<script type="text/javascript">
     window.onload = function () {
 
-        let result = {{p_mal}} > {{p_ben}} ? "malignant" : "benign";
-        let chart = new CanvasJS.Chart("chartContainer",
-        {    
-            title:{
+        let result = {{ p_mal }} > {{ p_ben }} ?"malignant" : "benign";
+    let chart = new CanvasJS.Chart("chartContainer",
+        {
+            title: {
                 text: "SCALP predicts this melanoma as " + result
             },
             legend: {
@@ -44,24 +46,24 @@
                 itemWidth: 120
             },
             data: [
-            {
-                type: "pie",
-                showInLegend: true,
-                toolTipContent: "{y} - #percent %",
-                legendText: "{indexLabel}",
-                dataPoints: [
-                    { y: {{ p_mal }}, indexLabel: "Malignant" },
-                    { y: {{ p_ben }}, indexLabel: "Benign" },
+                {
+                    type: "pie",
+                    showInLegend: true,
+                    toolTipContent: "{y} - #percent %",
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                        { y: {{ p_mal }}, indexLabel: "Malignant" },
+        { y: {{ p_ben }}, indexLabel: "Benign" },
                 ],
-                labels: ["Red", "Green"]
+    labels: ["Red", "Green"]
             }
             ]
         });
-        chart.render();
+    chart.render();
     }
-    </script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-    
+
 
 {% endblock %}

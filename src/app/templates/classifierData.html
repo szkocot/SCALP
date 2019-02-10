@@ -5,39 +5,64 @@
         <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
+                        <h5 class="card-title text-center">Classifier Data</h5>
     <form class="form-signin" method="get" action="{{ url_for('main.classifierData') }}">
-            <div class="table-responsive">
-                    <table id="dt-basic-checkbox" data-click-to-select="true" class="table table-sm"
-                           cellspacing="0" width="100%">
-            <tr>
-                <th>Name</th>
-                <th>Creator name</th>
-                <th>Image type</th>
-                <th>Age approx</th>
-                <th>General anatomic site</th>
-                <th>Type</th>
-                <th>Diagnosis</th>
-                <th>Diagnosis confirmed as</th>
-                <th>Sex</th>
-            </tr>
-            <tr>
-                <th><input name="m.name" type="text" id="name" class=""></th>
-                <th><input name="c.name" type="text" id="creator-name" class=""></th>
-                <th><input name="a.image_type" type="text" id="acquisition-image-type" class=""></th>
-                <th><input name="cl.age_approx" type="text" id="clinical-age-approx" class=""></th>
-                <th><input name="cl.anatom_site_general" type="text" id="clinical-anatom-site-general" class="">
-{#                    dropdown benign albo malignant albo puste #}
-                </th>
-                <th><input name="cl.benign_malignant" type="text" id="clinical-type" class=""></th>
-                <th><input name="cl.diagnosis" type="text" id="clinical-diagnosis" class=""></th>
-                <th><input name="cl.diagnosis_confirm_type" type="text" id="clinical-diagnosis-confirm" class=""></th>
-                <th><input name="cl.sex" type="text" id="clinical-sex" class="">
-{#                    to musi byc dropbox z 3 opcjami do wyboru pusta/male/female#}
-                </th>
-            </tr>
-        </table>
-        <input name="page" type="hidden" value="{{ page }}">
-        <button class="btn">Submit Filters</button>
+
+            <p><button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      Filtr/Search
+                    </button>
+                  </p>
+
+                  
+                  <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                    <b>Name</b><br>
+                                    <input name="m.name" type="text" id="name" class=""><br>
+                                    <b>Creator name</b><br>
+                                    <input name="c.name" type="text" id="creator-name" class=""><br>
+                                </div>
+                                <div class="col-sm-3">
+                                    <b>Image type</b><br>
+                                    <input name="a.image_type" type="text" id="acquisition-image-type" class=""><br>
+                                    <b>Age approx</b><br>
+                                    <input name="cl.age_approx" type="text" id="clinical-age-approx" class=""><br>
+                                </div>
+                                
+                                <div class="col-sm-3">
+                                    <b>General anatomic site</b><br>
+                                    <input name="cl.anatom_site_general" type="text" id="clinical-anatom-site-general" class=""><br>
+                                    <b>Type</b><br>
+                                
+                                            <select>
+                                            <option name="cl.benign_malignant" id="clinical-type-0" class=""></option>
+                                            <option name="cl.benign_malignant" id="clinical-type-1" class="">benign</option>
+                                            <option name="cl.benign_malignant" id="clinical-type-2" class="">malignant</option>
+                                         
+                                            </select>
+                                            
+                                </div>
+                                <div class="col-sm-3">
+                                    <b>Diagnosis</b><br>
+                                    <input name="cl.diagnosis" type="text" id="clinical-diagnosis" class=""><br>
+                                    <b>Diagnosis confirmed as</b><br>
+                                    <input name="cl.diagnosis_confirm_type" type="text" id="clinical-diagnosis-confirm" class=""><br>
+                                </div>
+                                <div class="col-sm-3">    
+                                    <b>Sex</b><br>
+                                    <input name="cl.sex" type="text" id="clinical-sex" class=""><br>
+                                    {#                    to musi byc dropbox z 3 opcjami do wyboru pusta/male/female#}
+                                
+ 
+                                    <input name="page" type="hidden" value="{{ page }}"><br>
+                                    <button class="badge badge-primary" value="reset-page">Submit Filters</button><br>
+                                </div>
+                    </div>
+                  </div>
+                  </div>
+
+
 
         <button class="btn" name="next-page" id="next-page" value="next-page">Next page</button>
         <div>Current page {{ page }}</div>

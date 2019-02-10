@@ -35,7 +35,7 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
 
 # data path
-DATA_PATH = "/static/ISIC/"
+DATA_PATH = "/src/app/static/ISIC/"
 
 # ML vars
 PREDICTOR = {
