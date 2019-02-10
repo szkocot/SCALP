@@ -15,9 +15,7 @@ Skin cancer is one of most common type of cancer. Early and precise diagnosys ca
 > The International Skin Imaging Collaboration: Melanoma Project is an academia and industry partnership designed to facilitate the application of digital skin imaging to help reduce melanoma mortality. 
 > -- <cite>[ISIC website][1]</cite>
 
-<img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000000.jpg?raw=true" height="100">
-<img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000010.jpg?raw=true" height="100">
-<img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000020.jpg?raw=true" height="100">
+<img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000000.jpg?raw=true" height="100"><img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000010.jpg?raw=true" height="100"><img src="https://github.com/szkocot/SCALP/blob/master/img/ISIC_0000020.jpg?raw=true" height="100">
 
 It contains thousands of skin images, annotated by professionals as well as non-profesional volunteers.
 
